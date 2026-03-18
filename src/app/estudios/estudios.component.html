@@ -1,0 +1,1507 @@
+<div>
+  <mat-drawer-container>
+    <mat-drawer
+      #drawer
+      class="example-sidenav"
+      mode="side"
+      style="padding: 0px 50px 50px 50px"
+    >
+      <div style="padding: 0px 50px 50px 50px">
+        <a  href="https://clouhr.cl" target="_blank">
+        <img width="80px" src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+      </a>
+      </div>
+      <p style="margin-top: 10px; font-weight: bold">Menú de Navegación</p>
+      <cdk-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <!-- This is the tree node template for leaf nodes -->
+        <cdk-tree-node
+          *cdkTreeNodeDef="let node"
+          cdkTreeNodePadding
+          [style.display]="shouldRender(node) ? 'flex' : 'none'"
+          class="example-tree-node"
+        >
+          <a [href]="getNodeLink(node)" target="_blank" class="node-link">
+            <mat-icon>{{ getNodeIcon(node) }}</mat-icon>
+            {{ node.name }}
+          </a>
+        </cdk-tree-node>
+        <!-- This is the tree node template for expandable nodes -->
+        <cdk-tree-node
+          *cdkTreeNodeDef="let node; when: hasChild"
+          cdkTreeNodePadding
+          [style.display]="shouldRender(node) ? 'flex' : 'none'"
+          class="example-tree-node"
+        >
+          <button
+            mat-icon-button
+            cdkTreeNodeToggle
+            style="padding-left: 0px; margin-left: -7px"
+            [attr.aria-label]="'Toggle ' + node.name"
+            (click)="node.isExpanded = !node.isExpanded"
+            [style.visibility]="node.expandable ? 'visible' : 'hidden'"
+          >
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{
+                treeControl.isExpanded(node) ? "expand_more" : "chevron_right"
+              }}
+            </mat-icon>
+          </button>
+          <p style="margin-left: -6px">{{ node.name }}</p>
+        </cdk-tree-node>
+      </cdk-tree>
+      <div style="text-align: center; margin-top: 50px">
+        <button (click)="logOut()" mat-raised-button>Cerrar Sesión</button>
+      </div>
+    </mat-drawer>
+    <mat-toolbar style="display: flex; justify-content: space-between">
+      <div style="display: flex; align-items: center">
+        <a  href="https://clouhr.cl" target="_blank">
+        <img width="80px" src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+      </a>
+      </div>
+      <div style="display: flex; align-items: center">
+        <span class="example-spacer"></span>
+        <a style="font-weight: 600">Hola {{ name }}!</a>&nbsp;&nbsp;&nbsp;
+        <mat-icon
+          style="
+            width: 100%;
+            height: 100%;
+            font-size: 40px;
+            color: #133d6a;
+            cursor: pointer;
+          "
+          [matMenuTriggerFor]="menu"
+          >account_circle</mat-icon
+        >
+        <mat-menu #menu="matMenu">
+          <div class="custom-menu">
+            <div
+              style="
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+              "
+            >
+              <div class="circulo">
+                <div
+                  style="
+                    font-size: 21px;
+                    padding-left: 15px;
+                    color: white;
+                    padding-top: 5px;
+                  "
+                >
+                  {{ firstLetter }}
+                </div>
+              </div>
+              <div style="margin-left: 10px">
+                <!-- Ajusta el margen según sea necesario -->
+                <strong>{{ user.personal.nombre }} - {{ type }}</strong> <br />
+                {{ user.username }}
+              </div>
+            </div>
+          </div>
+          <button mat-menu-item (click)="logOut()">
+            <a style="display: flex; align-items: center">
+              <mat-icon
+                style="
+                  font-size: 20px;
+                  color: #000;
+                  cursor: pointer;
+                  margin-right: 5px;
+                "
+              >
+                logout
+              </mat-icon>
+              <span style="margin-left: 5px; margin-top: -5px"
+                >Cerrar Sesión</span
+              >
+            </a>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+
+    <div style="text-align: center;background-color:#edf0f5">
+      <div>
+        <img width="100%" src="/assets/img/bannerPrincipal.jpg" />
+      </div>
+
+      <!--MENU BOTONES-->
+      <div id="demo-container" *ngIf="!activeResponse">
+        <div>
+          <ul id="simple-menu">
+            <li
+              (click)="activeElement('encuesta')"
+              *ngIf="
+                user.personal.tipoPersonal === 'Editor' ||
+                user.personal.tipoPersonal === 'Administrador'
+              "
+            >
+              <a
+                [ngClass]="
+                  activeEncuesta ? 'cardHomeActive' : 'cardHomeEstudios'
+                "
+                ><span>Estudios en Proceso</span></a
+              >
+            </li>
+            <li
+              (click)="activeElement('estudio')"
+              *ngIf="user.personal.tipoPersonal !== 'Editor'"
+            >
+              <a
+                [ngClass]="
+                  activeEstudios ? 'cardHomeActive' : 'cardHomeEncuesta'
+                "
+                ><span>Estudios Publicados</span></a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <mat-stepper
+        [linear]="isLinear"
+        #stepper
+        style="background-color: #edf0f5; margin-top: -15px"
+        (selectionChange)="onStepChange($event)"
+        *ngIf="activeEstudios"
+      >
+        <mat-step [stepControl]="firstFormGroup" label="Estudios">
+          <!--<h3 style="margin-bottom:0px">Estudios</h3>
+            <p style="margin-bottom:20px">Lista con todos los detalles de los estudios</p> -->
+          <div class="custom-table-container">
+            <div class="table-wrapper-chr">
+                <div class="overtable">
+                  <table
+                    mat-table
+                    [dataSource]="dataSourceEstudios"
+                    matSort
+                    matSortActive="created"
+                    matSortDisableClear
+                    matSortDirection="desc"
+                    class="custom-table2"
+                  >
+                    <ng-container matColumnDef="id">
+                      <th mat-header-cell *matHeaderCellDef style="padding-left: 20px;padding-right: 20px;" >ID</th>
+                      <td mat-cell *matCellDef="let estudio" style="padding-left: 20px;padding-right: 20px;" >{{ estudio.id }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;">
+                        Estado
+                      </th>
+                      <td mat-cell *matCellDef="let estudio" style="text-align: left;">
+                        <a
+                          *ngIf="estudio.status === 4"
+                          style="
+                            display: block;
+                            max-width: 100px;
+                            text-align: center;
+                          "
+                        >
+                          Publicado
+                        </a>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="tipo" >
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;">
+                        Tipo de Estudio
+                      </th>
+                      <td mat-cell *matCellDef="let estudio" style="text-align: left;">
+                      
+                          <span *ngIf="estudio.tipeStudies === 'Compensacion'">Compensación</span>
+                          <span *ngIf="estudio.tipeStudies !== 'Compensacion'">{{estudio.tipeStudies}}</span>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="entrega">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header style="text-align: left;">
+                        Tipo de Entrega
+                      </th>
+                      <td mat-cell *matCellDef="let estudio" style="text-align: left;">
+                        <a>{{ getNameDataPublish(estudio.Entrega) }}</a>
+                      </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombre">
+                      <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        style="color: black; text-align: left;"
+                      >
+                        Nombre del Estudio
+                      </th>
+                      <td mat-cell *matCellDef="let estudio" style="text-align: left;">
+                        {{ estudio.estudiesName }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="fecha">
+                      <th mat-header-cell *matHeaderCellDef style="text-align: left;">Fecha Publicación</th>
+                      <td mat-cell *matCellDef="let estudio" style="text-align: left;">
+                        {{ estudio.fechaPublication }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="acciones">
+                      <th mat-header-cell *matHeaderCellDef >Información Estudio</th>
+                      <td mat-cell *matCellDef="let estudio" >
+                        <button
+                          mat-raised-button
+                          (click)="selectEstudio(estudio)"
+                          style="
+                            background-color: #3473b9;
+                            color: white;
+                            font-size: 16px;
+                          "
+                          class="btnUpdate"
+                        >
+                          Detalle
+                        </button>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="descargar">
+                      <th mat-header-cell *matHeaderCellDef style="padding-right: 20px;" >Descargas</th>
+                      <td mat-cell *matCellDef="let estudio" style="padding-left: 20px;padding-right: 20px;" >
+                        <button mat-icon-button (click)="openFiles(files, estudio)">
+                          <mat-icon style="color: #3473b9">download</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+
+                    <!-- Fila que se muestra si no hay datos -->
+                    <tr *ngIf="dataSourceEstudios.data.length === 0">
+                      <td colspan="7" style="text-align: center">No hay datos</td>
+                    </tr>
+
+                    <tr
+                      mat-header-row
+                      *matHeaderRowDef="displayedColumns"
+                      style="color: grey"
+                    ></tr>
+                    <tr
+                      mat-row
+                      *matRowDef="let row; columns: displayedColumns"
+                    ></tr>
+                  </table>
+                </div>
+                <mat-paginator #paginatorEstudios [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+          </div>
+          <div *ngIf="activeAdmin">
+            <button
+              mat-raised-button
+              routerLink="/home"
+              style="
+                background-color: #3473b9;
+                color: white;
+                margin-bottom: 10px;
+              "
+            >
+              Volver
+            </button>
+          </div>
+        </mat-step>
+
+        <mat-step [stepControl]="secondFormGroup" label="Segmentación">
+          <div *ngIf="selectedEstudio?.tipeStudies === 'Compensacion'" id="miDiv">
+             <!-- Fila 1: Flecha -->
+              <div>
+                <div>
+                    <a style="background-color: transparent;color: black;display: flex;align-content: center;flex-direction: row;flex-wrap: wrap;cursor: pointer;"
+                        (click)="stepBack2()"><mat-icon style="    font-size: 40px;
+                        height: 40px;
+                        width: 40px;">arrow_back_ios</mat-icon></a>
+                </div>
+              </div>
+
+              <!-- Fila 2: ID + EstudiesName -->
+              <div style="display: flex; justify-content: center;">
+                <div
+                  style="
+                    width: 100%;
+                    max-width: 850px;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding-bottom: 20px;
+                    margin: 10px 10px 0px 10px;
+                    padding-top: 20px;
+                  "
+                >
+                  <!-- ID alineado a la izquierda
+                  <span
+                    style="
+                      color: #0e4370;
+                      font-weight: 700;
+                      font-family: sans-serif;
+                      font-size: 24px;
+                      margin-right: 15px;
+                      white-space: nowrap;
+                    "
+                  >
+                    ID: {{ selectedEstudio.id }}
+                  </span> -->
+
+                  <!-- Nombre del estudio centrado -->
+                  <h2
+                    style="
+                      color: #133d6a;
+                      margin: 0;
+                      font-family: sans-serif;
+                      font-size: 24px;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      max-width: 100%;
+                    "
+                  >
+                    {{ selectedEstudio.estudiesName }}
+                  </h2>
+                </div>
+              </div>
+
+              <div>
+                <div>
+                  <div>
+                    <div style="text-align: center">
+                      <br /><br />
+                      <div
+                        style="
+                          padding: 10px;
+                          margin-bottom: 20px;
+                          display: flex;
+                          justify-content: space-around;
+                        "
+                        *ngIf="selectedEstudio.Entrega === 'cortesia'"
+                      >
+                        <div class="info-box" style="width: 36vw">
+                          <p style="color: #686868;">
+                            Para recibir información acerca sobre la versión completa haz click aquí:
+                          </p>
+                          <br />
+                          <div class="cortesia">
+                            <a
+                            class="cortesia-text"
+                            href="https://clouhr.cl/#contact"
+                            >
+                              Quiero más información sobre el estudio completo.
+                            </a>
+                          </div>
+                          
+                          <br /><br />
+                          <p style="color: #686868;">
+                            Luego de seleccionar el área funcional, cargo y filtros, haga click en
+                            "Procesar" para ver los resultados de su búsqueda.
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Área Funcional y Cargo -->
+                      <div class="responsive-container">
+                        <mat-form-field class="responsive-field">
+                          <mat-label>Área Funcional</mat-label>
+                          <mat-select
+                            placeholder="Área Funcional"
+                            [(value)]="selectedAreaFuncional"
+                            (selectionChange)="onAreaFuncionalChange($event.value)"
+                          >
+                            <mat-option
+                              *ngFor="let tipo of filterAreaFuncionalOptions"
+                              [value]="tipo"
+                            >
+                              {{ tipo }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field class="responsive-field">
+                          <mat-label>Cargo</mat-label>
+                          <mat-select
+                            placeholder="Cargo"
+                            [(value)]="selectedCargo"
+                            (selectionChange)="onCargoChange($event.value)"
+                          >
+                            <mat-option *ngFor="let cargo of cargoOptions" [value]="cargo">
+                              {{ cargo }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+
+                      <!-- Filtros adicionales -->
+                      <div class="responsive-container" style="margin-top: 30px;">
+                        <mat-form-field
+                          *ngFor="let select of filterData"
+                          class="responsive-field"
+                        >
+                          <mat-label>{{ select.nombre }}</mat-label>
+                          <mat-select
+                            placeholder="{{ select.nombre }}"
+                            [(ngModel)]="selectedFilters[select.nombre]"
+                            (selectionChange)="onTypeSelectFilter(select.nombre, $event.value)"
+                          >
+                            <mat-option
+                              *ngFor="let tipoZona of select.opciones"
+                              [value]="tipoZona"
+                            >
+                              {{ tipoZona }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Botones -->
+              <div style="display: flex; justify-content: center">
+                <button
+                  mat-raised-button
+                  (click)="cleanFilters()"
+                  class="btnClean"
+                  style="font-size: 18px; max-width: 200px; width: 100%"
+                >
+                  Limpiar Filtros
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button
+                  mat-raised-button
+                  (click)="processInformation()"
+                  class="btnUpdate btnClean"
+                  style="
+                    background-color: #3673bb;
+                    color: white;
+                    font-size: 18px;
+                    max-width: 200px;
+                    width: 100%;
+                  "
+                >
+                  Procesar
+                </button>
+              </div>
+
+                <div
+                id="btnPrint"
+                *ngIf="tableAppears"
+                class="contentBenefits"
+                style="
+                  display: flex;
+                  justify-content: flex-end;
+                  width: 100%;
+                  padding: 25px 0px 0px 10px;
+                "
+              >
+                <button
+                   (click)="generatePDF('contenidoParaImprimirComp', loading)"
+                  style="
+                    background: linear-gradient(135deg, #3673ba, #3673ba);
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    transition: all 0.25s ease;
+                    transform: translateY(0);
+                    white-space: nowrap;
+                    margin-top:20px;
+                  "
+                  onmouseover="this.style.boxShadow='0 6px 18px rgba(37,99,235,0.55)'; this.style.transform='translateY(-2px)'"
+                  onmouseout="this.style.boxShadow='0 4px 10px rgba(37,99,235,0.3)'; this.style.transform='translateY(0)'"
+                >
+                  <span style="display: inline-flex; align-items: center; font-size: 18px;">
+                    📄
+                  </span>
+                  <span>Imprimir</span>
+                </button>
+              </div>
+
+              <div *ngIf="alldata?.length === 0" style="margin-top:50px">
+                <span><b>No existen datos para los criterios seleccionados.</b></span>
+              </div>
+
+              <div *ngIf="tableAppears" id="contenidoParaImprimirComp" class="contentBenefits"
+              >
+                <div style="margin-top: 45px; margin-bottom: 50px">
+                  <div>
+                    <h1 style="font-size: 24px; margin-bottom: 0px;color:#133d6a">
+                      {{ selectedCargo }}
+                    </h1>
+                  </div>
+                  <div style="text-align: left; margin-bottom: 20px">
+                    <h4 style="margin-bottom: 0px;color:#133d6a;font-size:22px">Descripción General:</h4>
+                    <br />
+                    <mat-card-content *ngIf="dataCargo != null" style="font-size:18px;">{{
+                      dataCargo?.description
+                    }}</mat-card-content>
+                    <mat-card-content *ngIf="dataCargo === null"
+                      >Sin descripción.</mat-card-content
+                    >
+                  </div>
+                  <div class="custom-table-container-chart">
+                    <div class="table-wrapper-chart">
+                      <table
+                        mat-table
+                        [dataSource]="dataSource2"
+                        class="mat-elevation-z8 custom-table-chart"
+                      >
+                        <!-- Encabezados de fila -->
+                        <ng-container matColumnDef="rowHeader">
+                          <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            style="background-color: #3473b9"
+                          ></th>
+                          <td
+                            mat-cell
+                            *matCellDef="let row"
+                            style="
+                              background-color: #133e6b;
+                              color: white;
+                              font-weight: 700;
+                            "
+                          >
+                            {{ row.rowHeader }}
+                          </td>
+                        </ng-container>
+
+                        <!-- Datos de la tabla -->
+                        <ng-container
+                          *ngFor="let column of displayedColumns2"
+                          [matColumnDef]="column"
+                        >
+                          <th
+                            mat-header-cell
+                            *matHeaderCellDef
+                            style="
+                              background-color: #3473b9;
+                              color: white;
+                              text-align: center;
+                            "
+                          >
+                            {{ column }}
+                          </th>
+                          <td
+                            mat-cell
+                            *matCellDef="let row"
+                            style="text-align: center"
+                          >
+                            <a
+                              *ngIf="row[column] >= 0 || row[column] !== 'N/A'"
+                              >{{ parseValue(row[column], row, column) }}</a
+                            >
+                            <a *ngIf="row[column] === 'N/A'">{{ row[column] }}</a>
+                          </td>
+                        </ng-container>
+
+                        <!-- Definición de filas y columnas -->
+                        <tr
+                          mat-header-row
+                          *matHeaderRowDef="
+                            ['rowHeader'].concat(displayedColumns2)
+                          "
+                        ></tr>
+                        <tr
+                          mat-row
+                          *matRowDef="
+                            let row;
+                            columns: ['rowHeader'].concat(displayedColumns2)
+                          "
+                        ></tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display: flex; justify-content: space-between">
+                  <div style="width: 400px">
+                    <div class="custom-table-container-chart">
+                      <div class="table-wrapper-chart">
+                        <table
+                          mat-table
+                          [dataSource]="dataSourceEdadAntiguedad"
+                          class="mat-elevation-z8"
+                        >
+                          <!-- Columna de encabezado vacío -->
+                          <ng-container matColumnDef="label">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td
+                              mat-cell
+                              *matCellDef="let element"
+                              style="
+                                background-color: #133e6b;
+                                color: white;
+                                font-weight: 700;
+                              "
+                            >
+                              {{ element.label }}
+                            </td>
+                          </ng-container>
+
+                          <!-- Columna de Promedio -->
+                          <ng-container matColumnDef="promedio" >
+                            <th
+                              mat-header-cell
+                              *matHeaderCellDef
+                              style="color: white;text-align: center;"
+                            >
+                              Promedio
+                            </th>
+                            <td mat-cell *matCellDef="let element" style="text-align: center;">
+                              {{ element.value }}
+                            </td>
+                          </ng-container>
+
+                          <!-- Encabezado de la tabla -->
+                          <tr
+                            mat-header-row
+                            *matHeaderRowDef="displayedColumnsEdadAntiguedad"
+                            style="
+                              background-color: #3473b9;
+                              color: white;
+                              text-align: center;
+                            "
+                          ></tr>
+                          <!-- Filas de la tabla -->
+                          <tr
+                            mat-row
+                            *matRowDef="
+                              let row;
+                              columns: displayedColumnsEdadAntiguedad
+                            "
+                          ></tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style="
+                      background-color: white;
+                      border: 1px solid #ccc;
+                      border-radius: 10px;
+                      overflow: hidden;
+                      height: 100%;
+                      box-shadow: 0px 4px 10px rgb(11 11 11 / 20%)!important
+                    "
+                  >
+                    <div
+                      style="
+                        background-color: #3473b9;
+                        padding: 16px 50px;
+                        color: white;
+                        font-weight: 700;
+                        border-top-left-radius: 10px;
+                        border-top-right-radius: 10px;
+                      "
+                    >
+                      Observaciones
+                    </div>
+                    <div style="padding: 20px">
+                      <a>{{ datacharts.observaciones }}</a>
+                    </div>
+                  </div>
+                </div>
+
+                <!--Antiguedad del Beneficios y Cambios-->
+                <div class="" id="charts" style="margin-top:70px">
+                  <div class="slides">
+                    <!-- Slide 1: Antigüedad del Beneficio -->
+                    <div class="slide">
+                      <div class="chart-main-container two-charts">
+                        <div class="chart-wrapper-new">
+                          <canvas id="myChart"></canvas>
+                          <div style="justify-items:center">
+                            <div id="customLabels1" class="chart-legend"></div>
+                          </div>
+                        </div>
+                        <div class="chart-wrapper-new">
+                          <canvas id="myChart2"></canvas>
+                          <div style="justify-items:center">
+                            <div id="customLabels2" class="chart-legend"></div>
+                          </div>                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            
+              <!--<div id="btnPrint" *ngIf="tableAppears">
+                <button
+                  mat-raised-button
+                  (click)="generatePDF('contenidoParaImprimirComp')"
+                  class="btnUpdate btnClean"
+                  style="
+                    background-color: #3673bb;
+                    color: white;
+                    font-size: 18px;
+                    max-width: 200px;
+                    width: 100%;
+                  "
+                >
+                  Imprimir
+                </button>
+              </div>-->
+          </div>
+
+          <div *ngIf="selectedEstudio?.tipeStudies === 'Beneficios'" id="miDiv">
+              <!-- Fila 1: Flecha -->
+              <div>
+                <div>
+                    <a style="background-color: transparent;color: black;display: flex;align-content: center;flex-direction: row;flex-wrap: wrap;cursor: pointer;"
+                        (click)="stepBack2()"><mat-icon style="    font-size: 40px;
+                        height: 40px;
+                        width: 40px;">arrow_back_ios</mat-icon></a>
+                </div>
+              </div>
+
+              <!-- Fila 2: ID + EstudiesName -->
+              <div style="display: flex; justify-content: center;">
+                <div
+                  style="
+                    width: 100%;
+                    max-width: 850px;
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    padding-bottom: 20px;
+                    margin: 10px 10px 0px 10px;
+                    padding-top: 20px;
+                  "
+                >
+                  <!-- ID alineado a la izquierda 
+                  <span
+                    style="
+                      color: #0e4370;
+                      font-weight: 700;
+                      font-family: sans-serif;
+                      font-size: 24px;
+                      margin-right: 15px;
+                      white-space: nowrap;
+                    "
+                  >
+                    ID: {{ selectedEstudio.id }}
+                  </span>-->
+
+                  <!-- Nombre del estudio centrado -->
+                  <h2
+                    style="
+                      position: absolute;
+                      left: 50%;
+                      transform: translateX(-50%);
+                      color: #133d6a;
+                      margin: 0;
+                      font-family: sans-serif;
+                      font-size: 24px;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      max-width: 100%;
+                    "
+                  >
+                    {{ selectedEstudio.estudiesName }}
+                  </h2>
+                  
+                </div>
+              </div>
+              <form>
+                <div>
+                  <div>
+                    <div style="text-align: center">
+                      <br />
+                      <div
+                        style="
+                          padding: 10px;
+                          margin-bottom: 20px;
+                          display: flex;
+                          justify-content: space-around;
+                        "
+                        *ngIf="selectedEstudio.Entrega === 'cortesia'"
+                      >
+                        <div
+                          style="
+                            max-width: 1100px !important;
+                            width: 100%;
+                            padding: 10px;
+                            border: 1px solid #ccc;
+                            background-color: #729aca;
+                            border-radius: 10px;
+                            color: #ffffff;
+                            font-size: 18px;
+                          "
+                        >
+                          <p>
+                            Este estudio es de cortesía, solo contiene un resumen del estudio completo.
+                            Si desea conseguir el estudio completo, pongase en contacto con nosotros.<br /><br />
+                            <a
+                              href="https://clouhr.cl/#contact"
+                              target="_blank"
+                              style="
+                                padding: 10px 60px 10px 60px;
+                                background-color: white;
+                                border-radius: 8px;
+                                text-decoration: none;
+                              "
+                            >
+                              Contactar
+                            </a>
+                          </p>
+                        </div>
+                      </div>
+
+                      <!-- Beneficios: con clase para poder seleccionarlo en CSS -->
+                      <mat-form-field
+                        class="select-beneficio"
+                        style="height: 80px; max-width: 350px; width: 100%"
+                      >
+                        <mat-select
+                          placeholder="Beneficios"
+                          [(value)]="selectedArea"
+                          (selectionChange)="onBeneficioSelect($event.value)"
+                        >
+                          <mat-option
+                            *ngFor="let tipo of filterAreaFuncionalOptions"
+                            [value]="tipo"
+                            >{{ tipo }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- Contenedor con flex para selects -->
+                    <div class="selects-row">
+                      <mat-form-field
+                        *ngFor="let select of filterDataBenefits"
+                        style="height: 80px; max-width: 350px; width: 100%"
+                      >
+                        <mat-label>{{ select.nombre }}</mat-label>
+                        <mat-select
+                          placeholder="{{ select.nombre }}"
+                          [(value)]="filterSelections[select.nombre]"
+                          (selectionChange)="
+                            onTypeSelectFilter2(select.nombre, $event.value)
+                          "
+                        >
+                          <mat-option
+                            *ngFor="let tipoZona of select.opciones"
+                            [value]="tipoZona"
+                            >{{ tipoZona }}</mat-option
+                          >
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div style="display: flex; justify-content: center">
+                <button
+                  mat-raised-button
+                  (click)="cleanFiltersBenefit()"
+                  class="btnClean"
+                >
+                  Limpiar Filtros</button
+                >&nbsp;&nbsp;&nbsp;
+                <button
+                  mat-raised-button
+                  (click)="processInformation()"
+                  class="btnUpdate btnClean"
+                  style="background-color: #3673bb; color: white"
+                >
+                  Procesar
+                </button>
+              </div>
+                               
+                    
+              <div *ngIf="alldataBenefits?.length === 0" style="margin-top:50px">
+                <span><b>No existen datos para los criterios seleccionados.</b></span>
+              </div>
+
+
+              <div
+                id="btnPrint"
+                *ngIf="tableAppears3"
+                class="contentBenefits"
+                style="
+                  display: flex;
+                  justify-content: flex-end;
+                  width: 100%;
+                  padding: 10px 0;
+                "
+              >
+                <button
+                  (click)="generatePDFBeneficio(loading)"
+                  style="
+                    background: linear-gradient(135deg, #3673ba, #3673ba);
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    transition: all 0.25s ease;
+                    transform: translateY(0);
+                    white-space: nowrap;
+                    margin-top:20px;
+                  "
+                  onmouseover="this.style.boxShadow='0 6px 18px rgba(37,99,235,0.55)'; this.style.transform='translateY(-2px)'"
+                  onmouseout="this.style.boxShadow='0 4px 10px rgba(37,99,235,0.3)'; this.style.transform='translateY(0)'"
+                >
+                  <span style="display: inline-flex; align-items: center; font-size: 18px;">
+                    📄
+                  </span>
+                  <span>Imprimir</span>
+                </button>
+              </div>
+
+              <div *ngIf="tableAppears3" id="contenidoParaImprimirBen" class="contentBenefits" >
+                <div>
+                  <div class="bloquePDF" id="bloquepdfben" >
+                  
+                    <h1 style="margin-bottom: 0px; font-size: 24;color:#133d6a;margin-top: 10px;">
+                      {{ beneficio }}
+                    </h1>
+                    <div>
+                      <h1 style="font-size: 24px; margin-bottom: 0px;color:#133d6a;margin-top: 10px;">
+                        {{ datachartsBenefit.nombreBeneficio }}
+                      </h1>
+                    </div>
+                    <div style="margin-bottom: 50px">
+                      <h1 style="margin-bottom: 0px;color:#133d6a">{{ columnCargo }}</h1>
+                      <div style="text-align: left; margin-bottom: 20px">
+                        <h4 style="margin-bottom: 0px; font-size: 22px;color:#133d6a">
+                          Descripción General:
+                        </h4>
+                        <br />
+                        <mat-card-content
+                          *ngIf="dataCargo != null"
+                          style="font-size: 18px"
+                          >{{ dataCargo?.message }}</mat-card-content
+                        >
+                        <mat-card-content
+                          *ngIf="dataCargo === null"
+                          style="font-size: 18px"
+                          >Sin descripción.</mat-card-content
+                        >
+                      </div>
+                      <!--<div style="margin: 40px 0px 20px 0px; font-size: 18px">
+                        <span style="padding-right: 30px"
+                          ><b>Beneficio:</b>
+                          {{ datachartsBenefit.nombreBeneficio }} </span
+                        >|
+                        <span style="padding-left: 30px; padding-right: 30px"
+                          ><b>Empresas seleccionadas:</b>
+                          {{ datachartsBenefit.nroEmp }} </span
+                        >|
+                        <span style="padding-left: 30px"
+                          ><b>Empresas con beneficios:</b>
+                          {{ datachartsBenefit.nroEmpBeneficio }}
+                        </span>
+                      </div>-->
+
+                      <!--TABLA PERCENTILES -->
+                      <div class="custom-table-container-chart">
+                        <div class="table-wrapper-chart">
+                          <table
+                            mat-table
+                            [dataSource]="dataSource3"
+                            class="mat-elevation-z8 custom-table-chart"
+                          >
+                            <!-- Encabezados de fila -->
+                            <ng-container matColumnDef="rowHeader">
+                              <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                style="background-color: #3473b9"
+                              ></th>
+                              <td
+                                mat-cell
+                                *matCellDef="let row"
+                                style="
+                                  background-color: #133e6b;
+                                  color: white;
+                                  font-weight: 700;
+                                "
+                              >
+                                {{ row.rowHeader }}
+                              </td>
+                            </ng-container>
+
+                            <!-- Datos de la tabla -->
+                            <ng-container
+                              *ngFor="let column of displayedColumns3"
+                              [matColumnDef]="column"
+                            >
+                              <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                style="
+                                  background-color: #3473b9;
+                                  color: white;
+                                  text-align: center;
+                                "
+                              >
+                                {{ column }}
+                              </th>
+                              <td
+                                mat-cell
+                                *matCellDef="let row"
+                                style="text-align: center"
+                              >
+                                <a
+                                  *ngIf="row[column] >= 0 || row[column] !== 'N/A'"
+                                  >{{ parseValue(row[column], row, column) }}</a
+                                >
+                                <a *ngIf="row[column] === 'N/A'">{{
+                                  row[column]
+                                }}</a>
+                              </td>
+                            </ng-container>
+
+                            <!-- Definición de filas y columnas -->
+                            <tr
+                              mat-header-row
+                              *matHeaderRowDef="
+                                ['rowHeader'].concat(displayedColumns3)
+                              "
+                            ></tr>
+                            <tr
+                              mat-row
+                              *matRowDef="
+                                let row;
+                                columns: ['rowHeader'].concat(displayedColumns3)
+                              "
+                            ></tr>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div
+                        *ngIf="dataSource3.length === 0"
+                        [attr.colspan]="displayedColumns3.length + 1"
+                        style="
+                          text-align: left;
+                          background-color: white;
+                          font-weight: bold;
+                          padding: 10px;
+                        "
+                      >
+                        Sin datos para mostrar
+                      </div>
+
+                      <div style="margin-top: 50px; max-width: 250px; width: 100%">
+                        <div class="custom-table-container-chart">
+                          <div class="table-wrapper-chart">
+                            <table
+                            mat-table
+                            [dataSource]="prescenciaBeneficio"
+                            class="mat-elevation-z8"
+                          >
+                            <!-- Columna de encabezado vacío -->
+                            <ng-container matColumnDef="prescencia">
+                              <th
+                                mat-header-cell
+                                *matHeaderCellDef
+                                style="
+                                  background-color: #3473b9;
+                                  color: white;
+                                  font-weight: 700;
+                                "
+                              >
+                                Presencia del Beneficio
+                              </th>
+                              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                                {{ element.prescencia }}%
+                              </td>
+                            </ng-container>
+      
+                            <!-- Encabezado de la tabla -->
+                            <tr
+                              mat-header-row
+                              *matHeaderRowDef="prescenciaColumns"
+                            ></tr>
+                            <!-- Filas de la tabla -->
+                            <tr
+                              mat-row
+                              *matRowDef="let row; columns: prescenciaColumns"
+                            ></tr>
+                          </table>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+
+                      <div>
+                        <div id="firstCharts" class="carousel responsive-carousel"
+                          style="
+                            border-radius: 10px;
+                            box-shadow: 0px 2px 10px rgb(11 11 11 / 20%)!important;
+                            height: 100%;
+                            background-color: white;
+                          " id="bloquePDF"
+                        >
+                          <div class="slides3">
+                            <!-- Slide 1: Presencia y Origen -->
+                            <div class="slide">
+                              <div class="horizontal-scroll-2">
+                                <div class="chart-wrapper-2">
+                                  <canvas id="myChartC"></canvas>
+                                  <div id="customLabelsC" class="custom-labels" style="justify-content:center"></div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Slide 2: Impacto Organización y Marca -->
+                            <div class="slide" id="slider2">
+                              <div class="horizontal-scroll-3">
+                                <div class="chart-wrapper-2">
+                                  <canvas id="myChartImpact2Uso"></canvas>
+                                  <a *ngIf="presenceVariable">Sin Información.</a>
+                                  <div id="customLabelsImpact2Uso" class="custom-labels" style="justify-content:center"></div>
+                                </div>
+                                <div class="chart-wrapper-2">
+                                  <canvas id="myChartImpact1"></canvas>
+                                  <a *ngIf="presenceVariable">Sin Información.</a>
+                                  <div id="customLabelsImpact1" class="custom-labels" style="justify-content:center"></div>
+                                </div>
+                                <div class="chart-wrapper-2">
+                                  <canvas id="myChartImpact2"></canvas>
+                                  <a *ngIf="presenceVariable">Sin Información.</a>
+                                  <div id="customLabelsImpact2" class="custom-labels" style="justify-content:center"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Botones de navegación -->
+                          <button class="prev" (click)="prevSlide3()">
+                            &#10094;
+                          </button>
+                          <button class="next" (click)="nextSlide3()">
+                            &#10095;
+                          </button>
+
+                        <!--CONTNEIDO PARA IMRPIMIR, PDF FALSO FIN-->
+                        </div>
+
+                        <!--Antiguedad del Beneficios y Cambios--> 
+                        <div class="chart-main-container two-charts" id="secondCharts">
+                          <div class="chart-wrapper-new">
+                            <canvas id="myChartD"></canvas>
+                            <div style="justify-items:center">
+                              <div id="customLabelsD" class="chart-legend"></div>
+                            </div>
+
+                          </div>
+                          <div class="chart-wrapper-new">
+                            <canvas id="myChartE"></canvas> 
+                            <div style="justify-items:center">
+                              <div id="customLabelsE" class="chart-legend"></div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="bloquePDF">
+                    <div class="thirdCharts">
+                      <div class="carousel-main-container" id="carousel2-desktop">
+                        <div class="carousel-container">
+                          <!-- Slide 1: Requisitos Beneficio y Tipo de Contrato -->
+                          <div class="carousel-inner">
+                            <div class="carousel-item multiple-charts">
+                              <div class="chart-wrapper-new">
+                                <div style="justify-items:center">
+                                  <canvas id="myChartF"></canvas>
+                                  <div id="customLabelsF" class="chart-legend"></div>
+                                </div>
+
+                              </div>
+                              <div class="chart-wrapper-new">
+                                <div style="justify-items:center">
+                                  <canvas id="myChartG"></canvas>
+                                  <div id="customLabelsG" class="chart-legend"></div>
+                                </div>
+
+                              </div>
+                            </div>
+                            <!-- Slide 2: Antigüedad y Otros Requisitos -->
+                              <div class="carousel-item multiple-charts">
+                                <div class="chart-wrapper-new">
+                                  <div style="justify-items:center">
+                                    <canvas id="myChartH"></canvas>
+                                    <div id="customLabelsH" class="chart-legend"></div>
+                                  </div>
+                                </div>
+                                <div class="chart-wrapper-new">
+                                  <div style="justify-items:center">
+                                    <canvas id="myChartI"></canvas>
+                                    <div id="customLabelsI" class="chart-legend"></div>
+                                  </div>
+                                </div>
+                              </div>
+                          </div>
+
+
+                        </div>
+                        <!-- Botones de navegación -->
+                        <button class="prev" (click)="prevSlide2()">
+                          &#10094;
+                        </button>
+                        <button class="next" (click)="nextSlide2()">
+                          &#10095;
+                        </button>
+                      </div>
+
+
+                    </div>
+                  </div>
+
+
+                </div>
+
+              </div>
+              <br />
+              <br />
+
+          </div>
+
+          <div *ngIf="selectedEstudio?.tipeStudies === 'Indicadores'" id="miDiv">
+            <div style="padding-left: 30px">
+              <a
+                style="
+                  background-color: transparent;
+                  color: black;
+                  display: flex;
+                  align-content: center;
+                  flex-direction: row;
+                  flex-wrap: wrap;
+                  font-size: 30px;cursor: pointer;
+                "
+                (click)="stepBack2()"
+                ><mat-icon style="font-size: 30px;height:100%">arrow_back_ios</mat-icon></a
+              >
+            </div>
+            <form>
+              <div>
+                <div>
+                  <div style="text-align: center">
+                    <h2 style="color: #133d6a; margin-bottom: 0px">
+                      {{ selectedEstudio.estudiesName }}
+                    </h2>
+                    <br />
+                    <mat-form-field
+                      style="
+                        height: 80px;
+                        margin-right: 50px;
+                        max-width: 350px;
+                        width: 100%;
+                      "
+                    >
+                      <mat-select
+                        placeholder="Indicadores"
+                        [(value)]="selectedArea"
+                        (selectionChange)="onCargoChange2()"
+                      >
+                        <mat-option
+                          *ngFor="let tipo of filterAreaFuncionalOptions"
+                          [value]="tipo"
+                          >{{ tipo }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div style="display: flex; justify-content: center" *ngIf="selectedArea">
+                    <mat-form-field
+                      *ngFor="let select of filterDataIndicadores"
+                      style="
+                        height: 80px;
+                        margin-right: 50px;
+                        max-width: 350px;
+                        width: 100%;
+                      "
+                    >
+                      <mat-label>{{ select.nombre }}</mat-label>
+                      <mat-select [(value)]="filterSelections[select.nombre]">
+                        <mat-option
+                          *ngFor="let tipoZona of select.opciones"
+                          [value]="tipoZona"
+                          >{{ tipoZona }}</mat-option
+                        >
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+              <!-- Botones -->
+              <div style="display: flex; justify-content: center">
+                <button
+                  mat-raised-button
+                  (click)="cleanFilters()"
+                  class="btnClean"
+                  style="font-size: 18px; max-width: 200px; width: 100%"
+                >
+                  Limpiar Filtros
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button
+                  mat-raised-button
+                  (click)="processInformation()"
+                  class="btnUpdate btnClean"
+                  style="
+                    background-color: #3673bb;
+                    color: white;
+                    font-size: 18px;
+                    max-width: 200px;
+                    width: 100%;
+                  "
+                >
+                  Procesar
+                </button>
+              </div>
+            <div
+              *ngIf="tableAppearsIndicadores"
+              id="contenidoParaImprimir" class="contentBenefits"
+             
+            >
+              <div style="margin-top: 50px">
+                <h1 style="margin-bottom: 0px;color:#133d6a">{{ beneficio }}</h1>
+                <div style="margin-bottom: 50px">
+                  <h1 style="margin-bottom: 0px;color:#133d6a">{{ columnCargo }}</h1>
+                  <div style="text-align: left; margin-bottom: 20px">
+                    <h4 style="margin-bottom: 0px;color:#133d6a;font-size:22px">Descripción General:</h4>
+                    <br />
+                    <mat-card-content *ngIf="dataCargo != null" style="font-size:20px;">{{
+                      dataCargo?.message
+                    }}</mat-card-content>
+                    <mat-card-content *ngIf="dataCargo === null"
+                      >Sin descripción.</mat-card-content
+                    >
+                  </div>
+
+                  <div>
+                    <div>
+                   <!--TABLA PERCENTILES -->
+                    <div class="custom-table-container-chart">
+                      <div class="table-wrapper-chart">
+                        <table mat-table [dataSource]="dataSourceIndicadores" class="mat-elevation-z8">
+
+                          <!-- Row Header -->
+                          <ng-container matColumnDef="rowHeader">
+                            <th mat-header-cell *matHeaderCellDef  style="background-color: #3473b9;color:white"> Indicador </th>
+                            <td mat-cell *matCellDef="let element"  style="background-color: #133e6b;color:white;font-weight: 700;"> {{ element.rowHeader }} </td>
+                          </ng-container>
+
+                          <!-- Dinámicas: usamos la primera fila para generar las columnas -->
+                          <ng-container *ngFor="let label of getTableHeaders()" [matColumnDef]="label">
+                            <th mat-header-cell *matHeaderCellDef  style="background-color: #3473b9;color:white;font-weight: 700;"> {{ label }} </th>
+                            <td mat-cell *matCellDef="let element">
+                              {{ getValue(element, label) }}
+                            </td>
+                          </ng-container>
+
+                          <tr mat-header-row *matHeaderRowDef="displayedColumnsIndicadores2"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumnsIndicadores2;"></tr>
+                        </table>
+                      </div>
+                    </div>
+                    </div>
+
+                    <!-- Iteramos sobre los grupos (claves del objeto) -->
+                    <!-- <div *ngFor="let group of objectKeys(dataSourceIndicadores)" style="margin-bottom:50px">
+                      <h2>{{ formatGroupName(group) }}</h2>
+                  
+                      <table mat-table [dataSource]="objectToArray(dataSourceIndicadores[group])" class="mat-elevation-z8">
+                        <ng-container matColumnDef="key">
+                          <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                          <td mat-cell *matCellDef="let element"> {{formatKeyName(element.key)}} </td>
+                        </ng-container>
+                  
+                        <ng-container matColumnDef="value">
+                          <th mat-header-cell *matHeaderCellDef> Valor </th>
+                          <td mat-cell *matCellDef="let element">
+                            <a *ngIf="element.value != 'na'">{{element.value | number:'1.2-2'}}</a>
+                            <a *ngIf="element.value === 'na'">0</a>
+                          </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="['key', 'value']"></tr>
+                        <tr mat-row *matRowDef="let row; columns: ['key', 'value'];"></tr>
+                      </table>
+                    </div>
+                  </div> -->
+                  </div>
+                </div>
+                <br />
+                <br />
+              </div>
+            </div>
+          </div>
+
+          <br />
+          <br />
+          <br />
+        </mat-step>
+      </mat-stepper>
+
+      <div *ngIf="activeEncuesta">
+        <app-show-surveys
+          (activateResponseChange)="onActivateResponseChange($event)"
+          (activeFilesChange)="onActivateResponseChange($event)"
+        ></app-show-surveys>
+      </div>
+    </div>
+  </mat-drawer-container>
+</div>
+
+<ng-template #files>
+  <app-dialog-upload-pdf-multiple
+    [type]="true"
+    [estudio]="estudioSelected"
+  ></app-dialog-upload-pdf-multiple>
+</ng-template>
+
+<ng-template #dialogWelcome let-dialogRef="dialogRef">
+  <div class="custom-modal-overlay fondo-curvas">
+    <div class="custom-modal">
+      <button class="close-btn" (click)="closeModal()">✕</button>
+      <h1>HOLA! :)</h1>
+      <p class="subtext">
+        Te damos la bienvenida a nuestra plataforma, donde podrás acceder a los diversos estudios publicados.
+      </p>
+      <p class="highlight">
+        Te invitamos a descubrir una forma dinámica e interactiva de explorar la información contenida en nuestros informes.
+      </p>
+    </div>
+  </div>
+</ng-template>
+
+
+
+<ng-template #loading>
+  <div style="text-align: center;">
+    <h4>Generando Archivo...</h4>
+  </div>
+
+  <div style="width: 100%;display: flex;justify-content: center;">
+    <div>
+      <mat-spinner style="width:50px"></mat-spinner>
+    </div>
+
+  </div>
+</ng-template>

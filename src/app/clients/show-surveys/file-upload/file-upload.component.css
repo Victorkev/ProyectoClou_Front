@@ -1,0 +1,137 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.card-container {
+  padding: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.center-content {
+  margin-bottom: 0px;
+  margin-top: 30px;
+}
+
+.block-content {
+  width: 150px;
+  background-color: #f1f1f1;
+  color: black;
+  border: 1px solid #7e7e7e;
+  display: block;
+  text-align: right;
+}
+
+.btnCancel {
+  width: 150px;
+  background-color: #fff;
+  color: black;
+  border: 1px solid #7e7e7e;
+}
+
+.btnCancel:hover {
+  color: #6b8d14;
+  border: 1px solid #6b8d14;
+}
+
+.btnFile {
+  max-width: 150px;
+  width: 150px;
+  border: 1px solid #7e7e7e;
+}
+
+.btnFile:hover {
+  color: #163c6b;
+  border: 1px solid #163c6b;
+}
+
+.block-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* Asegura que los botones estén alineados verticalmente */
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.left-button,
+.right-button {
+  display: flex;
+  align-items: center;
+}
+
+.custom-button {
+  width: 150px;
+  /* Ajusta el ancho según tus necesidades */
+  height: 40px;
+  /* Ajusta la altura según tus necesidades */
+  border-radius: 10px;
+  font-size: 16px
+}
+
+.btnHover {
+  background-color: #3572b8 !important;
+  color: #ffffff !important;
+}
+
+.btnHoverCancel {
+  background-color: white !important;
+  color: #000000 !important;
+}
+
+.btnHoverCancel:hover {
+  background-color: #163c6b !important;
+  color: #fff !important;
+}
+
+.btnHover:hover {
+  background-color: #163c6b !important;
+  color: white;
+}
+
+.btnObs{
+  background-color: #3472bb;
+  color:white;
+}
+
+.btnObs:hover{
+  background-color: #163c6b;
+}
+
+.styled-table {
+  width: 100%;
+  border-collapse: collapse; /* Elimina el doble borde */
+  margin: 20px 0; /* Margen superior e inferior para separar la tabla */
+  font-size: 16px;
+  text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 15px 20px; /* Añade espacio interno a las celdas */
+  border: 1px solid #ddd; /* Añade bordes ligeros */
+}
+
+.styled-table th {
+  background-color: #f2f2f2; /* Color de fondo para encabezados */
+}
+
+.styled-table tr:nth-child(even) {
+  background-color: #f9f9f9; /* Color de fondo alternado para filas */
+}
+
+.styled-table tr:hover {
+  background-color: #f1f1f1; /* Color de fondo al pasar el ratón */
+}

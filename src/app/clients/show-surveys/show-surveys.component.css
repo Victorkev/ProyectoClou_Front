@@ -1,0 +1,237 @@
+.cardHome {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  margin: 50px 20px 0px 20px;
+  border-radius: 20px;
+  background-image: radial-gradient(at bottom right, #17a0ae 75%, #51cfbd 0%);
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
+}
+
+.custom-table {
+  border-radius: 10px; /* Ajusta el valor según el radio de borde que desees */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajusta el valor según la sombra que desees */
+  overflow: hidden; /* Para asegurar que la sombra no se recorte si la tabla tiene bordes redondeados */
+}
+
+:host::ng-deep.mat-mdc-table .mdc-data-table__row {
+  height: 60px !important;
+  white-space: nowrap;
+}
+
+.active {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  margin: 50px 20px 0px 20px;
+  border-radius: 20px;
+  background-color: #133d6a;
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
+}
+
+.cardHome:hover {
+  transition-duration: 0.3s;
+  transform: scale(
+    1.1
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+.container-block {
+  display: flex;
+  justify-content: center;
+}
+.txt-block {
+  color: white;
+}
+
+/* Estilos para centrar la tabla y agregar márgenes responsivos */
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto; /* Margen automático para centrar verticalmente */
+  max-width: 100%; /* Ancho máximo para que se ajuste al tamaño de la pantalla */
+  padding: 0 180px; /* Padding lateral para espaciado en dispositivos de pantalla grande */
+}
+
+.btnUpdate:hover {
+  background-color: #133d6a !important;
+  color: white !important;
+}
+
+.btnComplete {
+  padding: 9px 15px 9px 15px;
+  border-radius: 8px;
+  background-color: #8db91f;
+  border: 1px solid #ccc;
+  display: block;
+  max-width: 100px;
+  text-align: center;
+  color: white;
+}
+
+.btnUpdate {
+  padding: 9px 15px 9px 15px;
+  background: #f7f8fa;
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px;
+  box-shadow: rgba(255, 255, 255, 0.6) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  font-size: 16px;
+  height: 38px;
+  font-size: 13px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 11px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  max-width: 120px;
+  width: 100%;
+}
+
+.btnBlocked {
+  background: #ececec;
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px;
+  box-shadow: rgba(255, 255, 255, 0.6) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #adacb0;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  font-size: 16px;
+  height: 38px;
+  font-size: 13px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 11px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  max-width: 120px;
+  width: 100%;
+}
+
+.formA {
+  cursor: pointer;
+}
+
+:host::ng-deep.mdc-linear-progress {
+  height: var(--mdc-linear-progress-track-height, 8px);
+}
+
+:host::ng-deep.mdc-linear-progress__bar-inner {
+  border-top-width: var(--mdc-linear-progress-track-height, 8px);
+}
+
+.iconColor {
+  color: #92c020;
+}
+
+.tdtxt {
+  font-size: 18px;
+}
+
+::ng-deep.mdc-tooltip__surface {
+  background-color: #92c020 !important;
+}
+
+.mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.custom-button2 {
+  width: 150px; /* Ajusta el ancho según tus necesidades */
+  height: 40px; /* Ajusta la altura según tus necesidades */
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #163c6b !important;
+  color: white !important;
+}
+
+.multi-line-cell {
+  word-break: break-word;
+  /* Opcional: Para romper palabras largas */
+}
+
+.custom-table-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.table-wrapper-chr {
+  width: 100%;
+  max-width: 1300px;
+  padding: 0px;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table2 {
+  width: 100%;
+  min-width: 800px; /* Asegura que tenga un tamaño mínimo */
+  border-collapse: collapse;
+}
+
+.custom-table2 th,
+.custom-table2 td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-table2 th {
+  background-color: #f4f4f4;
+}
+
+@media (max-width: 900px) {
+  .table-wrapper {
+    width: 95%;
+  }
+}
+
+.mat-header-cell {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.overtable {
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 800px) {
+  .table-wrapper-chr {
+    padding: 0px 20px 0px 20px;
+    overflow-x: auto;
+  }
+
+  .overtable {
+    overflow-x: auto !important;
+  }
+}

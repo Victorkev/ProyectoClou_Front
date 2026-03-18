@@ -1,0 +1,91 @@
+<mat-drawer-container>
+    <mat-toolbar style="display: flex; justify-content: space-between;">
+      <div style="display: flex; align-items: center;">
+       <a  href="https://clouhr.cl" target="_blank">
+        <img width="80px" src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+      </a>
+      </div>
+      <div style="display: flex; align-items: center;">
+        <span class="example-spacer"></span>
+        <a style="font-weight: 500;">Hola {{name}}!</a>&nbsp;&nbsp;&nbsp;
+        <mat-icon style="width: 100%; height: 100%; font-size: 40px; color: #133d6a; cursor: pointer" [matMenuTriggerFor]="menu">account_circle</mat-icon>
+        <mat-menu #menu="matMenu">
+          <div class="custom-menu">
+            <div style="padding: 20px; display: flex; align-items: center; justify-content: center;">
+              <div class="circulo">
+                <div style="font-size: 21px;
+                padding-left: 15px;
+                color: white;
+                padding-top: 5px;">{{ firstLetter }}</div>
+              </div>
+              <div style="margin-left: 10px;"> <!-- Ajusta el margen según sea necesario -->
+                <strong>{{ user.personal.nombre }} - {{type}}</strong> <br>
+                {{ user.username }}
+              </div>
+            </div>
+          </div>
+          <button mat-menu-item (click)="logOut()">
+            <a style="display: flex; align-items: center;">
+              <mat-icon style="font-size: 20px; color: #000; cursor: pointer;margin-right:5px">
+                logout
+              </mat-icon>
+              <span style="margin-left: 5px;margin-top: -5px;">Cerrar Sesión</span>
+            </a>
+          </button>
+        </mat-menu>
+      </div>
+  
+    </mat-toolbar>
+    <div style="text-align: center;">
+      <div>
+        <img width="100%" src="/assets/img/bannerPrincipal.jpg">
+      </div>
+    </div>
+
+    <div style="display: flex;justify-content: center;margin-top:50px">
+        <mat-card style="max-width:800px;width:100%;padding:30px">
+            <div style="text-align: center;">
+                <h3>Correo Masivo</h3>
+            </div>
+            <div>
+                <form [formGroup]="mailGroup">
+                    <div style="display:flex; justify-content:center;">
+                        <div class="containerInput">
+                          <div class="container-input">
+                            <mat-label>Correos Electrónicos</mat-label><br>
+                            <mat-form-field class="example-form-field" style="width: 600px;">
+                              <input matInput type="text" formControlName="correos" style="width: 100%;">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:center;">
+                        <div class="containerInput">
+                          <div class="container-input">
+                            <mat-label>Asunto</mat-label><br>
+                            <mat-form-field class="example-form-field" style="width: 600px;">
+                              <input matInput type="text" formControlName="asunto" style="width: 100%;">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:center;">
+                        <div class="containerInput">
+                          <div class="container-input">
+                            <mat-label>Mensaje</mat-label><br>
+                            <mat-form-field class="example-form-field" style="width: 600px;">
+                              <textarea matInput type="text" formControlName="mensaje" style="width: 100%;"></textarea>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button mat-raised-button class="custom-button">Enviar</button>
+                    </div>
+
+                </form>
+            </div>
+        </mat-card>
+    </div>
+  
+  </mat-drawer-container>

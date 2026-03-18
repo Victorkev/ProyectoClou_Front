@@ -1,0 +1,21 @@
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .content {
+    flex: 1;
+    background-color: #edf0f5;
+  }
+  
+  app-footer {
+    background-color: #edf0f5;
+    height: 100px; /* o el alto real de tu footer */
+    width: 100%;
+  }

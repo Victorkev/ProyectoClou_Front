@@ -1,0 +1,334 @@
+<div style="margin-bottom: 30px;
+padding-left: 40px;
+padding-right: 40px;">
+</div>
+
+<div>
+    <h1>Estudio {{estudioSelected.estudiesName}}</h1>
+</div>
+<div *ngIf="activeStep3" style="padding-left: 30px;    padding-left: 100px;
+    padding-right: 40px;">
+    <a style="    background-color: transparent;
+    color: black;
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;" (click)="stepBack()"><mat-icon style="font-size: 40px;height: 40px;width: 40px;">arrow_back_ios_ios</mat-icon></a>
+</div>
+<div *ngIf="!activeStep3" style="padding-left: 30px;    padding-left: 100px;
+    padding-right: 40px;" >
+    <a style="background-color: transparent;
+    color: black;
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;" (click)="backToTable()"><mat-icon style="font-size: 40px;height: 40px;width: 40px;">arrow_back_ios_ios</mat-icon></a>
+</div>
+<div class="container">
+
+    <div class="inner-container" *ngFor="let group of groups">
+        <div>
+
+            <!--PASO 1-->
+            <div *ngIf="!activeStep3">
+
+                <mat-card class="card-container" style="margin-bottom:30px">
+                    <div>
+                        <h4 style="color:#3472b7;font-weight: 700;font-size: 20px;">Instrucciones</h4>
+                    </div>
+                    <div
+                        style="margin-bottom:10px;text-align: left;display: flex;align-items: center;justify-content: space-between;">
+                        <a style="font-weight: 700;font-size: 20px;color:#3472b7">Paso 1: Descargar</a>
+                    </div>
+                    <p style="text-align: left;color:#163c6b;margin-top: 0px;">Presione el botón 'Descargar' para bajar
+                        el formulario y complete la información solicitada </p>
+                    <div style="margin-bottom:10px;text-align: left;margin-top:20px">
+                        <a style="font-weight: 700;font-size: 20px;color:#3472b7">Paso 2: Cargar</a>
+                    </div>
+                    <p style="text-align: left;color:#163c6b;margin-top: 0px;">Una vez que complete el formulario,
+                        presione el botón 'Seleccionar Archivo' para cargar el formulario.
+
+                        Para realizar la entrega de sus respuestas, presione el botón 'Enviar'.</p>
+                    <div style="margin-bottom:10px;text-align: left;margin-top:20px">
+                        <a style="font-weight: 700;font-size: 20px;color:#3472b7">Paso 3: Validar</a>
+                    </div>
+                    <p style="text-align: left;color:#163c6b;margin-top: 0px;">Después de cargar todas sus respuestas,
+                        presione el botón 'Siguiente' para que se validen sus archivos.</p>
+
+                    <mat-divider style="margin-top: 15px;"></mat-divider>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>1: Descargar</th>
+                                <th>2: Cargar</th>
+                                <th>Estado</th>
+                                <th>3: Validar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ng-container *ngFor="let file of file">
+                                <tr *ngIf="file.name !== ''">
+                                    <!-- Mostrar el nombre de la empresa solo en la primera fila del bloque -->
+                                    <td>
+                                        <div style="display: flex;">
+                                            <mat-chip-set aria-label="Dog selection" style="margin-right:20px">
+                                                <mat-chip>
+                                                    {{file.name}}
+                                                    <button matChipRemove
+                                                        style="color: #163c6b;width: 27px; height: 27px;font-size: 24px;opacity: unset;"
+                                                        aria-label="'remove ' + keyword">
+                                                    </button>
+                                                </mat-chip>
+                                            </mat-chip-set>
+                                            <div>
+                                                <button mat-raised-button
+                                                    style="max-width: 150px;width: 150px;background-color: #3ca445;color:white"
+                                                    (click)="downloadFile(file)">Descargar</button>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <div style="display: flex;justify-content: center;">
+                                            <input type="file" #fileInput style="display: none;"
+                                                (change)="onFileSelected($event, file)" />
+                                            <button mat-raised-button (click)="selectFile(downloadName)" class="btnFile"
+                                                style="margin-right: 30px;">
+                                                Seleccionar Archivo
+                                            </button>
+                                            <div *ngIf="!isFileUploaded(file.metaDataId)">
+                                                <button mat-raised-button
+                                                    style="    max-width: 150px;width: 150px;background-color: #3472b7;color:white"
+                                                    (click)="confirmUpload(confirm, file, blockBtnEnviar)">Enviar</button>
+                                            </div>
+                                            <div *ngIf="isFileUploaded(file.metaDataId)">
+                                                <button mat-raised-button
+                                                    style="    max-width: 150px;width: 150px;background-color: #3472b7;color:white"
+                                                    (click)="confirmUpload(replace, file, blockBtnEnviar)">Enviar</button>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div *ngIf="dataSourceObs.length > 0">
+                                                <div *ngFor="let files of dataSourceObs">
+                                                    <p *ngIf="files.metadata === file.metaDataId">{{files.fileName}}</p>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="selectedFileTmp.length > 0">
+                                                <div *ngFor="let files of selectedFileTmp">
+                                                    <p *ngIf="files.metaDataId === file.metaDataId">{{files.name}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <div>
+                                            <p *ngIf="isFileUploaded(file.metaDataId)" style="color:#3ca445">
+                                                <a>Enviado</a>
+                                            </p>
+                                            <p *ngIf="!isFileUploaded(file.metaDataId)">
+                                                <a>Sin Enviar</a>
+                                            </p>
+                                        </div>
+                                    </td>
+
+                                    <td style="text-align: center;">
+                                        <div>
+                                            <p>
+                                                <a>{{isFileUploadedValidation(file.metaDataId)}}</a>
+                                            </p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="file.name === ''" style="margin-top:20px">
+                                    <p>No hay archivos cargados.</p>
+                                </tr>
+                            </ng-container>
+                        </tbody>
+                    </table>
+
+                    <div style="display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;">
+                        <button mat-raised-button
+                            style="max-width: 150px;width: 150px;background-color: #3472b7;color:white"
+                            (click)="nextStep()">Siguiente</button>
+                    </div>
+
+                </mat-card>
+
+            </div>
+
+
+
+
+            <!--PASO 3-->
+
+            <div class="mat-elevation-z8" *ngIf="activeStep3">
+                <mat-card class="card-container" style="margin-bottom:30px">
+                    <p style="font-weight: 700;font-size: 20px;color:#3472b7">Validar Respuestas</p>
+                    <a>Sus respuestas serán validadas. Revise si existen observaciones a considerar. De ser necesario,
+                        puede volver a subir sus archivos en el paso anterior.</a>
+                    <mat-divider style="margin-top: 15px;"></mat-divider>
+                    <table class="styled-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Observaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="dataSourceObs.length > 0">
+                            <ng-container *ngFor="let element of dataSourceObs">
+                                <tr>
+                                    <!-- Mostrar el nombre de la empresa solo en la primera fila del bloque -->
+                                    <td>
+                                        <p> {{ element.formatDate }}</p>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <p>{{element.fileName}}</p>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <a *ngIf="element.status === 0"
+                                            style="color:#3472b7;font-weight: 700;">Sin Observaciones</a>
+                                        <a *ngIf="element.status === 1"
+                                            style="color:#3472b7;font-weight: 700;">Sin Observaciones</a>
+                                        <a *ngIf="element.status === 2" style="color:#3472b7;font-weight: 700;">Revisar
+                                            Observaciones</a>
+                                        <a *ngIf="element.status === 3"
+                                            style="color:#3ca445;font-weight: 700;">Formulario Validado</a>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <button mat-raised-button (click)="modalObs(observaciones, element)"
+                                            class="btnObs">Ver
+                                            Detalle</button>
+                                    </td>
+                                </tr>
+                            </ng-container>
+
+                        </tbody>
+                        <tbody *ngIf="dataSourceObs.length === 0">
+                            <tr>
+                                <!-- Mostrar el nombre de la empresa solo en la primera fila del bloque -->
+
+                                <p> No hay archivos cargados.</p>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div style="display: flex;
+                    flex-direction: row;
+                    justify-content: flex-end;" *ngIf="!activeStep3">
+                        <button mat-raised-button
+                            style="max-width: 150px;width: 150px;background-color: #3472b7;color:white"
+                            (click)="nextStep()">Siguiente</button>
+                    </div>
+
+                </mat-card>
+
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+<ng-template #confirm>
+    <div style="padding:25px 30px 15px 30px;text-align: center;">
+        <h3>Enviar Formulario</h3>
+        <p>¿Esta seguro de enviar el formulario?</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+            style="margin-right: 20px;">Cancelar</button>
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+            (click)="changeActiveResponse()">Aceptar</button>
+    </div>
+</ng-template>
+
+<ng-template #blockBtnEnviar>
+    <div style="padding:25px 30px 15px 30px;text-align: center;">
+        <h3>Mensaje</h3>
+        <p>Debe cargar un archivo para poder realizar el envío.</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+    </div>
+</ng-template>
+
+<ng-template #replace>
+    <div style="padding:25px 30px 15px 30px;text-align: center;">
+        <h3>Reemplazar Formulario</h3>
+        <p>¿Esta seguro de reemplazar el formulario?</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+            style="margin-right: 20px;">Cancelar</button>
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+            (click)="changeActiveResponse()">Aceptar</button>
+    </div>
+</ng-template>
+
+<ng-template #downloadName>
+    <div style="padding:20px 30px 15px 30px;text-align: center;">
+        <h3 style="color:red">IMPORTANTE</h3>
+        <p>El archivo a subir debe tener el mismo nombre del formulario descargado.</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Continuar</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template #observaciones>
+    <div style="padding:20px 30px 15px 30px;text-align: center;">
+        <h3 style="color:#163c6b">Observaciones</h3>
+    </div>
+    <div style="padding:20px 30px 15px 30px;text-align: left;">
+        <div style="height:300px;overflow:auto">
+            <div>
+                <div>
+                    <b>Estado: </b><br>
+                    <span *ngIf="obsSelected.status === 0">Validando Respuestas</span>
+                    <span *ngIf="obsSelected.status === 1">Validando Respuestas</span>
+                    <span *ngIf="obsSelected.status === 2">Revisar Observaciones</span>
+                    <span *ngIf="obsSelected.status === 3">Formulario Validado</span>
+                </div>
+                <br>
+                <div>
+                    <b>Nombre: </b><br>
+                    <span>{{obsSelected.fileName}}</span>
+                </div>
+
+            </div>
+
+            <br>
+            <br>
+            <b>Detalle: </b><br><br>
+            <div style="width: 97%;
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 84px;
+            overflow-y: auto;
+            overflow-x: hidden;border-radius:10px">
+                <span *ngIf="obsSelected.txtObs">{{obsSelected.txtObs}}</span>
+                <span *ngIf="!obsSelected.txtObs">Sin Observaciones</span>
+            </div>
+
+        </div>
+    </div>
+
+    <mat-divider style="    margin-bottom: 18px;
+    margin-top: -4px;"></mat-divider>
+    <div style="text-align: center;">
+        <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+    </div>
+</ng-template>

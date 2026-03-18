@@ -1,0 +1,42 @@
+.txt-cf-h1{
+    color:#133d6a
+}
+
+.container-input{
+    padding:5px
+}
+
+.custom-button {
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+:host::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: #f7f7f7 !important;
+    border: 1px solid #e4e2e2;
+}
+
+.containerInput{
+    max-width: 600px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+
+.custom-button:hover{
+    background-color: #163c6b!important;
+    color:white;
+  }
+
+.custom-button {
+    width: 150px; /* Ajusta el ancho según tus necesidades */
+    height: 40px; /* Ajusta la altura según tus necesidades */
+    border-radius: 10px;
+    font-size:16px;
+    background-color:#3572bc!important;
+    color:white!important;
+}

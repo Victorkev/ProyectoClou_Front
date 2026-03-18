@@ -1,0 +1,211 @@
+/* Estilos generales */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Contenedor principal */
+mat-drawer-container {
+  height: 100vh;
+}
+
+::ng-deep.mat-drawer-content{
+  background-color:#edf1f6!important;
+}
+
+/* Barra de herramientas */
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  width: 100px;
+}
+
+/* Botón de contacto */
+.contact-button {
+  width: 120px;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+/* Contenido principal */
+.content {
+  text-align: center;
+  padding: 20px;
+  padding-top: 40px;
+}
+
+.blockcontent{
+  width:auto;
+  transform: scale(0.9);
+  transform-origin: top center;
+  max-width: 400px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0px -1px 0px #181f380a, 0px 1px 15px #181f380f, 0px 3px 8px #181f381a;
+}
+
+
+.blockcontent img {
+  max-width: 60%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Formulario */
+.example-form {
+  margin-top: 45px;
+  padding: 5px;
+}
+
+.input-login {
+  padding: 9px 10px;
+  border-radius: 5px;
+  border: 1px solid #cbd6e2;
+  font-size: 16px;
+  transition: all .15s ease-out;
+  background-color: #f5f8fa !important;
+  color: #33475b !important;
+  display: block;
+  height: 30px;
+  line-height: 22px;
+  text-align: left;
+  vertical-align: middle;
+  width: 97%;
+}
+
+::ng-deep:focus-visible {
+  outline: #3373b7 1px solid;
+}
+
+::ng-deepinput:-internal-autofill-selected {
+  appearance: red
+}
+
+/* Etiquetas del formulario */
+.example-form label {
+  font-family: 'Roboto';
+  font-size: 18px;
+  color: #133d6a;
+  font-weight: 500;
+}
+
+
+/* Enlaces */
+.example-form a {
+  text-decoration: none;
+  color: #3572b8;
+}
+
+/* Botón de iniciar sesión */
+.login-button {
+  margin-bottom: 35px;
+  width: 100%;
+  height: 58px;
+  margin-top: 25px;
+  background-color: #133d6a !important;
+  color: white !important;
+  border-radius: 5px;
+}
+
+.login-button span {
+  font-size: 20px;
+  font-family: 'Roboto';
+  color: white;
+}
+
+.login-button .loading {
+  font-size: 16px;
+  font-family: 'Roboto';
+  font-weight: 700;
+  color: white;
+}
+
+/* Versión del sistema */
+.version {
+  color: #bebebe;
+}
+
+/* Estilos de error */
+.error p {
+  margin: 0;
+  color: red;
+}
+
+/* Dialogos de error */
+.custom-button {
+  background-color: #133d6a;
+  color: white;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .logo img {
+    width: 60px;
+  }
+
+  .contact-button {
+    width: 100px;
+    font-size: 15px;
+  }
+
+  .blockcontent img {
+    max-width: 70%;
+  }
+
+  .example-form {
+    padding: 15px;
+  }
+
+  .login-button {
+    height: 40px;
+    margin-top: 20px;
+  }
+
+  .login-button span {
+    font-size: 18px;
+  }
+}
+
+
+/**ngdepp login*/
+:host::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled){
+  background-color: #e8f0fd !important;
+  padding:0px!important
+}
+
+:host::ng-deep.mat-mdc-form-field-flex {
+  display: inline-flex;
+  align-items: baseline;
+  box-sizing: border-box;
+  width: 100%;
+  flex-direction: row-reverse;
+}
+
+:host::ng-deep.mat-mdc-form-field-subscript-wrapper{
+display: none;
+}
+
+
+:host::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before{
+  display: none;
+}
+
+::ng-deep input:-internal-autofill-selected{
+  background-color:white!important;
+}
+

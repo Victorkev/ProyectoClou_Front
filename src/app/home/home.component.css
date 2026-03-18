@@ -1,0 +1,1098 @@
+.cardHome {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    max-height: 12px;
+    height: 100%;
+    margin: 50px 18px 0px 20px;
+    border-radius: 10px;
+    background-color: #e2e2e2;
+    padding: 12px 20px 25px 20px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+#contentTab {
+    overflow: hidden;
+    position: relative;
+}
+
+
+
+.active {
+    display: flex;
+    justify-content: center;
+    width: 200px;
+    margin: 50px 18px 0px 20px;
+    max-height: 12px;
+    height: 100%;
+    border-radius: 10px;
+    background-color: #e2e2e2;
+    padding: 12px 20px 25px 20px;
+    cursor: pointer;
+    background-color: #133d6a;
+    color: white;
+    font-size: 18px;
+    position: relative;
+}
+
+.active::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: #133d6a;
+}
+
+.cardHome:hover {
+    transition-duration: .3s;
+    transform: scale(1.1);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    background-color: #133d6a;
+    color: white;
+}
+
+.elevation-ch {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    /* Ajusta los valores según tu preferencia */
+    transition: 0.3s;
+}
+
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.container-block {
+    display: flex;
+    justify-content: center;
+}
+
+.txt-block {
+    color: white;
+}
+
+th.mat-sort-header-sorted {
+    color: #1976d2;
+}
+
+.btnUpdate:hover {
+    background-color: #133d6a !important;
+    color: white !important;
+}
+
+.btnDownload {
+    background: #f7f8fa;
+    border-color: #adb1b8 #a2a6ac #8d9096;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    box-shadow: rgba(255, 255, 255, .6) 0 1px 0 inset;
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 16px;
+    height: 38px;
+    font-size: 16px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 11px;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    max-width: 138px;
+    width: 100%;
+}
+
+.btnDownload:hover {
+    background-color: #133d6a !important;
+    color: white !important;
+}
+
+.btnUpdate {
+    background: #f7f8fa;
+    border-color: #adb1b8 #a2a6ac #8d9096;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    box-shadow: rgba(255, 255, 255, .6) 0 1px 0 inset;
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 16px;
+    height: 38px;
+    font-size: 16px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 11px;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    max-width: 138px;
+    width: 100%;
+}
+
+.custom-button {
+    width: 150px;
+    /* Ajusta el ancho según tus necesidades */
+    height: 40px;
+    /* Ajusta la altura según tus necesidades */
+    border-radius: 10px;
+    font-size: 16px
+}
+
+.custombuttonEmpresa {
+    width: 150px;
+    /* Ajusta el ancho según tus necesidades */
+    height: 40px;
+    /* Ajusta la altura según tus necesidades */
+    border-radius: 10px;
+    font-size: 18px
+}
+
+.menu-icon {
+    margin-right: 10px;
+    vertical-align: middle;
+    /* Alinea verticalmente el icono al medio del texto */
+}
+
+
+.custom-button2 {
+    width: 150px;
+    /* Ajusta el ancho según tus necesidades */
+    height: 40px;
+    /* Ajusta la altura según tus necesidades */
+    border-radius: 10px;
+    font-size: 16px;
+    background-color: #163c6b !important;
+    color: white !important;
+}
+
+
+.btnHover:hover {
+    background-color: #163c6b !important;
+    color: white;
+}
+
+.custom-buttonModal {
+    width: 150px;
+    /* Ajusta el ancho según tus necesidades */
+    height: 40px;
+    /* Ajusta la altura según tus necesidades */
+    border-radius: 10px;
+    font-size: 16px
+}
+
+.btnHoverModal {
+    background-color: #3572b8 !important;
+    color: #ffffff !important;
+}
+
+.select-cl {
+    max-width: 128px;
+    width: 100%;
+    padding: 9px 5px 9px 5px;
+    border-radius: 8px;
+}
+
+::ng-deep .mat-mdc-tab-labels {
+    display: flex;
+    justify-content: center;
+}
+
+::ng-deep .mat-mdc-tab .mdc-tab__text-label {
+    font-size: 18px;
+    color: rgb(91 91 91 / 60%);
+    font-weight: 500;
+}
+
+::ng-deep.mat-mdc-raised-button {
+    box-shadow: var(--mdc-protected-button-container-elevation, 0px 5px 1px -1px rgba(0, 0, 0, 0.2), 5px 8px 7px 0px rgba(0, 0, 0, 0.14), 3px 2px 6px 0px rgba(0, 0, 0, 0.12));
+}
+
+:host::ng-deep.mat-mdc-tab-list {
+    flex-grow: 1;
+    position: relative;
+    transition: transform 500ms cubic-bezier(0.35, 0, 0.25, 1);
+    height: 67px;
+}
+
+:host::ng-deep.mat-mdc-tab-ripple {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    pointer-events: none;
+    background-color: #e0dfdf;
+    border-radius: 6px;
+}
+
+:host::ng-deep.mat-mdc-tab.mdc-tab {
+    height: 44px;
+    flex-grow: 0;
+    margin-right: 20px;
+    max-width: 170px;
+    width: 100%;
+}
+
+.custom-button {
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+
+:host::ng-deep.mdc-tab-indicator .mdc-tab-indicator__content--underline {
+    border-top-width: 3px;
+}
+
+:host::ng-deep.mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline,
+.mat-mdc-tab-link:not(.mat-mdc-tab-disabled) .mdc-tab-indicator__content--underline {
+    border-color: #163c6b;
+    margin-bottom: -14px;
+}
+
+:host::ng-deep.mat-mdc-tab:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
+    color: #ffffff;
+}
+
+:host::ng-deep.mdc-tab--active {}
+
+.activeTab {
+    background-color: #163c6b !important;
+    border-radius: 13px;
+    color: white !important;
+    margin-right: 20px;
+}
+
+.modalStatus {
+    padding: 20px;
+    padding-top: 5px
+}
+
+.disabledBtnUpd {
+    background-color: grey;
+    cursor: not-allowed;
+}
+
+.activeBtnUpd {
+    background-color: #133d6a !important;
+    color: white !important;
+    cursor: pointer;
+}
+
+.circulo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #133d6a;
+}
+
+:root {
+    --mdc-tab-indicator-active-indicator-color: #3f51b5 !important;
+}
+
+:ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+}
+
+.mat-row {
+    transition: background-color 0.3s ease;
+}
+
+::ng-deep.mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/*estilos personalizados*/
+
+
+/* CSS */
+.button-14 {
+    background: #f7f8fa;
+    border-color: #adb1b8 #a2a6ac #8d9096;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    box-shadow: rgba(255, 255, 255, .6) 0 1px 0 inset;
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 16px;
+    height: 38px;
+    font-size: 16px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 11px;
+    text-align: center;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    max-width: 132px;
+    width: 100%;
+}
+
+.newBtn14 {
+    background: #f7f8fa;
+    border-color: #adb1b8 #a2a6ac #8d9096;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    box-shadow: rgba(255, 255, 255, .6) 0 1px 0 inset;
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 16px;
+    font-size: 16px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 11px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.newBtn14:active {
+    border-bottom-color: #a2a6ac;
+}
+
+.newBtn14:active:hover {
+    border-bottom-color: #a2a6ac;
+}
+
+.newBtn14:hover {
+    background-color: #163c6b;
+    color: white;
+    border-color: #a2a6ac #979aa1 #82858a;
+}
+
+.newBtn14:focus {
+    border-color: #e77600;
+    box-shadow: rgba(228, 121, 17, .5) 0 0 3px 2px;
+    outline: 0;
+}
+
+
+.newBtnFindMetrics {
+    max-height: 56px;
+    width: 200px;
+    height: 67px;
+    float: right;
+    box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2);
+    background-color: #3471b8!important;
+    color: white!important;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    box-shadow: rgba(255, 255, 255, .6) 0 1px 0 inset;
+    box-sizing: border-box;
+    color: #0f1111;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Amazon Ember", Arial, sans-serif;
+    font-size: 16px;
+    font-size: 16px;
+    outline: 0;
+    overflow: hidden;
+    padding: 0 11px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+.newBtnFindMetrics:hover {
+    background-color: #163c6b!important;
+    color: white;
+    border-color: #a2a6ac #979aa1 #82858a;
+}
+
+
+.button-14:active {
+    border-bottom-color: #a2a6ac;
+}
+
+.button-14:active:hover {
+    border-bottom-color: #a2a6ac;
+}
+
+.button-14:hover {
+    background-color: #163c6b;
+    color: white;
+    border-color: #a2a6ac #979aa1 #82858a;
+}
+
+.button-14:focus {
+    border-color: #e77600;
+    box-shadow: rgba(228, 121, 17, .5) 0 0 3px 2px;
+    outline: 0;
+}
+
+.container-mat-tab {
+    width: 100%;
+    /* Usar 100% para que tome todo el ancho disponible */
+    margin: 25px auto;
+    /* Centrar el contenedor y agregar margen superior */
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+    /* Agregar un poco de padding para mejor visualización */
+}
+
+/* Media query para pantallas muy grandes */
+@media (min-width: 1400px) {
+    .container-mat-tab {
+        max-width: 1300px;
+        /* Ajustar el ancho máximo para pantallas muy grandes */
+    }
+}
+
+/* Media query para pantallas grandes */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    .container-mat-tab {
+        max-width: 900px;
+        /* Ajustar el ancho máximo para pantallas grandes */
+    }
+}
+
+/* Media query para pantallas medianas */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .container-mat-tab {
+        max-width: 1000px;
+        /* Ajustar el ancho máximo para pantallas medianas */
+    }
+}
+
+/* Media query para pantallas pequeñas */
+@media (min-width: 768px) and (max-width: 991px) {
+    .container-mat-tab {
+        max-width: 750px;
+        /* Ajustar el ancho máximo para pantallas pequeñas */
+    }
+}
+
+/* Media query para pantallas muy pequeñas */
+@media (max-width: 767px) {
+    .container-mat-tab {
+        max-width: 100%;
+        /* Tomar todo el ancho disponible en pantallas muy pequeñas */
+        padding: 10px;
+        /* Ajustar el padding para pantallas muy pequeñas */
+    }
+}
+
+
+/* Estilos para centrar la tabla y agregar márgenes responsivos */
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px auto;
+    /* Margen automático para centrar verticalmente */
+    max-width: 100%;
+    /* Ancho máximo para que se ajuste al tamaño de la pantalla */
+    padding: 0 180px;
+    /* Padding lateral para espaciado en dispositivos de pantalla grande */
+}
+
+/*.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+}
+
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+
+::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: #f7f7f7 !important;
+    border: 1px solid #e4e2e2;
+}
+
+:host::ng-deep.mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+
+
+.custom-select {
+    width: 150px;
+  
+}
+
+.custom-select .mat-form-field-wrapper {
+    padding-bottom: 0px;
+  
+}
+
+*/
+
+.custom-table {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: auto;
+}
+
+.mat-header-cell,
+.mat-cell {
+    padding: 8px 16px;
+    font-size: 1rem;
+    /* Ajustar tamaño de fuente relativo */
+}
+
+.status-label {
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    max-width: 100%;
+}
+
+.status-label.new {
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+.status-label.active {
+    background-color: #8db91f;
+    color: white;
+}
+
+.status-label.processing {
+    background-color: #da5e30;
+    color: white;
+}
+
+.status-label.published {
+    background-color: #163c6b;
+    color: white;
+}
+
+@media (max-width: 768px) {
+
+    .mat-header-cell,
+    .mat-cell {
+        font-size: 0.8rem;
+        /* Tamaño de fuente más pequeño para pantallas pequeñas */
+    }
+
+    .status-label {
+        font-size: 0.8rem;
+    }
+
+    .select-cl {
+        font-size: 0.8rem;
+    }
+}
+
+::ng-deep.mdc-dialog__surface {
+    border-radius: var(--mdc-dialog-container-shape, var(--mdc-shape-medium, 20px));
+}
+
+:host::ng-deep.mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
+
+
+::ng-deep.mat-mdc-checkbox.mat-accent {
+    --mdc-checkbox-selected-checkmark-color: #fff;
+    --mdc-checkbox-selected-focus-icon-color: #3572b9 !important;
+    --mdc-checkbox-selected-hover-icon-color: #3572b9 !important;
+    --mdc-checkbox-selected-icon-color: #3572b9 !important;
+    --mdc-checkbox-selected-pressed-icon-color: #3572b9 !important;
+    --mdc-checkbox-unselected-focus-icon-color: #3572b9;
+    --mdc-checkbox-unselected-hover-icon-color: #212121;
+    --mdc-checkbox-disabled-selected-icon-color: #3572b9;
+    --mdc-checkbox-disabled-unselected-icon-color: #3572b9;
+    --mdc-checkbox-unselected-icon-color: #3572b9;
+    --mdc-checkbox-unselected-pressed-icon-color: #3572b9;
+}
+
+::ng-deep.mat-mdc-checkbox.mat-accent .mdc-checkbox--selected~.mdc-checkbox__ripple {
+    background: #3572b9
+}
+
+
+
+:host::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+}
+
+.custom-button {
+    background: none;
+    /* Sin fondo */
+    border: none;
+    /* Sin borde */
+    padding: 0;
+    /* Sin espaciado interno */
+    cursor: pointer;
+    /* Cursor de mano */
+}
+
+.custom-menu5 {
+    display: none;
+    /* Ocultar por defecto */
+    position: absolute;
+    /* Posicionamiento absoluto */
+    background: white;
+    /* Color de fondo */
+    border: 1px solid #ccc;
+    /* Borde */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra */
+    border-radius: 4px;
+    /* Esquinas redondeadas */
+    padding: 8px 0;
+    /* Espaciado interno */
+}
+
+.custom-menu5.show {
+    display: block;
+    /* Mostrar menú */
+}
+
+.custom-menu-item {
+    display: block;
+    padding: 8px 16px;
+    /* Espaciado del botón */
+    border: none;
+    /* Eliminar borde por defecto */
+    background: transparent;
+    /* Fondo transparente */
+    text-align: left;
+    /* Alineación del texto */
+    width: 100%;
+    /* Ancho completo */
+    cursor: pointer;
+    /* Cursor de mano */
+}
+
+.multi-line-cell {
+    white-space: normal;
+    word-break: break-word;
+    /* Opcional: Para romper palabras largas */
+}
+
+.custom-menu-item:hover {
+    background: #f5f5f5;
+    /* Fondo al pasar el ratón */
+}
+
+.custom-menu-item:active {
+    background: #e0e0e0;
+    /* Fondo al hacer clic */
+}
+
+
+.mat-menu .mat-menu-item.btnMatMenu:hover .menu-icon {
+    filter: brightness(0) invert(1);
+    /* Opcional: Cambia el color del icono si es necesario */
+}
+
+::ng-deep.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+    align-items: center !important;
+}
+
+
+
+/**MENU BOTONES EDITAR ESTUDIO Y CAMBIAR ESTADO**/
+.dropdown {
+    display: inline-block;
+}
+
+.dropbtn {
+    cursor: pointer;
+    padding: 8px 16px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.dropdown-content {
+    display: block;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    /* Ensure this is high */
+    position: fixed;
+    /* Change to fixed positioning */
+    left: 0;
+    /* Ensure it's aligned correctly */
+    top: 0;
+    /* Ensure it's aligned correctly */
+    transform: translate(-50%, 100%);
+    /* Adjust positioning based on button */
+}
+
+.dropdown-content.show {
+    display: block;
+    /* Muestra el menú cuando isMenuOpen es true */
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    20%,
+    60% {
+        transform: translateX(-10px);
+    }
+
+    40%,
+    80% {
+        transform: translateX(10px);
+    }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+::ng-deep .mat-mdc-dialog-container .mdc-dialog__surface {
+    border-radius: var(--mdc-dialog-container-shape, var(--mdc-shape-medium, 10px)) !important;
+}
+
+.btnChangeStatus:hover {
+    color: white;
+}
+
+.btnMatMenu:hover {
+    background-color: #3274b9;
+}
+
+.mat-menu .mat-menu-item.btnMatMenu:hover {
+    background-color: #3274b9;
+}
+
+
+.btnMatMenu:hover~ ::ng-deep .mdc-list-item__primary-text {
+    color: white;
+}
+
+::ng-deep .mdc-list-item__primary-text.hover-active {
+    color: white;
+}
+
+
+
+/** ICONOS PERSONALIZADOS **/
+.checkbox-wrapper-2 .ikxBAC {
+    appearance: none;
+    background-color: #dfe1e4;
+    border-radius: 72px;
+    border-style: none;
+    flex-shrink: 0;
+    height: 20px;
+    margin: 0;
+    position: relative;
+    width: 30px;
+}
+
+.checkbox-wrapper-2 .ikxBAC::before {
+    bottom: -6px;
+    content: "";
+    left: -6px;
+    position: absolute;
+    right: -6px;
+    top: -6px;
+}
+
+.checkbox-wrapper-2 .ikxBAC,
+.checkbox-wrapper-2 .ikxBAC::after {
+    transition: all 100ms ease-out;
+}
+
+.checkbox-wrapper-2 .ikxBAC::after {
+    background-color: #fff;
+    border-radius: 50%;
+    content: "";
+    height: 14px;
+    left: 3px;
+    position: absolute;
+    top: 3px;
+    width: 14px;
+}
+
+.checkbox-wrapper-2 input[type=checkbox] {
+    cursor: default;
+}
+
+.checkbox-wrapper-2 .ikxBAC:hover {
+    background-color: #c9cbcd;
+    transition-duration: 0s;
+}
+
+.checkbox-wrapper-2 .ikxBAC:checked {
+    background-color: #8db81e;
+}
+
+.checkbox-wrapper-2 .ikxBAC:checked::after {
+    background-color: #fff;
+    left: 13px;
+}
+
+.checkbox-wrapper-2 :focus:not(.focus-visible) {
+    outline: 0;
+}
+
+.checkbox-wrapper-2 .ikxBAC:checked:hover {
+    background-color: #8db81e;
+}
+
+.showMetricsDisplay {
+    display: table-row;
+    /* Cambiar a table-row para visibilidad en las filas de la tabla */
+}
+
+.showMetricsDisplayNone {
+    display: none;
+}
+
+
+table {
+    width: 100%;
+}
+
+tr.example-detail-row {
+    height: 0;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: #edf1f6;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 16px;
+}
+
+.example-element-description-attribution {
+    opacity: 1;
+    font-weight: 700;
+}
+
+
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Elimina el doble borde */
+    margin: 20px 0;
+    /* Margen superior e inferior para separar la tabla */
+    font-size: 16px;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 15px 20px;
+    /* Añade espacio interno a las celdas */
+    border: 1px solid #ddd;
+    /* Añade bordes ligeros */
+}
+
+.styled-table th {
+    background-color: #f2f2f2;
+    /* Color de fondo para encabezados */
+}
+
+.styled-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+    /* Color de fondo alternado para filas */
+}
+
+.styled-table tr:hover {
+    background-color: #f1f1f1;
+    /* Color de fondo al pasar el ratón */
+}
+
+
+
+
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* fondo oscuro translúcido */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .custom-modal {
+    width: 400px;
+    height: 450px;
+    background-image: url(/assets/img/bienvenida.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    position: relative;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  
+  .logo {
+    width: 100px;
+  }
+  
+  .bottom-icon {
+    width: 40px;
+  }
+  
+  h1 {
+    font-size: 3.0rem;
+    margin: 3rem 0 0.5rem;
+    font-size:sans-serif;
+  }
+  
+  .subtext {
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
+    max-width: 320px;
+    font-weight: 300;
+    font-size:sans-serif;
+  }
+  
+  .highlight {
+    font-size: 15px;
+    font-weight: bold;
+    margin: 0.5rem 0 3rem;
+    max-width: 320px;
+    font-size:sans-serif;
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+  }

@@ -1,0 +1,133 @@
+<div class="custom-table-container" style="margin-bottom: 50px;">
+  <div class="table-wrapper-chr"  *ngIf="!activateResponse && !activeFiles">
+    <div class="overtable">
+      <table mat-table [dataSource]="estudios" matSort matSortActive="created" matSortDisableClear matSortDirection="desc"class="custom-table2">
+
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef style="padding-left: 20px;padding-right: 20px;" > ID </th>
+          <td mat-cell *matCellDef="let estudio" class="tdtxt" style="padding-left: 20px;padding-right: 20px;"> {{ estudio.id }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef  style="text-align: left;"> Fecha de Creación </th>
+          <td mat-cell *matCellDef="let estudio" class="tdtxt"  style="text-align: left;"> {{ getFormatDate(estudio.create) }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef  style="text-align: left;"> Estado </th>
+          <td mat-cell *matCellDef="let element"  style="text-align: left;">
+            <a *ngIf="element.status === 1" style="
+            border-radius: 8px;
+            background-color: white;
+            display: block;;text-align: center;"> Nuevo </a>
+            <a *ngIf="element.status === 2" style="
+                border-radius: 8px;
+        color: #133e6b;
+        opacity: 0.8;
+        display: block;
+        max-width: 100px;
+        font-weight: 600;"> Vigente </a>
+            <a *ngIf="element.status === 3" style="
+            border-radius: 8px;
+            color: #929292;
+            display: block;
+            max-width: 100px;font-weight: 600;"> Procesando </a>
+            <a *ngIf="element.status === 4" style="
+            border-radius: 8px;
+            color: #163c6b;
+            display: block;
+            max-width: 100px;text-align: center;"> Publicado </a>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoEstudio">
+          <th mat-header-cell *matHeaderCellDef style="color: black;;font-weight: 700;text-align: left;"> Tipo Estudio </th>
+          <td mat-cell *matCellDef="let estudio" class="tdtxt"  style="text-align: left;">
+            <div *ngIf="estudio.tipeStudies">
+              <span *ngIf="estudio.tipeStudies === 'Compensacion'">Compensación</span>
+              <span *ngIf="estudio.tipeStudies !== 'Compensacion'">{{estudio.tipeStudies}}</span>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="tipo">
+          <th mat-header-cell *matHeaderCellDef style="color: black;text-align: left;"> Nombre Estudio </th>
+          <td mat-cell *matCellDef="let estudio" class="multi-line-cell" style="text-align: left;"> {{ estudio.estudiesName | truncate:50 }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="year">
+          <th mat-header-cell *matHeaderCellDef style="color: black;"> Año </th>
+          <td mat-cell *matCellDef="let estudio"> {{ estudio.year }} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="progreso">
+          <th mat-header-cell *matHeaderCellDef style="color: black;"> Progreso </th>
+          <td mat-cell *matCellDef="let estudio">
+            <div style="text-align: center; display: flex; width:160px;">
+              <progress
+                [value]="getProgresoEstudio(estudio)"
+                max="100"
+                style="margin-right:10px; width:100px;">
+              </progress>
+              {{ getProgresoEstudio(estudio) }}%
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="descargar">
+          <th mat-header-cell *matHeaderCellDef style="color: black;"> Encuesta </th>
+          <td mat-cell *matCellDef="let estudio">
+            <!-- Add a button or link for downloading if applicable -->
+            <button mat-raised-button (click)="selectStudy(estudio)" class="btnUpdate" *ngIf="estudio.status === 2"
+              style="font-size:16px;color:white;background-color:#95c123">Responder</button>
+            <button mat-raised-button (click)="modalBlock(modalBloqued)" class="btnBlocked"
+              *ngIf="estudio.status === 3">Responder</button>&nbsp;&nbsp;
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="formulario">
+          <th mat-header-cell *matHeaderCellDef style="color: black;padding-left: 20px;padding-right: 20px;"> Formulario </th>
+          <td mat-cell *matCellDef="let estudio" style="padding-left: 20px;padding-right: 20px;">
+            <!-- Add a button or link for downloading if applicable -->
+            <!--<button mat-icon-button (click)="updateFiles(estudio)" ><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32"><path fill="#20744a" fill-rule="evenodd" d="M28.781 4.405h-10.13V2.018L2 4.588v22.527l16.651 2.868v-3.538h10.13A1.16 1.16 0 0 0 30 25.349V5.5a1.16 1.16 0 0 0-1.219-1.095m.16 21.126H18.617l-.017-1.889h2.487v-2.2h-2.506l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2h10.411Z"/><path fill="#20744a" d="M22.487 7.439h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323z"/><path fill="#fff" fill-rule="evenodd" d="m6.347 10.673l2.146-.123l1.349 3.709l1.594-3.862l2.146-.123l-2.606 5.266l2.606 5.279l-2.269-.153l-1.532-4.024l-1.533 3.871l-2.085-.184l2.422-4.663z"/></svg></button>-->
+            <div *ngIf="estudio.files && estudio.tipeStudies !== 'Beneficios'" >
+              <button mat-raised-button (click)="updateFiles(estudio)" class="btnUpdate" *ngIf="estudio.status === 2"
+                style="font-size:16px;color:white;background-color: #163c6b;">Completar</button>
+                <button mat-raised-button (click)="modalBlock(modalBloqued)" class="btnBlocked"
+                *ngIf="estudio.status === 3"> Completar</button>&nbsp;&nbsp;
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" style="
+        opacity: 0.8;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4" style="padding: 10px;">Sin estudios asignados</td>
+        </tr>
+      </table>
+    </div>
+    <mat-paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
+<div *ngIf="activateResponse">
+  <app-response-questions [estudioSelected]="estudioSeleceted" [allStudy]="allStudy" [idStudy]="idStudy"
+    [activeResponse]="activateResponse" (activeResponseChange)="onActiveResponseChange($event)"
+    (sendValuesUpdate)="sendValuesUpdate($event)"></app-response-questions>
+</div>
+
+<div *ngIf="activeFiles">
+  <app-file-upload [estudioSelected]="estudioSeleceted" [surveySelected]="surveySelected" [idStudy]="idStudy"
+    [activeFiles]="activeFiles" (activeFilesChange)="onActiveFilesChange($event)"></app-file-upload>
+</div>
+
+<ng-template #modalBloqued>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Procesando</h3>
+    <p>No se permiten más respuestas.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;margin-bottom:10px">
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover">Cerrar</button>
+  </div>
+</ng-template>

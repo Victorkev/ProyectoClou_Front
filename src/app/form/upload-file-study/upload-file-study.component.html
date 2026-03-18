@@ -1,0 +1,90 @@
+<div style="display: flex; padding-left:2.5vw;background-color:#133e6b;color:white">
+    <h2 class="txt-cf-h1">Formularios</h2>
+  </div>
+  <div style="padding: 3vw;">
+    <div>
+      <div style="text-align: center;">
+        <p>IMPORTANTE: No se pueden subir archivos con el mismo nombre.</p>
+        <input
+        type="file"
+        #fileInput
+        style="display: none;"
+        (change)="onFileSelectedUF($event)"
+        multiple
+        />
+        <button mat-raised-button color="primary" style="background-color: #3572b6;color:white" (click)="fileInput.click()">
+          <mat-icon>cloud_upload</mat-icon>
+          Subir Archivo
+        </button>           
+      </div>
+      <div *ngIf="archivoSelect" style="text-align: center;">
+        <input
+        type="file"
+        #fileInput
+        style="display: none;"
+        (change)="onFileSelectedUF($event)"
+        multiple
+        />
+        <button *ngIf="!id" mat-raised-button color="primary" (click)="fileInput.click()">
+          <mat-icon>cloud_upload</mat-icon>
+          Subir Archivo
+        </button><br>
+        <div style="margin-top: 10px;">
+
+          <mat-chip-set aria-label="Dog selection" >
+            <mat-chip *ngFor="let file of fileNames">
+              {{file.name}}
+              <button *ngIf="id" matChipRemove style="color: #163c6b;
+              width: 23px;
+              height: 24px;
+              font-size: 24px;" (click)="downloadData()" aria-label="'remove ' + keyword">
+                <mat-icon>download</mat-icon>
+              </button>
+              <button matChipRemove (click)="deleteFile(file, file)" aria-label="'remove ' + keyword">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <div style="display: flex;
+  justify-content: end;
+  padding: 20px;
+  padding-right: 2.5vw;
+  border-top: 1px solid #cdcdcd;">
+    <div>
+      <button mat-raised-button class="custom-button2" [mat-dialog-close]>Cancelar</button>
+    </div>
+    <div style="margin-left: 1vw;">
+      <button mat-raised-button class="custom-button" style="background-color: #133d6a; color: white;" (click)="saveFiles(errorsendfiles, success)">Guardar</button>
+    </div>
+  </div>
+
+  
+
+  <ng-template #success>
+    <div style="padding:25px 30px 15px 30px;text-align: center;">
+      <h3>Mensaje</h3>
+      <p>Carga Exitosa.</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+      <button mat-raised-button (click)="closeData()" class="custom-button btnHover">Cerrar</button>
+    </div>
+  </ng-template>
+
+  <ng-template #errorsendfiles>
+    <div style="padding:25px 30px 15px 30px;text-align: center;">
+      <h3>Error</h3>
+      <p>Ya existe un archivo con ese nombre. Utilice otro nombre.<br><br>
+        
+        Ej. AAAAMMDD.HHMM.Nombre del archivo.</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+      <button mat-raised-button (click)="closeData()" class="custom-button btnHover">Cerrar</button>
+    </div>
+  </ng-template>

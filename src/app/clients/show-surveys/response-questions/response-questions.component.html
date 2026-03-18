@@ -1,0 +1,233 @@
+<div style="    margin-bottom: 0px;
+padding-left: 40px;
+padding-right: 40px;">
+</div>
+<div *ngIf="!activeResponseGroup">
+    <div>
+        <h1>Estudio {{allStudy.estudiesName}}</h1>
+    </div>
+    <div class="container">
+        <h2>Grupos de Beneficios</h2>
+    </div>
+
+    <div>
+        <div *ngIf="groups != undefined" style="text-align: center;margin-left: 5vw;margin-right: 5vw;">
+            <div style="    text-align: right;
+            padding-right: 45px;
+            margin-top: -80px;
+            margin-bottom: 50px;">
+                <div style="    padding-left: 42px;">
+                    <a style="background-color: transparent;color: black;display: flex;align-content: center;flex-direction: row;flex-wrap: wrap;cursor: pointer;"
+                        (click)="backToTable()"><mat-icon style="    font-size: 40px;
+                        height: 40px;
+                        width: 40px;">arrow_back_ios</mat-icon></a>
+                </div>
+            </div>
+            <!--<div *ngFor="let groupWrapper of allBenefitGroup" style="margin-bottom: 15px; margin-top: 15px;">-->
+           <div class="group-container" style="display: flex; flex-wrap: wrap; justify-content: center; margin-bottom: 100px;">
+                <div *ngFor="let group of allBenefitGroup" class="card-wrapper"
+                    style="flex: 0 1 30%; max-width: 30%; margin: 10px; box-sizing: border-box;">
+                    
+                    <mat-card class="card-container" style="border-radius: 10px;  position: relative;">
+                        <div class="card-content">
+                            <h3>{{ group.name }}</h3>
+
+                            <div style="text-align: center; padding-left: 50px; padding-right: 50px;">
+                                <div style="margin-bottom:20px; display: flex;"
+                                    *ngIf="(group.RespuestasCount === 0) || (group.RespuestasCount <= group.PreguntasCount)">
+                                    <progress id="file" value="{{group.RespuestasCount}}" max="{{group.PreguntasCount}}" style="margin-right:10px"></progress>
+                                    {{ (group.RespuestasCount / group.PreguntasCount) * 100 | number:'1.0-0' }}%
+                                </div>
+
+                                <div style="margin-bottom:20px; display: flex;"
+                                    *ngIf="group.RespuestasCount > group.PreguntasCount">
+                                    <progress id="file" value="100" max="100" style="margin-right:10px"></progress>
+                                    100%
+                                </div>
+                            </div>
+
+                                                        <!-- Cuadro de pregunta -->
+                            <div style="margin: 15px 30px 10px 30px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                                <p style="margin-bottom: 8px; font-weight: 500;">
+                                    ¿La empresa cuenta con el beneficio <strong>{{ group.name }}</strong>?
+                                </p>
+                            
+                                <mat-radio-group
+                                    [(ngModel)]="group.aplica"
+                                    (change)="onRespuestaChange(group, allStudy)"
+                                    style="display: flex; justify-content: space-around;"
+                                    >
+                                    <mat-radio-button [value]="1">Sí</mat-radio-button>
+                                    <mat-radio-button [value]="2">No</mat-radio-button>
+                                    <mat-radio-button [value]="3">Se está evaluando</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+
+                            <div style="overflow: auto;">
+                                <p>{{ group.description }}</p>
+                            </div>
+
+
+
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <button
+                                mat-raised-button
+                                [disabled]="!group.boolResponse"
+                                (click)="responseQuestions(group)"
+                                [ngClass]="group.boolResponse ? 'btnIniciar' : 'btnDisabled'"
+                                *ngIf="group.RespuestasCount === 0"
+                            >
+                                Contestar
+                            </button>
+
+                            <button
+                                mat-raised-button
+                                [disabled]="!group.boolResponse"
+                                (click)="responseQuestions(group)"
+                                [ngClass]="group.boolResponse ? 'btnUpdate' : 'btnDisabled'"
+                                style="font-size: 16px;"
+                                *ngIf="group.RespuestasCount > 0 && group.RespuestasCount <= group.PreguntasCount"
+                            >
+                                Editar
+                            </button>
+
+                            <button
+                                mat-raised-button
+                                [disabled]="!group.boolResponse"
+                                (click)="responseQuestions(group)"
+                                [ngClass]="group.boolResponse ? 'btnUpdate' : 'btnDisabled'"
+                                style="font-size: 16px;"
+                                *ngIf="group.RespuestasCount > group.PreguntasCount"
+                            >
+                                Editar
+                            </button>
+                        </div>
+
+
+                    </mat-card>
+                </div>
+             </div>
+            <!--</div>-->
+        </div>
+    </div>
+
+</div>
+
+<div *ngIf="activeResponseGroup" class="block-response">
+    <form (ngSubmit)="onSubmit()" style="width: 100%;">
+        <div style="text-align: left;">
+            <h1 style="text-align: center;">{{ groupDataSurvey?.name }}</h1>
+
+            <p><a style="color:red">* </a> <b>Campos Obligatorios</b></p>
+            <div>
+                <mat-progress-bar mode="determinate" [value]="(actualResponse / maxResponse) * 100">
+                </mat-progress-bar>
+            </div>
+            <div style="overflow: auto;
+                border-radius: 10px 10px 0px 0px;
+                height:100%;
+                padding: 30px;
+                background-color: #e8e8e8;
+                margin-top: 20px;">
+                <div *ngFor="let pregunta of paginatedPreguntas">
+                    <div *ngIf="pregunta.type === 'MULTIPLE'  && pregunta.seleccionMultiple === false"
+                        style="padding-top:5px;padding-bottom:5px">
+                        <mat-card class="response-block">
+                            <h3 style="margin-bottom:0px"><strong>{{ pregunta.pregunta_name }} </strong><a
+                                    style="color:red" *ngIf="pregunta.looked === true">*</a></h3><br>
+                            <mat-radio-group [(ngModel)]="pregunta.respuesta" name="respuesta{{pregunta.pregunta_id}}"
+                                style="display: flex; flex-direction: column; width: 100%">
+                                <div *ngFor="let option of pregunta.opcion">
+                                    <mat-radio-button [value]="option" (change)="radioChange(pregunta, option)">
+                                        <a>{{ option }}</a>
+                                    </mat-radio-button>
+                                    <div *ngIf="pregunta.mostrarOtro && option === 'Otro'">
+                                        <mat-form-field class="example-full-width" style="width: 100%">
+                                            <input matInput maxlength="200" placeholder="Añadir texto..."
+                                                [(ngModel)]="pregunta.otroRespuesta"
+                                                name="otroRespuesta{{pregunta.pregunta_id}}"
+                                                style="width: 100%; padding: 10px;">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </mat-radio-group>
+                        </mat-card>
+                    </div>
+                    <div *ngIf="pregunta.type === 'MULTIPLE' && pregunta.seleccionMultiple === true"
+                        style="padding-top:5px;padding-bottom:5px">
+                        <mat-card style="padding:50px;margin-bottom:10px;width:100%;border-radius: 10px;">
+                            <h3 style="margin-bottom:0px">
+                                <strong>{{ pregunta.pregunta_name }} </strong><a style="color:red"
+                                    *ngIf="pregunta.looked === true">*</a>
+                            </h3>
+                            <br>
+                            <div *ngFor="let option of pregunta.opcion" style="display: flex; flex-direction: column;">
+                                <mat-checkbox [checked]="pregunta.respuesta?.includes(option)"
+                                    (change)="checkboxChange($event, pregunta, option)">
+                                    {{ option }}
+                                </mat-checkbox>
+                                <div *ngIf="pregunta.mostrarOtro === true && option === 'Otro'">
+                                    <mat-form-field class="example-full-width" style="width: 100%">
+                                        <input matInput maxlength="200" placeholder="Añadir texto..."
+                                            [(ngModel)]="pregunta.otroRespuestaMultiple"
+                                            name="otroRespuesta{{pregunta.pregunta_id}}"
+                                            style="width: 100%; padding: 10px;">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </div> 
+                    <div *ngIf="pregunta.type === 'SIMPLE' && pregunta.tipoDato === 'TEXTO'"
+                        style="padding-top:5px;padding-bottom:5px">
+                        <mat-card style="padding:50px;margin-bottom:10px;border-radius: 10px;">
+                            <h3 style="margin-bottom:0px"><strong>{{ pregunta.pregunta_name }} </strong><a
+                                    style="color:red" *ngIf="pregunta.looked === true">*</a></h3><br>
+                            <mat-form-field style="width:600px">
+                                <input matInput (keyup)="keyup($event, pregunta.pregunta_id)"
+                                    [(ngModel)]="pregunta.respuesta" name="respuesta{{pregunta.pregunta_id}}"
+                                    placeholder="Ingrese un texto">
+                            </mat-form-field>
+                        </mat-card>
+                    </div>
+                    <div *ngIf="pregunta.type === 'SIMPLE' && pregunta.tipoDato === 'NUMERICO'"
+                        style="padding-top:5px;padding-bottom:5px">
+                        <mat-card style="padding:50px;margin-bottom:10px;border-radius: 10px;">
+                            <h3 style="margin-bottom:0px"><strong>{{ pregunta.pregunta_name }} <a style="color:red"
+                                        *ngIf="pregunta.looked === true">*</a></strong></h3><br>
+                            <mat-form-field style="width:600px">
+                                <input matInput type="number" (keyup)="keyup($event,pregunta.pregunta_id)"
+                                    [(ngModel)]="pregunta.respuesta"  min="0" name="respuesta{{pregunta.pregunta_id}}"
+                                    placeholder="Ingrese un valor numerico">
+                            </mat-form-field>
+                        </mat-card>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <mat-paginator
+                    [length]="groupDataSurvey?.preguntas?.length"
+                    [pageSize]="pageSize"
+                    [pageSizeOptions]="[3, 5, 10]"
+                    (page)="onPageChange($event)" style="border-radius: 0px 0px 10px 10px;">
+        </mat-paginator>
+        <div style="display: flex; justify-content: center;margin-top:20px">
+            <button type="submit" mat-raised-button class="btnNewCancel" (click)="resetForm()"
+                style="max-width:150px;width:100%">Cancelar</button>&nbsp;&nbsp;&nbsp;
+            <div class="tooltip" style="max-width: 150px;width:100%">
+                <button type="submit" mat-raised-button style="max-width:150px;width:100%"
+                    [ngClass]="isFormValid() ? 'btnActive' : 'btnDisabled'" [disabled]="!isFormValid()">
+                    Responder
+                </button>
+
+                <span *ngIf="!isFormValid()" class="tooltiptext">
+                   * Preguntas obligatorias sin responder.
+                </span>
+            </div>
+
+        </div>
+
+    </form>
+
+</div>

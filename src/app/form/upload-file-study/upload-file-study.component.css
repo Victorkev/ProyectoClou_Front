@@ -1,0 +1,20 @@
+
+.custom-button {
+    width: 150px; /* Ajusta el ancho según tus necesidades */
+    height: 40px; /* Ajusta la altura según tus necesidades */
+    border-radius: 10px;
+    background-color: #133d6a;
+    color: white;
+    font-size: 18px;
+}
+
+.custom-button2{
+    width: 150px;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.txt-cf-h1{
+    font-size:22px;
+}

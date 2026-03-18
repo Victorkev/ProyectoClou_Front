@@ -1,0 +1,686 @@
+<mat-drawer-container style="border-radius:10px;overflow-x: hidden!important;overflow:auto">
+  <mat-stepper *ngIf="(!id && !loading) || (id && typeAction)" #stepper>
+
+    <!--CREACIÓN DE ENCUESTA-->
+    <mat-step>
+      <div>
+        <form [formGroup]="encuestaForm" style="padding:50px 50px 50px 50px">
+          <div style="margin-bottom:10px">
+            <button class="custom-button" mat-raised-button
+              style="background-color: #133d6a; color: white;font-size:18px;width:auto;max-width:180px"
+              (click)="getTemplate(importTemp)">Importar Plantilla</button>
+          </div>
+          <ng-template matStepLabel>Seleccionar Preguntas</ng-template>
+          <div style="margin-bottom:20px">
+            <div style="text-align: center;">
+              <!--  <mat-card style="padding:15px;overflow:scroll;width:700px;height:300px">-->
+              <div style="display: flex;
+                justify-content: center;height: 390px;">
+                <div
+                  style="width: 50%;
+                  border: 1px solid #ccc;
+                  padding: 30px;padding-top:0px;box-shadow: var(--mdc-protected-button-container-elevation, 0px 5px 5px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));overflow: overlay;border-radius: 5px;">
+                  <mat-accordion class="example-headers-align" style="max-width: 50%;
+                    width: 100%;margin-right:50px">
+                    <div
+                      style="display: flex; justify-content: center;background-color: #94c11f;border-radius:5px;padding-left:10px;padding-right:10px">
+                      <h3 class="txt-cf-h1">Seleccionar Preguntas:</h3>
+                    </div>
+                    <div>
+                      <div style="text-align: left;">
+                        <mat-checkbox [checked]="activeCheckedAll" (change)="toggleCheckedAll($event.checked)">
+                          Todas
+                        </mat-checkbox>
+                      </div>
+                      <mat-accordion style="text-align: left;">
+                        <mat-expansion-panel *ngFor="let benefit of benefitTypes">
+                          <mat-expansion-panel-header>
+                            {{ benefit.name }}
+
+                          </mat-expansion-panel-header>
+                          <!-- Contenido del panel, si es necesario -->
+                          <mat-accordion style="text-align: left;">
+                            <mat-expansion-panel *ngFor="let group of benefit.groupBeneficios">
+                              <mat-expansion-panel-header>
+                                {{ group.name }}
+                              </mat-expansion-panel-header>
+                              <!-- Contenido del panel, si es necesario -->
+                              <section class="example-section" *ngIf="group.preguntas.length > 0">
+                                <div *ngIf="group.preguntas.length > 0">
+                                  <p *ngFor="let question of group.preguntas">
+
+                                    <mat-checkbox [checked]="question.checked"
+                                      (change)="toggleChecked(question, $event, benefit)">
+                                      {{ question.name }}
+                                    </mat-checkbox>
+                                  </p>
+                                </div>
+                                <div *ngIf="group.preguntas.length === 0">
+                                  <p>Este beneficio no tiene preguntas.</p>
+                                </div>
+                              </section>
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                    </div>
+
+                  </mat-accordion>
+                </div>
+                <div style="    display: flex;
+                  align-items: center;
+                  margin-left: 8px;
+                  margin-right: 8px;
+                  font-weight: bold;
+                  font-size: 27px;">
+                  <mat-icon>arrow_forward</mat-icon>
+                </div>
+                <div style="width: 50%;
+                  border: 1px solid #ccc;
+                  padding: 30px;padding-top:0px;
+                  box-shadow:var(--mdc-protected-button-container-elevation, 0px 5px 5px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));
+                  border-radius: 5px;    
+                  overflow: scroll;
+                  overflow-x: hidden; ">
+                  <div style="display: flex; justify-content: center;background-color: #94c11f;border-radius:5px">
+                    <h3 class="txt-cf-h1">Preguntas Seleccionadas:</h3>
+                  </div>
+                  <div *ngFor="let question of allSelectedQuestions; let u = index"
+                    style="text-align: left;margin-top:10px">
+                    <div>
+                      <ng-container *ngIf="isFirstInGroup(question.groupName, u)">
+                        <p style="font-weight: 600;margin-top:30px">{{question.groupName}}</p>
+                      </ng-container>
+                      <ng-container *ngIf="isFirstInGroup2(question.nameBenefitGroup, u)">
+                        <p style="font-weight: 600;font-size:15px">{{question.nameBenefitGroup}}</p>
+                      </ng-container>
+                      <div>
+                        <p>{{u + 1}}. {{question.name}}</p>
+                        <ul>
+                          <li *ngFor="let opcion of question.opcion">{{opcion.value}}</li>
+                        </ul>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <div style="display: flex;
+          padding: 15px;
+          justify-content: end;
+          padding-right: 3vw;
+          border-top: 1px solid #cdcdcd">
+          <div>
+            <button class="custom-button" style="font-size:18px" mat-raised-button [mat-dialog-close]>Cancelar</button>
+          </div>
+          <div style="margin-left:20px">
+            <button class="custom-button" mat-raised-button
+              style="background-color: #133d6a; color: white;font-size:18px"
+              (click)="validateStep(error)">Siguiente</button>
+          </div>
+        </div>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel *ngIf="!id">Crear Encuesta</ng-template>
+
+      <div *ngIf="responseForm || id">
+        <div style="display: flex;justify-content: center;margin-bottom: 20px;">
+          <div style="max-width: 1200px; width: 100%; display: flex;justify-content: center;">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-bottom: 20px; margin-top: 10px;">
+          <div style="max-width: 1075px; width: 100%; ">
+            <div style="margin-bottom:20px">
+              <button mat-raised-button (click)="addQuestions(modalAddQuestion)" style="background-color: #3573ba;color:white;font-size: 16px;padding: 23px;">
+                <mat-icon>add</mat-icon> Nueva Pregunta</button>
+            </div>
+            <div
+              style="overflow: auto; max-height: 600px; border: 1px solid #ccc; padding-left: 40px; 
+            border-radius: 5px; 
+            box-shadow: var(--mdc-protected-button-container-elevation, 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 5px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12));">
+              <div style="margin-right: 20px;">
+                <h4>Preguntas Seleccionadas:</h4>
+                <div *ngFor="let question of allSelectedQuestions; let u = index; let isLast = last"
+                  style="text-align: left; margin-top: 10px;margin-bottom: 50px;">
+                  <div *ngIf="(!id) || (id && typeAction)">
+                    <ng-container *ngIf="isFirstInGroup(question.groupName, u)">
+                      <p style="font-weight: 600; margin-top: 30px;">{{question.groupName}}</p>
+                    </ng-container>
+                    <ng-container *ngIf="isFirstInGroup2(question.nameBenefitGroup, u)">
+                      <p style="font-weight: 600; font-size: 15px;">{{question.nameBenefitGroup}}</p>
+                    </ng-container>
+
+                    <div style="display: flex;align-items: center;">
+                      <p style="margin-right:15px" *ngIf="!question.isEditing"> {{ u + 1 }}. {{question.name}}</p>
+                      <mat-form-field style="width: 100%;" *ngIf="question.isEditing">
+                        <mat-label>Editar pregunta</mat-label>
+                        <input matInput value="{{question.name}}" [(ngModel)]="question.name">
+                      </mat-form-field>
+
+                      <mat-icon style="font-size:22px;color:#94c11f" *ngIf="question.isEditing"
+                        (click)="saveChangesQuestion(question, u)">check</mat-icon>
+                      <mat-icon style="font-size:22px;color:#d05c67" *ngIf="question.isEditing"
+                        (click)="cancelEditQuestion(question, u)">close</mat-icon>
+                      <mat-icon style="font-size:22px;color:#3573ba" *ngIf="!question.isEditing"
+                        (click)="editQuestion(question, u, modalAddQuestion)">edit</mat-icon>
+                      <mat-icon style="font-size:22px;color:#d05c67"
+                        (click)="deleteQuestion(question, u)">delete</mat-icon>
+                    </div>
+
+                    <div style="margin-left:20px;display:flex">
+                      <section class="example-section">
+                        <a style="font-size: 15px;font-weight: 500;margin-right: 20px;">Obligatoria</a>
+                        <mat-slide-toggle
+                            class="example-margin" [(ngModel)]="question.looked" [checked]="question.looked">
+                        </mat-slide-toggle>
+                      </section>
+                      <div style="margin-left:50px">
+                        <div *ngIf="(question.seleccionMultiple === false || question.seleccionMultiple === 0) && question.type==='MULTIPLE'">
+                          <a><b>Tipo:</b> Selección Única</a>
+                        </div>
+                        <div *ngIf="(question.seleccionMultiple === true || question.seleccionMultiple === 1) && question.type==='MULTIPLE'">
+                          <a><b>Tipo:</b> Selección Múltiple</a>
+                        </div>
+                        <div *ngIf="question.type==='SIMPLE'">
+                          <a><b>Tipo:</b> {{ capitalizeFirstLetter(question.type) }} - {{ capitalizeFirstLetter(question.tipoDato) }}</a>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <!-- Listar las opciones con checkboxes -->
+                      <ul>
+                        <div *ngFor="let opcion of question.opcion">
+                          <!-- Selección múltiple (checkbox) -->
+                          <section *ngIf="(question.seleccionMultiple === 1 || question.seleccionMultiple === true) && question.type === 'MULTIPLE'">
+                            <mat-checkbox>
+                              {{ opcion.value }}
+                            </mat-checkbox>
+                          </section>
+
+                          <!-- Selección simple (radio button) -->
+                          <section *ngIf="(question.seleccionMultiple === 0 || question.seleccionMultiple === false) && question.type === 'MULTIPLE'">
+                            <mat-radio-group [(ngModel)]="question.respuesta">
+                              <mat-radio-button>
+                                {{ opcion.value }}
+                              </mat-radio-button>
+                            </mat-radio-group>
+                          </section>
+                        </div>
+                      </ul>
+
+                  </div>
+                  <div *ngIf="id && !typeAction">
+                    <p>{{u + 1}}. {{question.pregunta_name}}</p>
+                  </div>
+
+
+                   <mat-divider *ngIf="isLast" style="margin: 20px 0;"></mat-divider>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display: flex; padding-left:20px;justify-content: center;margin-bottom:20px;margin-top:40px"
+          *ngIf="(!id) || (id && typeAction)">
+          <div>
+            <button mat-raised-button class="custom-button" matStepperPrevious>Volver</button>
+          </div>
+          <div style="margin-left:20px">
+            <button mat-raised-button (click)="modalConfirm(confirmacion, errorMultiple)" class="custom-button"
+              style="background-color: #133d6a;color:white"><strong>Finalizar</strong></button>
+          </div>
+        </div>
+
+        <div style="display: flex; padding-left:20px;justify-content: center;margin-bottom:20px;margin-top:40px"
+          *ngIf="id && !typeAction">
+          <div style="margin-left:20px">
+            <button mat-raised-button class="custom-button" style="background-color: #133d6a;color:white"
+              [routerLink]="['/admin/home']" [queryParams]="{ tab: 1 }"><strong>Cerrar</strong></button>
+          </div>
+        </div>
+
+      </div>
+    </mat-step>
+
+  </mat-stepper>
+
+  <mat-card *ngIf="id && !typeAction" style="margin-top:20px;padding:10px">
+    <div *ngIf="id">
+      <div style="width: 100%;text-align: center;">
+        <h2 style="color:#3573ba">Detalle Estudio</h2>
+      </div>
+      <div style="text-align: left;padding: 22px;">
+        <span style="margin-right: 50px;margin-left: 23px;"><a style="color: #3573ba;font-weight: 700;">ID:</a>
+          {{allData.id}}</span>
+        <span style="margin-left: 23px;margin-right: 50px;" *ngIf="allData.status === 1"> <a
+            style="color: #3573ba;font-weight: 700;">Estado:</a> Nuevo</span>
+        <span style="margin-left: 23px;margin-right: 50px;" *ngIf="allData.status === 2"> <a
+            style="color: #3573ba;font-weight: 700;">Estado:</a> Vigente</span>
+        <span style="margin-left: 23px; margin-right: 50px;" *ngIf="allData.status === 3"> <a
+            style="color: #3573ba;font-weight: 700;">Estado:</a> Procesando</span>
+        <span style="margin-left: 23px; margin-right: 50px;" *ngIf="allData.status === 4"> <a
+            style="color: #3573ba;font-weight: 700;">Estado:</a> Públicado</span>
+        <span style="margin-left: 23px; margin-right: 50px;"><a style="color: #3573ba;font-weight: 700;">Nombre: </a>
+          {{allData.estudiesName}}</span>
+        <br>
+      </div>
+      <div style="padding:22px">
+        <mat-divider></mat-divider>
+      </div>
+
+      <div *ngIf="responseForm || id">
+        <div style="
+          margin-bottom: 20px;
+          padding: 22px;
+          padding-top: 28px;">
+          <mat-accordion class="example-headers-align">
+            <mat-expansion-panel (opened)="setStep(0)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Encuesta </mat-panel-title>
+                <mat-panel-description>
+
+                  <div style="display: flex;align-items: center;">
+                    <img class="menu-icon" alt="icono" width="25px" style="margin-right:10px"
+                      src="/assets/img/unknow.png">
+                    <span>Preguntas:</span>
+                    <a> {{allData.preguntasCount}}</a>
+                  </div>
+
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div style="height:250px;overflow-y:scroll" *ngIf="allSelectedQuestions.length > 0">
+                <div *ngFor="let question of allSelectedQuestions; let u = index"
+                  style="text-align: left; margin-top: 10px;">
+                  <div>
+                    <ng-container *ngIf="isFirstInGroup(question.groupName, u)">
+                      <p style="font-weight: 600; margin-top: 30px;color:#3573ba">{{question.groupName}}</p>
+                    </ng-container>
+                    <ng-container *ngIf="isFirstInGroup2(question.nameBenefitGroup, u)">
+                      <p style="font-weight: 600; font-size: 15px;color:#3573ba">{{question.nameBenefitGroup}}</p>
+                    </ng-container>
+                    <div *ngFor="let data of question.questions; let i = index">
+                      <p
+                        style="word-break: break-word; overflow-wrap: break-word; white-space: normal;max-width: 400px;width: 100%;">
+                        {{i + 1}}. {{data.pregunta_name}}</p>
+                      <div *ngIf="data.opcion">
+                        <ul>
+                          <li *ngFor="let opt of data.opcion">{{opt}}</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="allSelectedQuestions.length === 0">
+                No hay preguntas seleccionadas.
+              </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Empresas </mat-panel-title>
+                <mat-panel-description>
+                  <div style="display: flex;
+                  align-items: center;">
+                    <mat-icon style="margin-right:10px">contact_page</mat-icon>
+                    <span>Contactos:</span>
+                    <a> {{allData.empresa.length}}</a>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div style="height:250px;overflow-y:scroll;padding-left: 13px;padding-right: 20px;">
+                <table class="styled-table">
+                  <thead>
+                    <tr>
+                      <th>Empresa</th>
+                      <th>Nombre</th>
+                      <th>Email</th>
+                      <th>Tipo Usuario</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="empresasSelected.length > 0; else noContacts">
+                      <ng-container *ngFor="let empresa of empresasSelected">
+                        <ng-container *ngFor="let user of empresa.personal; let i = index">
+                          <tr>
+                            <!-- Mostrar el nombre de la empresa solo en la primera fila del bloque -->
+                            <td *ngIf="i === 0" [attr.rowspan]="empresa.personal.length">{{ empresa.empresaName }}</td>
+                            <td>{{ user.nombre }}</td>
+                            <td>{{ user.email }}</td>
+                            <td *ngIf="user.tipo === 'Administrador'">Gestor</td>
+                            <td *ngIf="user.tipo !== 'Administrador'">{{user.tipo}}</td>
+                          </tr>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </tbody>
+                </table>
+
+                <ng-template #noContacts>
+                  <div>No hay contactos seleccionados.</div>
+                </ng-template>
+              </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title> Formularios </mat-panel-title>
+                <mat-panel-description>
+                  <div style="display: flex;
+                  align-items: center;">
+                    <mat-icon style="margin-right:10px">upload_file</mat-icon>
+                    <span>Archivos:</span>
+                    <a> {{allData?.files?.length}}</a>
+                  </div>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+              <div *ngIf="allData?.files?.length > 0">
+                <mat-chip-set aria-label="Dog selection">
+                  <mat-chip *ngFor="let file of allData.files">
+                    {{file.name}}
+                  </mat-chip>
+                </mat-chip-set>
+              </div>
+              <div *ngIf="allData?.files?.length === 0">
+                No hay archivos.
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+
+
+        </div>
+
+        <div style="display: flex; padding-left:20px;justify-content: center;margin-bottom:20px;margin-top:40px"
+          *ngIf="!id">
+          <div>
+            <button mat-raised-button class="custom-button" matStepperPrevious>Volver</button>
+          </div>
+          <div style="margin-left:20px">
+            <button mat-raised-button (click)="modalConfirm(confirmacion, errorMultiple)" class="custom-button"
+              style="background-color: #133d6a;color:white"><strong>Finalizar</strong></button>
+          </div>
+        </div>
+        <div style="display: flex;justify-content: center;margin-bottom:20px;margin-top:40px" *ngIf="id">
+          <div style="margin-left:20px">
+            <button mat-raised-button class="custom-button" style="background-color: #133d6a;color:white"
+              [mat-dialog-close]><strong>Cerrar</strong></button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </mat-card>
+
+
+  <div style="display: flex;justify-content: center;padding:150px" *ngIf="loading && !id">
+    <a><mat-spinner style="width:50px;color:white!important"></mat-spinner></a>
+  </div>
+
+
+</mat-drawer-container>
+
+<ng-template #error>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Debe completar todos los campos.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #errorEmpresa>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Debes seleccionar una empresa.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #confirmacion>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>¿Estás seguro de crear la encuesta?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      (click)="createPoll(success,loadingData, errorsendfiles2)">Crear</button>
+  </div>
+</ng-template>
+
+<ng-template #success>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>Encuesta Creada.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button (click)="closeData()" class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #surveyExist>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Este estudio ya tiene una encuesta asociada.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #errorsendfiles>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Ya existe un archivo con ese nombre. Utilice otro nombre.<br><br>
+
+      Ej. AAAAMMDD.HHMM.Nombre del archivo.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #errorsendfiles2>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Ha ocurrido un error.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #loadingData>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Procesando</h3>
+    <div style="display: flex;justify-content: center;">
+      <mat-spinner style="width: 30px;height:30px"></mat-spinner>
+    </div>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="display: flex;justify-content: center;">
+    <p>Espere por favor.</p>
+  </div>
+</ng-template>
+
+<ng-template #validationModal>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Debe completar todos los campos para continuar</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modalAddQuestion>
+  <form [formGroup]="createQuestionForm" style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3 *ngIf="isEditingQuestion === false">Añadir Pregunta</h3>
+    <h3 *ngIf="isEditingQuestion === true">Editar Pregunta</h3>
+    <div
+      style="border: 1px solid #ccc; border-radius: 10px; padding: 20px; margin-bottom: 20px; background-color: #ebebeb;">
+      <div style="text-align: left;">
+        <mat-form-field style="width:100%">
+          <mat-label>Grupo de Beneficios</mat-label>
+          <mat-select formControlName="group" (selectionChange)="getBenefitType($event.value)">
+            <mat-option *ngFor="let benefit of benefitTypes" [value]="benefit">
+              {{ benefit.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width:100%">
+          <mat-label>Beneficio</mat-label>
+          <mat-select formControlName="benefit">
+            <mat-option *ngFor="let group of selectedBenefit.groupBeneficios" [value]="group">
+              {{ group.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!--<div style="text-align: center;margin-bottom:20px" *ngIf="!step2Modal">
+      <button mat-raised-button class="custom-button btnHoverCancel" [mat-dialog-close] style="margin-right: 20px;"
+        (click)="cancelModal(modalAddQuestion)">Cancelar</button>
+      <button mat-raised-button class="custom-button btnHover"
+        (click)="nextStepModal(validationModal)">Siguiente</button>
+    </div>-->
+
+    <div style="border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #ebebeb;
+    margin-bottom: 20px;
+    overflow: scroll;
+    height: 400px;overflow-x:hidden">
+      <div style="padding:20px;text-align: left;">
+        <div style="text-align: left;">
+          <div style="display: flex;">
+            <mat-form-field appearance="fill" style="margin-right:20px">
+              <mat-label>Tipo de Respuesta</mat-label>
+              <mat-select formControlName="type" (selectionChange)="selectionTypeResponse($event)">
+                <mat-option value="SIMPLE">Simple</mat-option>
+                <mat-option value="MULTIPLE">Multiple</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" *ngIf="createQuestionForm.get('type').value === 'SIMPLE'">
+              <mat-label>Formato</mat-label>
+              <mat-select formControlName="format">
+                <mat-option value="0">Texto</mat-option>
+                <mat-option value="1">Número</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="fill" *ngIf="createQuestionForm.get('type').value === 'MULTIPLE'">
+              <mat-label>Formato</mat-label>
+              <mat-select formControlName="seleccionMultiple" (selectionChange)="test()">
+                <mat-option [value]="0">Selección Única</mat-option>
+                <mat-option [value]="1">Selección Múltiple</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-form-field style="width: 100%;"
+          *ngIf="(createQuestionForm.get('format').value && createQuestionForm.get('format').value !== '') || (createQuestionForm.get('seleccionMultiple').value === 1 || createQuestionForm.get('seleccionMultiple').value === 0) ">
+          <mat-label>Pregunta</mat-label>
+          <input matInput placeholder="Ingrese pregunta" formControlName="question">
+        </mat-form-field>
+        <div *ngIf="createQuestionForm.get('type').value === 'MULTIPLE'">
+          <mat-radio-group formControlName="selectedOptionRadioButton">
+            <ng-container *ngFor="let key of getRadioButtonKeys(); let i = index">
+              <div>
+                <mat-radio-button [value]="key" [disabled]="true">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Opción {{ i + 1 }}</mat-label>
+                    <input matInput [formControl]="createQuestionForm.get('radioButtons').get(key)"
+                      placeholder="Ingrese opción">
+                  </mat-form-field>
+                </mat-radio-button>
+                <button mat-icon-button (click)="removeRadioButton(key)">
+                  <mat-icon style="color:#c55b67">delete_forever</mat-icon>
+                </button>
+              </div><br>
+            </ng-container>
+          </mat-radio-group>
+
+          <button mat-icon-button (click)="addRadioButton()"
+            *ngIf="(createQuestionForm.get('format').value && createQuestionForm.get('format').value !== '') || (createQuestionForm.get('seleccionMultiple').value === 1 || createQuestionForm.get('seleccionMultiple').value === 0) ">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align: center;">
+      <button mat-raised-button class="custom-button btnHoverCancel" style="margin-right: 20px;"
+        (click)="emptyForm(modalAddQuestion)" [mat-dialog-close]>Cancelar</button>
+      <button mat-raised-button class="custom-button btnHover" *ngIf="isEditingQuestion === false"
+        (click)="createQuestion(validationModal, errorMultiple)">Crear</button>
+        <button mat-raised-button class="custom-button btnHover" *ngIf="isEditingQuestion === true"
+        (click)="saveQuestionEdit(validationModal, errorMultiple, modalAddQuestion)">Guardar</button>
+    </div>
+  </form>
+</ng-template>
+
+<ng-template #errorMultiple>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Debes completar todos los campos.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #importTemp>
+  <div>
+    <div style="text-align: center;">
+      <h2 style="color:#133d6a">Importar Plantilla</h2>
+      <span style="color:#133d6a">Selecciona la plantilla que desees importar</span>
+    </div>
+    <form>
+      <div style="background-color: #eaeaea;margin: 20px 50px 20px 50px;height: auto;max-height: 400px;overflow: scroll;overflow-x: auto;border-radius: 5px;">
+        <mat-selection-list [multiple]="false" (selectionChange)="onSelectionChangeTemplate($event)">
+          <mat-list-option *ngFor="let template of allTemplates" [value]="template"
+            style="border-bottom:1px solid #ccc;">
+            {{template.name}}
+          </mat-list-option>
+        </mat-selection-list>
+      </div>
+      <div style="text-align: center;margin-bottom:20px">
+        <div style="text-align: center;">
+          <button mat-raised-button class="custom-button btnHoverCancel" style="margin-right: 20px;" [mat-dialog-close]>Cancelar</button>
+          <button mat-raised-button class="custom-button btnHover"
+          (click)="selectTemplate(importTemp)" [mat-dialog-close]>Aceptar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

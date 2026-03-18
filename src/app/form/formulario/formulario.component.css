@@ -1,0 +1,28 @@
+.cardHome{
+    display: flex;
+    justify-content:center;
+    width: 300px;
+    margin: 50px 20px 0px 20px;
+    border-radius:20px;
+    background-image: radial-gradient(at bottom right, #17A0AE 75%, #51CFBD 0%);
+    padding: 20px 20px 20px 20px;
+    cursor:pointer;
+}
+
+.cardHome:hover {
+    transform: scale(1.1); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.container{
+    display: flex;
+    justify-content: center;
+}
+.container-block{
+    display: flex;
+    justify-content: center;
+}
+
+.txt-block{
+    color:white;
+}
+

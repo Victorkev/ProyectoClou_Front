@@ -1,0 +1,29 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+body { margin: 0; font-family: sans-serif; }
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #edf0f5;
+  }
+  
+  app-root {
+    display: block;
+    height: 100%;
+  }
+
+
+::ng-deep.mat-drawer-container {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+  display: block;
+  overflow: hidden;
+  height: 100%;
+  background-color: transparent!important;
+}
+
+

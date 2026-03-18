@@ -1,0 +1,37 @@
+<mat-drawer-container>
+  <mat-toolbar style="display: flex; justify-content: space-between;">
+    <div style="display: flex; align-items: center;">
+      <a  href="https://clouhr.cl" target="_blank">
+        <img width="80px" src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+      </a>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon" (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+    <div>
+      <div class="container">
+        <h1>Bienvenido</h1>
+        <br>
+      </div>
+      <div class="container-block" >
+        <div class="cardHome"  routerLink="/add-study"> 
+          <p class="txt-block">Crear Estudio</p>
+        </div>
+        <div class="cardHome">
+          <p class="txt-block">Ver Respuestas</p>
+        </div>
+      </div>
+      <div>
+
+      </div>
+    </div>
+
+
+
+  </mat-drawer-container>
+

@@ -1,0 +1,168 @@
+<mat-drawer-container>
+  <div style="display: flex; padding-left:2.5vw;background-color:#133e6b;color:white">
+    <h2 style="font-size:22px">Nuevo Estudio</h2>
+  </div>
+ <!-- <mat-toolbar style="display: flex; justify-content: space-between;">
+    <div style="display: flex; align-items: center;">
+      <img width="80px" src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+    </div>
+    <div style="display: flex; align-items: center;">
+      <span class="example-spacer"></span>
+      <a style="font-weight: 500;">Hola {{name}}!</a>&nbsp;&nbsp;&nbsp;
+      <mat-icon style="width: 100%; height: 100%; font-size: 40px; color: #133d6a; cursor: pointer" [matMenuTriggerFor]="menu">account_circle</mat-icon>
+      <mat-menu #menu="matMenu">
+        <div class="custom-menu">
+          <div style="padding: 20px; display: flex; align-items: center; justify-content: center;">
+            <div class="circulo">
+              <div style="font-size: 21px;
+              padding-left: 15px;
+              color: white;
+              padding-top: 5px;">{{ firstLetter }}</div>
+            </div>
+            <div style="margin-left: 10px;"> 
+              <strong>{{ user.personal.nombre }} - {{type}}</strong> <br>
+              {{ user.username }}
+            </div>
+          </div>
+        </div>
+        <button mat-menu-item (click)="logOut()">
+          <a style="display: flex; align-items: center;">
+            <mat-icon style="font-size: 20px; color: #000; cursor: pointer;margin-right:5px">
+              logout
+            </mat-icon>
+            <span style="margin-left: 5px;margin-top: -5px;">Cerrar Sesión</span>
+          </a>
+        </button>
+      </mat-menu>
+    </div>
+
+  </mat-toolbar> 
+  <div style="text-align: center;">
+    <div>
+      <img width="100%" src="/assets/img/bannerPrincipal.jpg">
+    </div>
+  </div>-->
+
+  <div style="display:flex; justify-content:center;">
+    <mat-card style="width: 750px;
+    margin-top: 0px;">
+      <!--CREAR FORMULARIO-->
+      <div *ngIf="!responseForm && !loading">
+  
+        <!--CREACIÓN DE ESTUDIO-->
+        <form [formGroup]="studyForm" style="margin-top:50px;margin-bottom:35px">
+
+          <div style="display:flex; justify-content:center;">
+            <div class="containerInput">
+              <div class="container-input">
+                <mat-label  style="font-size:18px">Nombre de Estudio</mat-label>
+                <mat-form-field class="example-form-field" style="width: 600px;margin-top:10px">
+                  <input matInput type="text" formControlName="studyName">
+                </mat-form-field>            
+              </div>
+            </div>
+          </div>
+  
+          <div style="display:flex; justify-content:center;">
+            <div class="containerInput">
+              <div class="container-input">
+                <mat-label style="font-size:18px">Tipo de Estudio</mat-label>
+                <mat-form-field style="width: 600px;margin-top:10px">
+                  <mat-label>Seleccionar</mat-label>
+                  <mat-select formControlName="studyType">
+                    <mat-option value="compensacion" style="font-size:18px">Compensación</mat-option>
+                    <mat-option value="beneficios" style="font-size:18px">Beneficios</mat-option>
+                    <mat-option value="indicadores" style="font-size:18px">Indicadores</mat-option>
+                    <mat-option value="otros" style="font-size:18px">Otros Estudios</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+
+          <div style="display:flex; justify-content:center;">
+            <div class="containerInput">
+              <div class="container-input">
+                <mat-label style="font-size:18px">Tipo de Entrega</mat-label>
+                <div style="width: 600px;"><br>
+                  <mat-radio-group formControlName="studyEntrega">
+                    <mat-radio-button value="normal" style="margin-right:45px;font-size:18px">Normal</mat-radio-button>
+                    <mat-radio-button value="cortesia" style="font-size:18px">Cortesía</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          
+  
+        </form>
+        <!--FIN CRECIÓN DE ESTUDIO-->
+     
+      <div style="display: flex;
+      justify-content: end;
+      padding: 20px;
+      padding-right: 2.5vw;
+      border-top: 1px solid #cdcdcd;">
+        <div>
+          <button mat-raised-button [mat-dialog-close] class="custom-button2">Cancelar</button>
+        </div>
+        <div style="margin-left:20px">
+          <button mat-raised-button class="custom-button" (click)="modalConfirmStudy(modalConfirm, error, allData)">Crear</button>
+        </div>
+      </div>
+    </div>
+    </mat-card>
+  </div>
+
+
+</mat-drawer-container>
+<ng-template #sameName>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Estudio ya existe, utilice otro nombre para crear un nuevo estudio.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #error>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Ha ocurrido un error inesperado.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #allData>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>Debes completar todos los campos.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalConfirm>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Crear Estudio</h3>
+    <p class="multi-line-cell">¿Esta seguro de crear el estudio ?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;margin-bottom:10px">
+    <button mat-raised-button [mat-dialog-close] class="modal-button-cancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="modal-button-confirm"
+      (click)="createForm(sameName, error,allData)">Aceptar</button>
+  </div>
+</ng-template>
+
+

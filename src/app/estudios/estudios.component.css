@@ -1,0 +1,1331 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+th {
+  color: #000;
+}
+
+.tabla-container2 {
+  display: flex;
+  align-items: center; /* Centra verticalmente los elementos */
+}
+
+.tabla-pequena {
+  width: 32%;
+  min-width: 0px !important;
+}
+
+.tabla-pequena2 {
+  width: 100%;
+  min-width: 0px !important;
+}
+
+.tabla-pequena3 {
+  width: 418px;
+  min-width: 0px !important;
+}
+
+/* Estilos para que la tabla sea responsiva */
+@media screen and (max-width: 600px) {
+  .table-container {
+    padding: 0 10px; /* Reducir el padding lateral en dispositivos pequeños */
+  }
+}
+
+#miDiv {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* estándar */
+}
+
+.mdc-data-table__row:not(.mdc-data-table__row--selected):hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+.custom-table {
+  border-radius: 5px; /* Ajusta el valor según el radio de borde que desees */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajusta el valor según la sombra que desees */
+  overflow: hidden; /* Para asegurar que la sombra no se recorte si la tabla tiene bordes redondeados */
+}
+
+::ng-deep .mat-drawer-content {
+  height: 100% !important;
+  overflow-x: hidden;
+}
+
+.cardHome {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  margin: 50px 20px 0px 20px;
+  border-radius: 20px;
+  background: #92c020;
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
+  height: 30px;
+  align-items: center;
+}
+
+.active {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  margin: 50px 20px 0px 20px;
+  border-radius: 20px;
+  background-color: #133d6a;
+  padding: 10px 10px 10px 10px;
+  cursor: pointer;
+  height: 30px;
+  align-items: center;
+  transform: scale(1.1);
+}
+.cardHome:hover {
+  transition-duration: 0.3s;
+  transform: scale(
+    1.1
+  ); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+}
+.container-block {
+  display: flex;
+  justify-content: center;
+}
+.txt-block {
+  color: white;
+}
+
+ul#simple-menu {
+  list-style-type: none;
+  width: 100%;
+  position: relative;
+  height: 27px;
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0;
+  padding: 11px 0 0 0;
+  display: flex;
+  justify-content: center;
+}
+
+ul#simple-menu li {
+  display: block;
+  float: left;
+  margin: 0 0 0 4px;
+  height: 27px;
+}
+
+ul#simple-menu li.left {
+  margin: 0;
+}
+
+#demo-container {
+  margin-top: 30px;
+  margin-bottom: 90px;
+}
+
+.btnUpdate {
+  background: #f7f8fa;
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px;
+  box-shadow: rgba(255, 255, 255, 0.6) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  height: 38px;
+  font-size: 18px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 11px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  max-width: 120px;
+  width: 100%;
+}
+
+.btnClean {
+  background: #f7f8fa;
+  border-color: #adb1b8 #a2a6ac #8d9096;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 8px;
+  box-shadow: rgba(255, 255, 255, 0.6) 0 1px 0 inset;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember", Arial, sans-serif;
+  font-size: 18px;
+  height: 50px;
+  outline: 0;
+  overflow: hidden;
+  padding: 0 11px;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  max-width: 200px;
+  width: 100%;
+}
+
+.btnUpdate:hover {
+  background-color: #133d6a !important;
+  color: white !important;
+}
+
+h1 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #cccccc;
+  height: 1px;
+  margin-bottom: 25px;
+}
+
+.cardHomeEncuesta {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  max-height: 12px;
+  height: 100%;
+  margin: 0px 18px 0px 20px;
+  border-radius: 10px;
+  background-color: #e2e2e2;
+  padding: 12px 20px 25px 20px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: sans-serif;
+}
+
+.cardHomeActive {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  margin: 0px 18px 0px 20px;
+  max-height: 12px;
+  height: 100%;
+  border-radius: 10px;
+  background-color: #e2e2e2;
+  padding: 12px 20px 25px 20px;
+  cursor: pointer;
+  background-color: #133d6a;
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+  position: relative;
+  font-family: sans-serif;
+}
+
+.cardHomeEstudios {
+  display: flex;
+  justify-content: center;
+  width: 200px;
+  max-height: 12px;
+  height: 100%;
+  margin: 0px 18px 0px 20px;
+  border-radius: 10px;
+  background-color: #e2e2e2;
+  padding: 12px 20px 25px 20px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: sans-serif;
+}
+
+.cardHomeEncuesta:hover {
+  background-color: #133d6a !important;
+  color: white;
+  transition-duration: 0.3s;
+  transform: scale(1.1);
+}
+
+.cardHomeEstudios:hover {
+  background-color: #133d6a !important;
+  color: white;
+  transition-duration: 0.3s;
+  transform: scale(1.1);
+}
+
+:host::ng-deep.mat-horizontal-stepper-header-container {
+  display: none;
+}
+
+.mat-horizontal-content-container {
+  padding: 0;
+}
+
+/*CARRUSEL*/
+.carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slides2 {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slides3 {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: #000000;
+  border: none;
+  padding: 10px;
+  font-size: 35px;
+  cursor: pointer;
+}
+
+.prev {
+  left: 20px;
+}
+
+.next {
+  right: 20px;
+}
+
+@media screen and (max-width: 800px) {
+  .prev {
+    left: 0px;
+  }
+
+  .next {
+    right: 0px;
+  }
+}
+
+.custom-table-container {
+  display: flex;
+  justify-content: center;
+  align-items: unset;
+  width: 100%;
+  min-height: 100vh; /* Asegura que esté centrado verticalmente */
+}
+
+.new-content-container {
+  max-width: 1200px; /* O el ancho que estimes ideal */
+  margin: 0 auto; /* Centra horizontalmente */
+  padding: 0 16px; /* Márgenes internos laterales en pantallas pequeñas */
+  box-sizing: border-box;
+}
+
+.table-wrapper-chr {
+  height: 100%;
+  width: 100%; /* Ajusta el ancho según necesites */
+  max-width: 1300px; /* Tamaño fijo máximo */
+  overflow-x: auto; /* Habilita el scroll horizontal si es necesario */
+  padding: 0px;
+  border-radius: 8px;
+  box-shadow: 7px 10px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table2 {
+  width: 100%;
+  min-width: 800px; /* Asegura que tenga un tamaño mínimo */
+  border-collapse: collapse;
+}
+
+.custom-table2 th,
+.custom-table2 td {
+  padding: 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.custom-table2 th {
+  background-color: #f4f4f4;
+}
+
+@media (max-width: 900px) {
+  .table-wrapper-chr {
+    width: 100%;
+  }
+}
+
+.custom-table-container-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 10vh; /* Asegura que esté centrado verticalmente */
+}
+
+.table-wrapper-chart {
+  width: 100%; /* Ajusta el ancho según necesites */
+  overflow-x: auto; /* Habilita el scroll horizontal si es necesario */
+  padding: 0px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.custom-table-chart {
+  width: 100%;
+  min-width: 800px; /* Asegura que tenga un tamaño mínimo */
+  border-collapse: collapse;
+  box-shadow: 0px 4px 10px rgb(11 11 11 / 20%) !important;
+}
+
+.custom-table-chart th,
+.custom-table-chart td {
+  padding: 12px;
+  width: 0%;
+  text-align: center;
+  border-bottom: 0px solid #ddd;
+}
+
+.custom-table-chart th {
+  background-color: #f4f4f4;
+}
+
+@media (max-width: 900px) {
+  .table-wrapper-chart {
+    width: 95%;
+  }
+}
+
+.custom-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); /* fondo oscuro translúcido */
+  display: flex;
+  backdrop-filter: blur(10px);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.custom-modal {
+  width: 400px;
+  height: 450px;
+  background-image: url(/assets/img/bienvenida.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  color: white;
+  text-align: center;
+  position: relative;
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.logo {
+  width: 100px;
+}
+
+.bottom-icon {
+  width: 40px;
+}
+
+h1 {
+  font-size: 3rem;
+  margin: 3rem 0 0.5rem;
+  font-size: sans-serif;
+}
+
+.subtext {
+  font-size: 1.3rem;
+  margin: 0.5rem 0;
+  max-width: 320px;
+  font-weight: 300;
+  font-size: sans-serif;
+}
+
+.highlight {
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0.5rem 0 3rem;
+  max-width: 320px;
+  font-size: sans-serif;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 480px) {
+  span,
+  h2 {
+    font-size: 18px !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+  }
+
+  mat-icon {
+    font-size: 24px !important;
+  }
+}
+
+.responsive-carousel {
+  border-bottom: 1px solid #ccc;
+  border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  background-color: white;
+  box-shadow: 0px 2px 10px rgba(11, 11, 11, 0.2);
+  width: 100%;
+  max-width: 100%;
+  margin-inline: auto;
+}
+
+.chart-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 20px 0px 20px 0px;
+}
+
+.chart-wrapper {
+  width: 300px;
+  height: 300px;
+  position: relative;
+}
+
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.custom-legend {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.legend-row {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.legend-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+}
+
+.horizontal-scroll {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroll-3 {
+  display: flex;
+  gap: 150px;
+  overflow-x: auto;
+  justify-content: center;
+  padding: 20px;
+  scroll-snap-type: x mandatory;
+}
+
+.horizontal-scroll-3 > * {
+  flex: 0 0 0%; /* Ocupa el 50% del ancho */
+  box-sizing: border-box;
+}
+
+.horizontal-scroll .chart-wrapper {
+  flex: 0 0 auto; /* evita que se reduzca el tamaño automáticamente */
+  scroll-snap-align: start;
+}
+
+.contentBenefits {
+  max-width: 1500px; /* ancho máximo del contenido */
+  margin: 0 auto; /* centra horizontalmente */
+  padding: 0 1rem; /* espacio lateral flexible */
+  box-sizing: border-box; /* para que el padding no rompa el ancho */
+}
+
+.chart-wrapper-2 {
+  flex: 0 0 auto; /* No crecer ni encoger, ancho automático según contenido */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra contenido interno (canvas + labels) */
+  min-width: 300px; /* o el ancho deseado para que el canvas no sea muy pequeño */
+}
+
+.chart-wrapper-3 {
+  flex: 0 0 auto;
+  width: 360px;
+  height: 400px;
+  position: relative;
+  background-color: white;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.cortesia{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #3ca339;
+  border-radius: 10px;
+}
+
+.cortesia-text{
+  color: #ffffff;
+  font-size: 18px;
+  text-decoration: double;
+}
+
+.horizontal-scroll-2 {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 100%;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  justify-content: center; /* centra los items */
+  align-items: center;
+}
+
+@media screen and (max-width: 766px) {
+  .contentBenefits {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+  }
+  .chart-wrapper {
+    width: 100%;
+    height: 450px;
+    position: relative;
+  }
+  .chart-wrapper-2 {
+    width: 100%;
+  }
+  .chart-wrapper-3 {
+    width: 100%;
+  }
+  .horizontal-scroll-2 {
+    padding: 0px !important;
+  }
+  .cortesia{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #3ca339;
+    border-radius: 10px;
+  }
+
+  .cortesia-text{
+    color: #ffffff;
+    font-size: 15px;
+    text-decoration: double;
+  }
+}
+
+/* Contenedor de los selects para PC */
+.selects-row {
+  display: flex;
+  justify-content: center;
+  gap: 50px; /* espacio entre los selects */
+  flex-wrap: nowrap; /* que no se rompa en PC */
+}
+
+/* En móviles, que los selects estén en columna */
+@media (max-width: 768px) {
+  .selects-row {
+    flex-direction: column;
+    gap: 20px;
+    margin: 0 auto;
+    max-width: 350px; /* para que no sean muy anchos */
+  }
+
+  /* Ajustar el ancho de los mat-form-field en móvil */
+  .selects-row mat-form-field,
+  mat-form-field.select-beneficio {
+    width: 100% !important;
+    margin-right: 0 !important;
+  }
+
+  /* El mat-select del beneficio también en 100% */
+  mat-form-field.select-beneficio {
+    max-width: 350px;
+    width: 100%;
+    margin: 0 auto 20px auto;
+  }
+}
+
+#simple-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 30px; /* espacio horizontal entre ítems */
+  justify-content: center;
+}
+
+#simple-menu li a {
+  display: flex;
+  padding: 20px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  justify-content: center;
+  align-items: center;
+}
+
+/* En móvil: stack vertical */
+@media (max-width: 768px) {
+  #simple-menu {
+    flex-direction: column;
+    gap: 35px; /* espacio vertical entre ítems */
+    align-items: center;
+  }
+
+  #simple-menu li a {
+    display: flex;
+    padding: 20px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.responsive-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+}
+
+.responsive-field {
+  height: 80px;
+  max-width: 350px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .responsive-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .responsive-field {
+    margin-right: 0 !important;
+  }
+
+  .info-box {
+    width: 90% !important;
+  }
+}
+
+.overtable {
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 800px) {
+  .table-wrapper-chr {
+    padding: 0px 0px 0px 00px;
+    overflow-x: auto;
+  }
+
+  .overtable {
+    overflow-x: auto !important;
+  }
+}
+
+.dots {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.dots span.active {
+  background-color: #717171;
+}
+
+@media (max-width: 1024px) {
+  .slides3 {
+    display: flex;
+    transition: transform 0.3s ease;
+  }
+  .slide {
+    flex: 0 0 100%;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+}
+
+.chart-wrapper-only {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 320px; /* tamaño fijo del gráfico */
+}
+
+.chart-wrapper-only canvas {
+  display: block;
+}
+
+.custom-labels {
+  margin-top: 10px;
+  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* espacio entre elementos */
+}
+
+.custom-labels > * {
+  flex: 1 1 calc(33.33% - 10px); /* 3 por fila */
+  box-sizing: border-box;
+}
+
+/* Si quieres que en pantallas pequeñas se vean 2 por fila */
+@media (max-width: 768px) {
+  .custom-labels > * {
+    flex: 1 1 calc(50% - 10px);
+  }
+}
+
+.chart-main-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 30px 10px;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  margin: 20px 0px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-main-container.two-charts {
+  justify-content: space-around;
+}
+
+.chart-main-container.two-charts {
+  gap: 20px;
+}
+
+.chart-main-container.two-charts .chart-wrapper {
+  margin-bottom: 20px;
+}
+
+.chart-wrapper-new {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+  margin: 0 10px;
+  position: relative;
+}
+
+.chart-legend {
+  width: 100%;
+  margin-top: 20px;
+  font-family: "Open Sans", sans-serif;
+  font-size: 16px;
+  line-height: 1.2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  height: auto;
+}
+
+.chart-legend > div {
+  flex: 0 0 calc(50% - 10px); /* 50% menos el gap para que no se rompa */
+  display: flex;
+  align-items: center;
+}
+
+/* Clases de justificación para la leyenda */
+.chart-legend.justify-center {
+  justify-content: center;
+}
+.chart-legend.justify-between {
+  justify-content: space-between;
+}
+.chart-legend.justify-around {
+  justify-content: space-around;
+}
+
+@media (min-width: 768px) {
+  .chart-legend > div {
+    flex: 0 0 calc(50% - 10px);
+  }
+}
+
+.chart-legend.grid-2-cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px 15px;
+}
+
+.chart-legend.grid-3-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px 20px;
+}
+
+/**carusel*/
+/* Estilos para el carrusel */
+.carousel-main-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  position: relative;
+}
+
+.carousel-main-container-special {
+  margin: auto;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px 0;
+  position: relative; /* Esencial para posicionar los botones de navegación */
+  width: 100%;
+  overflow: hidden;
+}
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-container-special {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+  min-width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.carousel-item.multiple-charts {
+  justify-content: space-evenly;
+}
+
+.carousel-item.single-chart {
+  justify-content: center;
+}
+
+#carousel2-desktop .carousel-item.multiple-charts {
+  justify-content: space-around;
+}
+
+.carousel-control {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: transparent;
+  color: black;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  font-size: 2.5rem;
+  line-height: 1;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-control:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.carousel-control.prev {
+  left: 10px;
+}
+
+.carousel-control.next {
+  right: 10px;
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 5px;
+}
+
+.carousel-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.carousel-indicator.active {
+  background-color: #333;
+}
+
+/* Estilos responsivos para móvil */
+@media (max-width: 1024px) {
+  .chart-wrapper-new {
+    width: 260px;
+    margin: 0 auto;
+  }
+
+  .carousel-item{
+    display:block!important;
+  }
+
+  ::ng-deep.mat-horizontal-content-container{
+    padding:0px!important;
+  }
+
+  .message-overlay {
+    width: 260px; /* Igual que el tamaño del canvas de móvil */
+    height: 260px; /* Igual que el tamaño del canvas de móvil */
+  }
+
+  .chart-legend {
+    font-size: 14px;
+    line-height: 1.2;
+    gap: 3px;
+    margin-top: 15px;
+  }
+
+  .legend-item {
+    flex-basis: 49%;
+    word-break: break-word;
+    margin-bottom: 2px;
+  }
+
+  .legend-text {
+    font-size: 14px;
+    overflow-wrap: break-word;
+  }
+
+  .legend-color-box {
+    margin-top: 3px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .chart-main-container.two-charts {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .chart-main-container.two-charts .chart-wrapper-new {
+    margin-bottom: 20px;
+  }
+
+  .carousel-control {
+    font-size: 1.5rem;
+    width: 30px;
+    height: 30px;
+  }
+
+  .carousel-control.prev {
+    left: 5px;
+  }
+
+  .carousel-control.next {
+    right: 5px;
+  }
+}
+
+/* Estilos para dispositivos modernos en orientación horizontal (landscape) */
+@media (min-width: 480px) and (max-width: 1024px) and (orientation: landscape) {
+  .chart-wrapper-new {
+    width: 400px; /* Aumentamos el ancho para dar más espacio a las leyendas */
+  }
+
+  .message-overlay {
+    width: 260px; /* El overlay mantiene el tamaño del canvas */
+    height: 260px;
+  }
+
+  .chart-legend {
+    width: 100%;
+    margin-top: 20px;
+    gap: 5px; /* Más espacio entre elementos */
+  }
+
+  .legend-item {
+    margin-bottom: 4px; /* Más espacio vertical entre items */
+  }
+
+  .legend-text {
+    font-size: 15px; /* Ligeramente más grande */
+  }
+
+  /* Estilos específicos para 3 elementos en landscape moderno */
+  .chart-legend.three-items-landscape .legend-item {
+    width: calc(33.333% - 3.33px);
+    flex-basis: calc(33.333% - 3.33px);
+  }
+}
+
+/* Estilos para móviles muy pequeños en orientación horizontal */
+@media (max-width: 479px) and (orientation: landscape) {
+  .chart-wrapper-new {
+    width: 320px;
+  }
+
+  .message-overlay {
+    width: 260px;
+    height: 260px;
+  }
+
+  .chart-legend {
+    width: 100%;
+    margin-top: 15px;
+    gap: 3px;
+  }
+
+  .legend-item {
+    margin-bottom: 2px;
+  }
+
+  .legend-text {
+    font-size: 13px;
+  }
+
+  /* Para móviles muy pequeños, mantener 2 columnas incluso con 3 elementos */
+  .chart-legend.three-items-landscape .legend-item {
+    width: calc(50% - 1.5px);
+    flex-basis: calc(50% - 1.5px);
+  }
+}
+@media (max-width: 480px) {
+  .legend-text {
+    font-size: 14px;
+  }
+}
+
+.desktop-only {
+  display: none;
+}
+
+.mobile-only {
+  display: none;
+}
+@media (min-width: 1025px) {
+  .desktop-only {
+    display: block;
+  }
+}
+@media (max-width: 1024px) {
+  .mobile-only {
+    display: block;
+  }
+}
+
+.chat-wrapper-special {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 500px;
+  margin: 0 10px;
+  position: relative;
+}
+
+.carousel-main-container-special {
+  position: relative;
+  width: 100%;
+  max-width: 1000px; /* o el ancho deseado */
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.carousel-container-special {
+  width: 100%;
+}
+
+.carousel-inner-special {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  overflow: hidden;
+}
+
+.carousel-item-special {
+  min-width: 100%; /* Asegura que cada slide ocupe todo el ancho */
+  box-sizing: border-box;
+}
+
+.carousel-item-special.active {
+  display: flex; /* solo activo se muestra */
+}
+
+/* Para el primer slide con un solo gráfico */
+.chart-wrapper-special.single-chart {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Estilo de botones prev/next */
+
+
+button.prev {
+  left: 10px;
+}
+
+button.next {
+  right: 10px;
+}
+
+
+
+/* Para que los canvas tomen el ancho disponible */
+.chart-wrapper-special canvas {
+  width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+/*BOTON PDF*/
+.btn-pdf {
+  background: linear-gradient(135deg, #3673ba, #2563eb);
+  color: #fff;
+  border: none;
+  padding: 12px 14px;
+  font-size: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+  transition: all 0.25s ease;
+  transform: translateY(0);
+}
+
+.btn-pdf:hover {
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.55);
+  transform: translateY(-2px);
+}
+
+.contentBenefits2 {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  padding: 10px 0;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .contentBenefits2 {
+    justify-content: center;
+  }
+
+  .btn-pdf {
+    font-size: 18px;
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-pdf {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+}
+
+
+.custom-loading-dialog {
+  background: transparent !important; /* fondo transparente */
+  box-shadow: none !important;       /* quita sombra */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 !important;
+}

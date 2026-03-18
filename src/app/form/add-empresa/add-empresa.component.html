@@ -1,0 +1,76 @@
+<div style="display: flex; padding-left:2.5vw;background-color:#133e6b;color:white">
+    <h2 class="txt-cf-h1">Empresas</h2>
+  </div>
+  <div style="padding: 3vw;">
+    <form [formGroup]="empresasForm">
+      <section class="example-section">
+        <mat-card style="
+          height: 50vh;
+          border: 1px solid #ccc;
+          padding: 2vw;
+          box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+          overflow: auto;
+          border-radius: 15px;
+          background-color:#edf0f5">
+          <div style="padding: 1vh; margin-top: 1vh; font-weight: 700; font-size: 18px;">
+            <div style="display: flex; justify-content: space-between;">
+              <a>Seleccionar:</a>
+              <mat-checkbox class="colorEmpresa" [checked]="allChecked" (change)="toggleCheckedEmpresaAll($event.checked)">Todos</mat-checkbox>
+            </div>
+            <mat-divider style="margin-top: 1vh;"></mat-divider>
+          </div>
+          <div *ngIf="empresas.length > 0">
+            <mat-accordion style="text-align: left;">
+              <mat-expansion-panel *ngFor="let empresa of empresas; let o = index">
+                <mat-expansion-panel-header>
+                  <mat-checkbox class="colorEmpresa" [checked]="isCheckedEmpresa[o]" (click)="$event.stopPropagation()" (change)="toggleCheckedEmpresa(o)">{{ empresa.empresaName }}</mat-checkbox>
+                </mat-expansion-panel-header>
+                <p *ngFor="let persona of empresa.personal; let u = index">
+                  <mat-checkbox 
+                    class="colorEmpresa" 
+                    [checked]="isCheckedEmpresaPeople[o] && isCheckedEmpresaPeople[o][u]" 
+                    (change)="toggleCheckedEmpresaPeople(persona, o , u)" *ngIf="consultor === false">
+                    <strong>Nombre: </strong>{{persona.nombre}} | <strong> Correo: </strong>{{persona.email}} | <strong>Tipo de Perfil: </strong>
+                    <a *ngIf="persona.tipo === 'Administrador'">Gestor</a>
+                    <a *ngIf="persona.tipo !== 'Administrador'">{{persona.tipo}}</a>
+                  </mat-checkbox>
+                  <mat-checkbox 
+                    class="colorEmpresa" 
+                    [checked]="isCheckedEmpresaPeople[o] && isCheckedEmpresaPeople[o][u]" 
+                    (change)="toggleCheckedEmpresaPeople(persona, o , u)" *ngIf="consultor === true && persona.tipo !== 'Editor'">
+                    <strong>Nombre: </strong>{{persona.nombre}} | <strong> Correo: </strong>{{persona.email}} | <strong>Tipo de Perfil: </strong>
+                    <a *ngIf="persona.tipo === 'Administrador'">Gestor</a>
+                    <a *ngIf="persona.tipo !== 'Administrador'">{{persona.tipo}}</a>
+                  </mat-checkbox>
+                </p>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+        </mat-card>
+      </section>
+    </form>
+  </div>
+  <div style="    display: flex;
+  justify-content: end;
+  padding: 20px;
+  padding-right: 2.5vw;
+  border-top: 1px solid #cdcdcd;">
+    <div>
+      <button mat-raised-button class="custom-button2" [mat-dialog-close]>Cancelar</button>
+    </div>
+    <div style="margin-left: 1vw;">
+      <button mat-raised-button class="custom-button" style="background-color: #133d6a; color: white;" (click)="saveEmpresa(success)">Guardar</button>
+    </div>
+  </div>
+
+
+  <ng-template #success>
+    <div style="padding:25px 30px 15px 30px;text-align: center;">
+      <h3>Mensaje</h3>
+      <p>Se guardaron los contactos seleccionados.</p>
+    </div>
+    <mat-divider style="margin-bottom:10px"></mat-divider>
+    <div style="text-align: center;">
+      <button mat-raised-button (click)="closeData()" class="custom-button btnHover">Cerrar</button>
+    </div>
+  </ng-template>

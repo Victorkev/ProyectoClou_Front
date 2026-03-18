@@ -1,0 +1,99 @@
+<div style="height: 100vh;">
+  <mat-drawer-container style="height: 100%;">
+    <mat-toolbar>
+      <div class="logo">
+        <a target="_blank" href="https://clouhr.cl">
+          <img src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+        </a>
+      </div>
+      <div class="contact">
+        <span class="example-spacer"></span>
+        <a target="_blank" href="https://clouhr.cl/#contact">
+          <button mat-flat-button color="primary" class="contact-button">Contacto</button>
+        </a>
+      </div>
+    </mat-toolbar>
+
+    <div class="content desktop" role="main">
+      <div class="blockcontent">
+        <div>
+          <img src="/assets/img/logo.svg">
+        </div>
+        <form class="example-form" [formGroup]="angForm">
+          <div style="text-align: left;margin-bottom: 5px;">
+            <label>Correo Electrónico</label>
+          </div>
+          <div style="display: flex;justify-content: left;">
+            <mat-form-field appearance="fill" style="width: 99%;border: 1px solid #c9c9c9;border-radius: 5px;">
+              <input matInput type="text" placeholder="" required formControlName="username" style="font-size: 18px;">
+              <mat-icon matSuffix style="font-size: 20px;color:#3473b8">mail</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="error" style="text-align: left;margin-top:3px">
+            <p *ngIf="error">Complete este campo.</p>
+          </div>
+
+
+          <br />
+          <div style="text-align: left;margin-bottom: 5px;">
+            <label>Contraseña</label>
+          </div>
+          <div style="display: flex;justify-content: left;">
+            <!--<mat-form-field appearance="fill" style="width: 99%;border: 1px solid #c9c9c9;;border-radius: 5px;">
+              <input matInput type="password" name="password" placeholder="" formControlName="password" >
+             
+            </mat-form-field>-->
+            <mat-form-field style="width: 99%; border: 1px solid #c9c9c9; border-radius: 5px;">
+              <mat-icon matSuffix style="font-size: 20px; color:#3473b8">lock</mat-icon> <!-- Cambiado a matPrefix -->
+              <input matInput [type]="hide ? 'password' : 'text'" formControlName="password" />
+              <button
+                mat-icon-button
+                matPrefix
+                (click)="clickEvent($event)"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="error" style="text-align: left;margin-top:3px">
+            <p *ngIf="error">Complete este campo.</p>
+          </div>
+          <br />
+          <div>
+            <a routerLink="/recovery">Crear/Recuperar Contraseña</a>
+          </div>
+          <button class="login-button" mat-raised-button color="primary" (click)="validaUsuario(error1, error2)">
+            <span *ngIf="loading === false">Ingresar</span>
+            <span class="loading" *ngIf="loading === true">
+              <mat-spinner style="width: 20px; color: white !important;"></mat-spinner>
+            </span>
+          </button>
+        </form>
+        <span class="version">Versión 1.9.1</span>
+      </div>
+    </div>
+  </mat-drawer-container>
+</div>
+<ng-template #error1>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Ingrese todos los datos.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #error2>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Usuario o Contraseña incorrecta.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>

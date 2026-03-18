@@ -1,0 +1,1861 @@
+<mat-drawer-container>
+  <mat-toolbar style="display: flex; justify-content: space-between;">
+    <div style="display: flex; align-items: center;">
+      <a  href="https://clouhr.cl" target="_blank">
+        <img width="80px" src="https://clouhr.cl/wp-content/uploads/2020/07/logo-oscuro-01.png">
+      </a>
+
+    </div>
+    <div style="display: flex; align-items: center;">
+      <span class="example-spacer"></span>
+      <a style="font-weight: 500;">Hola {{name}}!</a>&nbsp;&nbsp;&nbsp;
+      <mat-icon style="width: 100%; height: 100%; font-size: 40px; color: #133d6a; cursor: pointer"
+        [matMenuTriggerFor]="menu">account_circle</mat-icon>
+      <mat-menu #menu="matMenu">
+        <div class="custom-menu">
+          <div style="padding: 20px; display: flex; align-items: center; justify-content: center;">
+            <div class="circulo">
+              <div style="font-size: 21px;
+              padding-left: 15px;
+              color: white;
+              padding-top: 5px;">{{ firstLetter }}</div>
+            </div>
+            <div style="margin-left: 10px;"> <!-- Ajusta el margen según sea necesario -->
+              <strong>{{ user.personal.nombre }} - {{type}}</strong> <br>
+              {{ user.username }}
+            </div>
+          </div>
+        </div>
+        <button mat-menu-item (click)="logOut()">
+          <a style="display: flex; align-items: center;">
+            <mat-icon style="font-size: 20px; color: #000; cursor: pointer;margin-right:5px">
+              logout
+            </mat-icon>
+            <span style="margin-left: 5px;margin-top: -5px;">Cerrar Sesión</span>
+          </a>
+        </button>
+      </mat-menu>
+    </div>
+
+  </mat-toolbar>
+
+  <div>
+    <div style="text-align: center;">
+      <div>
+        <img width="100%" src="/assets/img/bannerPrincipal.jpg">
+      </div>
+    </div>
+    <div class="container-block" id="tabs">
+      <ul style="display: flex;margin-top:0px">
+        <li [ngClass]="activeEstudios ? 'active' : 'cardHome'" (click)="activeElement(0)" [routerLink]="['/admin/home']"
+          [queryParams]="{ tab: 0 }">Estudios</li>
+        <li [ngClass]="activeMetrics ? 'active' : 'cardHome'" (click)="activeElement(5)" [routerLink]="['/admin/home']"
+          [queryParams]="{ tab: 5 }">Progreso</li>
+        <li [ngClass]="activeRespuestas ? 'active' : 'cardHome'" (click)="activeElement(2)"
+          [routerLink]="['/admin/home']" [queryParams]="{ tab: 2 }">Respuestas</li>
+        <li [ngClass]="activeEntregas ? 'active' : 'cardHome'" (click)="activeElement(3)" [routerLink]="['/admin/home']"
+          [queryParams]="{ tab: 3 }">Entregas</li>
+        <li [ngClass]="activeEmpresas ? 'active' : 'cardHome'" (click)="activeElement(4)" [routerLink]="['/admin/home']"
+          [queryParams]="{ tab: 4 }">Empresas</li>
+      </ul>
+    </div>
+
+    <div id="contentTab">
+      <!--TABLA ESTUDIOS-->
+      <div id="estudios" style="display: none; justify-content: center; margin-bottom: 50px; margin-top: 50px;"
+        @fadeInOut>
+        <div style="padding-right: 6vw;
+    padding-left: 6vw;">
+          <div style="margin-bottom: 10px">
+
+          </div>
+          <div style="display: flex;align-items: center;margin-bottom:10px">
+            <!-- BOTON AÑADIR ESTUDIO -->
+            <div>
+              <button mat-raised-button (click)="newStudy(createStudy)" style="background-color: #3571b8;
+                color: white;
+                max-width: 217px;
+                height: 50px;
+                width: 100%;
+                font-size: 19px;
+                margin-left: 5px;
+                border-radius: 10px;margin-right:200px">+ Nuevo Estudio</button>
+            </div>
+            <div>
+              <div style="">
+                <p style="margin-right:0px;font-weight: 700;margin-bottom:5px;">Buscar</p>
+                <mat-form-field class="example-
+                  -field" style="padding-right:5px;float:left;height: 48px;">
+                  <mat-select [(ngModel)]="selectedSearch" (selectionChange)="changeFilterStudy($event)"
+                    id="studyTypeSelect">
+                    <mat-option value="id">ID</mat-option>
+                    <mat-option value="nombre">Nombre</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field style="padding-right: 5px;
+    width: 41.3%;height: 48px;" *ngIf="activeIDFilter">
+                  <mat-label>Contenido</mat-label>
+                  <input matInput (keyup)="onInputSearch($event)" [(ngModel)]="inputSearch" placeholder="Ingresar ID"
+                    #input>
+                </mat-form-field>
+                <mat-form-field style="padding-right: 5px;
+    width: 41.3%;height: 48px;" *ngIf="activateNameFilter">
+                  <mat-label>Contenido</mat-label>
+                  <input matInput (keyup)="onInputSearch($event)" [(ngModel)]="inputSearch" placeholder="Ingresar texto"
+                    #input>
+                </mat-form-field>
+                <mat-form-field style="padding-right: 5px;
+    width: 41.3%;height: 48px;" *ngIf="activateUserFilter">
+                  <mat-label>Contenido</mat-label>
+                  <input matInput (keyup)="onInputSearch($event)" [(ngModel)]="inputSearch" placeholder="Ingresar texto"
+                    #input>
+                </mat-form-field>
+              </div>
+              <div style="
+                  align-items: center;margin-bottom:10px">
+                <p style=" font-weight: 700;
+                width: 100px;margin-bottom:5px">Filtrar</p>
+                <div style="display: flex;align-items:center">
+                  <div>
+                    <mat-form-field class="example-
+                    -field" style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                      <mat-label>Tipo de Estudio</mat-label>
+                      <mat-select [(ngModel)]="selectedType" id="studyTypeSelect"
+                        (selectionChange)="onStudyTypeSelect($event)">
+                        <mat-option>Todos</mat-option>
+                        <mat-option *ngFor="let type of allStudyType" [value]="type">{{type}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-
+                    -field" style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                      <mat-label>Tipo de Entrega</mat-label>
+                      <mat-select [(ngModel)]="selectedEntrega" id="studyTypeEntregaSelect"
+                        (selectionChange)="onStudyEntregaSelect($event)">
+                        <mat-option>Todos</mat-option>
+                        <mat-option *ngFor="let type of allEntregaType" [value]="type">{{type}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field"
+                      style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                      <mat-label>Estado</mat-label>
+                      <mat-select [(ngModel)]="selectedStatus" id="statusSelect"
+                        (selectionChange)="onStatusSelect($event)">
+                        <mat-option>Todos</mat-option>
+                        <mat-option *ngFor="let status of allStatus" [value]="status">{{status}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field"
+                      style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                      <mat-label>Año</mat-label>
+                      <mat-select [(ngModel)]="selectedYear" id="yearSelect" (selectionChange)="onYearSelect($event)">
+                        <mat-option>Año</mat-option>
+                        <mat-option *ngFor="let year of allYear" [value]="year">{{year}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field"
+                      style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                      <mat-label>Mes</mat-label>
+                      <mat-select [(ngModel)]="selectedMonthSring" id="monthSelect"
+                        (selectionChange)="onMonthSelect($event)">
+                        <mat-option>Mes</mat-option>
+                        <mat-option *ngFor="let month of allMonth" [value]="month">{{month}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="example-form-field"
+                    style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                    <mat-label>Usuarios</mat-label>
+                    <mat-select [(ngModel)]="selectedUser" id="monthSelect"
+                      (selectionChange)="onUserSelected($event)">
+                      <mat-option>Usuario</mat-option>
+                      <mat-option *ngFor="let user of allUserStudy" [value]="user">{{user}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  </div>
+                  <div style="margin-left:20px">
+
+                    <button mat-raised-button style="    max-width: 217px;
+                    max-height: 50px;
+                    width: 100%;
+                    margin-left: 30px;
+                    height: 50px;float:right;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2);" (click)="cleanFilters()"
+                      class="button-14">Limpiar Filtros</button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          <div>
+            <!--<button (click)="toggleIconsVisibility()">
+              Toggle Icons
+            </button>-->
+            <table mat-table [dataSource]="dataSource2" matSort class="mat-elevation-z8 custom-table">
+              <!-- ID Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}}</td>
+              </ng-container>
+
+
+              <!-- Título Column -->
+              <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Estudio</th>
+                <td mat-cell *matCellDef="let element" class="multi-line-cell">
+                  {{element.estudiesName}}</td>
+              </ng-container>
+
+              <!-- Tipo Column -->
+              <ng-container matColumnDef="tipo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Estudio </th>
+                <td mat-cell *matCellDef="let element">
+                  <a *ngIf="element.tipeStudies === 'compensacion'">Compensación</a>
+                  <a *ngIf="element.tipeStudies === 'beneficios'">Beneficios</a>
+                  <a
+                    *ngIf="element.tipeStudies !== 'beneficios' && element.tipeStudies !== 'compensacion'">{{element.tipeStudies}}</a>
+                </td>
+              </ng-container>
+
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="user">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Usuario </th>
+                <td mat-cell *matCellDef="let element"> {{element.usuario}} </td>
+              </ng-container>
+
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="entrega">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Entrega </th>
+                <td mat-cell *matCellDef="let element"> {{capitalizarPrimeraLetra(element.Entrega)}} </td>
+              </ng-container>
+
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Creación </th>
+                <td mat-cell *matCellDef="let element"> {{element.create | date:'dd/MM/YYYY'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="icon1">
+                <th mat-header-cell *matHeaderCellDef matTooltip="Encuestas" matTooltipPosition="above"
+                  matTooltipClass="example-tooltip-uppercase"> <img class="menu-icon" alt="icono" width="25px"
+                    style="margin-right:10px" src="/assets/img/unknow.png"></th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> <span
+                    *ngIf="element.surveys.length >0 ">{{element.surveys[0]?.preguntas.length}}</span><span
+                    *ngIf="element.surveys.length == 0">0</span> </td>
+              </ng-container>
+              <ng-container matColumnDef="icon2">
+                <th mat-header-cell *matHeaderCellDef matTooltip="Empresas" matTooltipPosition="above"
+                  matTooltipClass="example-tooltip-uppercase"><mat-icon>contact_page</mat-icon> </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">{{element.personalCount}}</td>
+              </ng-container>
+              <ng-container matColumnDef="icon3">
+                <th mat-header-cell *matHeaderCellDef matTooltip="Formularios" matTooltipPosition="above"
+                  matTooltipClass="example-tooltip-uppercase"><mat-icon>upload_file</mat-icon> </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">{{element.countFiles}} </td>
+              </ng-container>
+
+              <!-- Fecha Column
+                 <ng-container matColumnDef="seleccionar">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>Agregar</th>
+                  <td mat-cell *matCellDef="let element">
+                    <mat-form-field class="custom-select">
+                      <mat-label>Agregar</mat-label>
+                      <mat-select (change)="addItems($event)">
+                        <mat-option *ngFor="let option of options" [value]="option.value">
+                          {{ option.label }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </td>
+                </ng-container>-->
+              <!-- Columna para el botón de menú -->
+              <ng-container matColumnDef="seleccionar">
+                <th mat-header-cell *matHeaderCellDef style="font-size:16px;font-weight: bold;">Editar</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  <div *ngIf="element.status < 4 && element.status != 2">
+                    <button mat-icon-button [matMenuTriggerFor]="menu2"
+                      style="color:#3573b6;font-size:16px;font-weight: bold;">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <mat-menu #menu2="matMenu">
+                      <button mat-menu-item (click)="addItems('preguntas', editQuestions, element)"
+                        style="width: 180px;" *ngIf="element.surveys.length > 0">
+                        <img class="menu-icon" alt="icono" width="25px" style="margin-right:10px"
+                          src="/assets/img/unknow.png"> Preguntas
+                      </button>
+                      <button mat-menu-item (click)="addItems('preguntas', addPreguntas, element)" style="width: 180px;"
+                        *ngIf="element.surveys.length === 0">
+                        <img class="menu-icon" alt="icono" width="25px" style="margin-right:10px"
+                          src="/assets/img/unknow.png"> Preguntas
+                      </button>
+                      <button mat-menu-item (click)="addItems('empresas', addEmpresas, element)" style="width: 180px;">
+                        <img class="menu-icon" alt="icono" width="25px" style="margin-right:10px"
+                          src="/assets/img/empresa.png"> Empresas
+                      </button>
+                      <button mat-menu-item (click)="addItems('formularios', addUploadFile, element)"
+                        style="width: 180px;">
+                        <img class="menu-icon" alt="icono" width="25px" style="margin-right:10px"
+                          src="/assets/img/formulario.png"> Formularios
+                      </button>
+                    </mat-menu>
+                  </div>
+                  <div *ngIf="element.status === 4">
+                    <button mat-icon-button [disabled]="true"
+                    style="color:#ccc;font-size:16px;font-weight: bold;">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  </div>
+                   <div *ngIf="element.status === 2">
+                    <button mat-icon-button [disabled]="true"
+                    style="color:#ccc;font-size:16px;font-weight: bold;">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Estado Column -->
+              <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="width:160px"> Estado </th>
+                <td mat-cell *matCellDef="let element">
+                  <p *ngIf="element.status === 1" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: white;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;;margin:0px"> Nuevo </p>
+                  <p *ngIf="element.status === 2" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #8db91f;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;margin:0px"> Vigente </p>
+                  <p *ngIf="element.status === 3" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #da5e30;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;;margin:0px"> Procesando </p>
+                  <p *ngIf="element.status === 4" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #163c6b;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;margin:0px"> Publicado </p>
+                </td>
+              </ng-container>
+
+
+              <!-- Acciones Column -->
+              <ng-container matColumnDef="acciones">
+                <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> Activar </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">
+
+
+                  <div *ngIf="element.status === 1" class="checkbox-wrapper-2">
+                    <input type="checkbox" *ngIf="!activeSwitchNew" [checked]="false"
+                      (change)="updateStatus(2, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,validationStatusId5, validationCancel, validationStatusIdBP)"
+                      class="sc-gJwTLC ikxBAC">
+                    <input type="checkbox" *ngIf="activeSwitchNew" [checked]="false"
+                      (change)="updateStatus(2, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,validationStatusId5, validationCancel, validationStatusIdBP)"
+                      class="sc-gJwTLC ikxBAC">
+                  </div>
+
+                  <div *ngIf="element.status === 2" class="checkbox-wrapper-2">
+                    <input *ngIf="!activeSwitchEnable" type="checkbox" class="sc-gJwTLC ikxBAC" [checked]="true"
+                      (change)="updateStatus(3, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,validationStatusId5, validationCancel, validationStatusIdBP)">
+                    <input *ngIf="activeSwitchEnable" type="checkbox" class="sc-gJwTLC ikxBAC" [checked]="true"
+                      (change)="updateStatus(3, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,validationStatusId5, validationCancel, validationStatusIdBP)">
+                  </div>
+
+                  <div *ngIf="element.status === 3" class="checkbox-wrapper-2">
+                    <input *ngIf="!activeSwitchProcessing" type="checkbox" class="sc-gJwTLC ikxBAC" [checked]="false"
+                      (change)="updateStatus('cancel', element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,validationStatusId5, validationCancel, validationStatusIdBP)">
+                    <input *ngIf="activeSwitchProcessing" type="checkbox" class="sc-gJwTLC ikxBAC" [checked]="false"
+                      (change)="updateStatus('cancel', element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4, validationStatusId5, validationCancel, validationStatusIdBP)">
+                  </div>
+                </td>
+              </ng-container>
+
+              <!--<ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center;">Acciones</th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">
+                
+                  <button mat-button [matMenuTriggerFor]="menu" style="color:#3573b6; font-weight: bold;">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item (click)="viewDetail(element, addPreguntasId, modalErrorDetail)" style="width: 180px;">
+                      Detalle <mat-icon style="color:#3672b8">checklist</mat-icon>
+                    </button>
+                    <button mat-menu-item *ngIf="element.status === 1" (click)="deleteStudyModal(element, modalDelete)"
+                      style="width: 180px;">
+                      Eliminar <mat-icon class="iconColor"
+                        style="font-size: 28px; color:#c55b67">delete_forever</mat-icon>
+                    </button>
+                  </mat-menu>
+                  
+                </td>
+              </ng-container>-->
+
+
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="surveys">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Detalle </th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-button role="button" (click)="viewDetail(element, addPreguntasId, modalErrorDetail)">
+                    <img src="./assets/img/icondetail.png" width="36px"></button>
+                </td>
+              </ng-container>
+
+              <!-- Fecha Column -->
+              <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Eliminar </th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button *ngIf="element.status === 1" style="text-align: center;"
+                    (click)="deleteStudyModal(element, modalDelete)"><mat-icon class="iconColor"
+                      style="font-size: 28px;color:#c55b67">delete_forever</mat-icon></button>
+                </td>
+              </ng-container>
+
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+              <!-- Row shown when there is no matching data. -->
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4" style="padding: 10px;">Sin información de estudios</td>
+              </tr>
+            </table>
+            <mat-paginator #paginador [pageSizeOptions]="[10, 25, 100]" aria-label="Páginas de Estudio"
+              style="border-end-end-radius: 10px;border-end-start-radius: 10px;box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);"></mat-paginator>
+          </div>
+        </div>
+      </div>
+
+      <!-- EX TABLA ENCUESTAS-->
+      <div id="encuestas" style="display: none;justify-content: center;margin-bottom:50px;margin-top: 50px;" @fadeInOut>
+        <div style="">
+          <div style="margin-bottom:10px">
+            <button mat-raised-button routerLink="/add-poll" style="background-color:#95c020;
+                  color: white;
+                  max-width: 217px;
+                  height: 50px;
+                  width: 100%;
+                  font-size: 19px;
+                  margin-left: 5px;
+                  border-radius: 10px;">Crear Encuesta</button>
+          </div>
+          <mat-form-field style="width: 50%;
+              padding: 5px;">
+            <mat-label>Buscar Encuestas</mat-label>
+            <input matInput (keyup)="applyFilterEncuesta($event)" placeholder="Ingresar Nombre" #input>
+          </mat-form-field>
+
+          <table mat-table [dataSource]="dataSourceEncuesta" class="mat-elevation-z8 custom-table">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef> ID </th>
+              <td mat-cell *matCellDef="let element"> {{element.survey_id}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="tituloEncuesta">
+              <th mat-header-cell *matHeaderCellDef> Nombre Estudio </th>
+              <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="tipoEncuesta">
+              <th mat-header-cell *matHeaderCellDef> Tipo Estudio </th>
+              <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="estudio">
+              <th mat-header-cell *matHeaderCellDef> Detalle </th>
+              <td mat-cell *matCellDef="let element">
+                <button class="button-14" role="button"
+                  (click)="viewDetail(element, addPreguntas, modalErrorDetail)">Detalle</button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsEncuesta"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsEncuesta;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4" style="padding:10px">Sin información de estudios</td>
+            </tr>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10, 25, 100]" aria-label="Páginas de Estudio"
+            style="border-end-end-radius: 10px;border-end-start-radius: 10px;"></mat-paginator>
+        </div>
+
+
+      </div>
+
+      <!--TABLA RESPUESTAS-->
+      <div id="resultados" *ngIf="!activeObsTable"
+        style="display: none;justify-content: center;margin-bottom:50px;margin-top: 50px;" @fadeInOut>
+        <div>
+          <div style="margin-bottom:20px;display:flex">
+            <mat-form-field style="padding-right: 5px;height: 48px;">
+              <mat-label>ID</mat-label>
+              <input matInput  (keyup)="onInputSearchID($event)" [(ngModel)]="inputSearchId" placeholder="Buscar..."
+                #input>
+            </mat-form-field>
+            <mat-form-field style="padding-right: 5px;height: 48px;">
+              <mat-label>Nombre</mat-label>
+              <input matInput (keyup)="onInputSearchResp($event)" [(ngModel)]="inputSearch" placeholder="Buscar..."
+                #input>
+            </mat-form-field>
+
+            <div style="margin-left:20px">
+
+              <button mat-raised-button style="    max-width: 217px;
+              max-height: 50px;
+              width: 100%;
+              margin-left: 30px;
+              height: 50px;float:right;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2);"
+                (click)="cleanFiltersResponse()" class="button-14">Limpiar Filtros</button>
+            </div>
+          </div>
+
+          <table mat-table [dataSource]="dataSourceRespuestas" matSort class="mat-elevation-z8 custom-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+              <td mat-cell *matCellDef="let element;">{{element.id}} </td>
+            </ng-container>
+
+            <!-- Estado Column -->
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef> Estado </th>
+              <td mat-cell *matCellDef="let element" style="width:200px">
+                <p *ngIf="element.status === 1" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: white;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;;margin:0px"> Nuevo </p>
+                <p *ngIf="element.status === 2" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #8db91f;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;margin:0px"> Vigente </p>
+                <p *ngIf="element.status === 3" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #da5e30;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;;margin:0px"> Procesando </p>
+                <p *ngIf="element.status === 4" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #163c6b;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;margin:0px"> Publicado </p>
+              </td>
+            </ng-container>
+
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Creación </th>
+              <td mat-cell *matCellDef="let element"> {{element.create | date:'dd/MM/YYYY'}} </td>
+            </ng-container>
+
+
+            <!-- Título Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Estudio</th>
+              <td mat-cell *matCellDef="let element" style="width: 200px !important;
+              white-space: normal;
+              word-break: break-word;padding:10px">{{element.estudiesName}}</td>
+            </ng-container>
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Estudio </th>
+              <td mat-cell *matCellDef="let element">
+                <a *ngIf="element.tipeStudies === 'compensacion'">Compensación</a>
+                <a *ngIf="element.tipeStudies === 'beneficios'">Beneficios</a>
+                <a
+                  *ngIf="element.tipeStudies !== 'beneficios' && element.tipeStudies !== 'compensacion'">{{element.tipeStudies}}</a>
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Consolidar Encuestas </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <button mat-icon-button (click)="modalDownloadFilesEncuesta(element, modalDownload2)"><mat-icon
+                    style="color:#8db91f">download_2</mat-icon></button>&nbsp;&nbsp;&nbsp;
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="validar">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Validar Formularios </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <button mat-icon-button *ngIf="element.files" (click)="addModal(validateFiles, element)">
+                  <mat-icon style="color:#3a6cb8">task</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="consolidado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Consolidar Formularios </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <div *ngIf="element.files" (click)="modalDownloadFiles(modalDF, element)">
+                  <button mat-icon-button>
+                    <mat-icon style="color:#3471b8">download_2</mat-icon>
+                  </button>
+                  <!--<button mat-icon-button (click)="modalDownloadFiles(modalDF, element)">
+                    <mat-icon style="color:#3471b8">download_2</mat-icon>
+                  </button>-->
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="formularioxempresa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Formularios por Empresa </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <div *ngIf="element.files" (click)="modalDownloadFiles(modalDF, element)">
+                  <button mat-icon-button>
+                    <mat-icon style="color:#3471b8">download_2</mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsEstudiesActive"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsEstudiesActive;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4" style="padding: 10px;">Sin información de estudios</td>
+            </tr>
+          </table>
+          <mat-paginator #paginador2 [pageSizeOptions]="[10, 25, 100]" aria-label="Páginas de Estudio"
+            style="border-end-end-radius: 10px;border-end-start-radius: 10px;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)"></mat-paginator>
+        </div>
+      </div>
+
+      <div id="addObs" *ngIf="activeObsTable"
+        style="display: flex;justify-content: center;margin-bottom:50px;margin-top: 50px;padding:50px;padding-top:0px"
+        @fadeInOut>
+        <div>
+          <div style="display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;margin-bottom:20px">
+            <div style="display: flex;">
+              <a style="background-color: transparent;color: black;display: flex;align-content: center;flex-direction: row;flex-wrap: wrap;margin-right:40px"
+                (click)="backToTable()"><mat-icon>arrow_back_ios_ios</mat-icon></a>
+              <mat-form-field appearance="fill" style="margin-right: 5px;height: 48px;">
+                <mat-label>Empresa</mat-label>
+                <mat-select [(ngModel)]="selectedOptionEmpresaValidar"
+                  (selectionChange)="applyFilterValidateEmpresa($event.value)">
+                  <mat-option value="">Todas</mat-option> <!-- Opción para mostrar todas -->
+                  <mat-option *ngFor="let option of uniqueEmpresas" [value]="option">
+                    {{ option }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill" style="height: 48px;">
+                <mat-label>Estado</mat-label>
+                <mat-select [(ngModel)]="selectedStatusEmpresaValidar"
+                  (selectionChange)="applyFilterStatusEmpresa($event.value)">
+                  <mat-option value="">Todos</mat-option> <!-- Opción para mostrar todas -->
+                  <mat-option value="1">Pendiente</mat-option>
+                  <mat-option value="2">Revisar</mat-option>
+                  <mat-option value="3">Validado</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <button mat-raised-button (click)="toggleOriginalColumn()" style="margin-bottom:20px">
+              <p *ngIf="!showOriginalColumn">Mostrar</p>
+              <p *ngIf="showOriginalColumn">Ocultar</p>
+            </button>
+          </div>
+          <div style="display: flex;margin-left:50px">
+            <p style="font-size:18px"><strong style="color:#133d6a">ID:</strong> {{selectedStudyResponse.id}}</p>
+            <p style="margin-left:50px;font-size:18px"><strong style="color:#133d6a;">ESTUDIO:
+              </strong>{{selectedStudyResponse.estudiesName}}</p>
+          </div>
+
+          <table mat-table [dataSource]="dataSourceObs" matSort class="mat-elevation-z8 custom-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="original" *ngIf="showOriginalColumn">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Formulario Clou </th>
+              <td mat-cell *matCellDef="let element;">
+                <mat-chip-set aria-label="Dog selection">
+                  <mat-chip>
+                    {{element.file[0].name}}
+                    <button matChipRemove (click)="downloadFile(element)"
+                      style="color: #163c6b;width: 27px;height: 27px;font-size: 24px;">
+                      <mat-icon>download</mat-icon>
+                    </button>
+                  </mat-chip>
+                </mat-chip-set>
+              </td>
+            </ng-container>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="empresa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Empresa </th>
+              <td mat-cell *matCellDef="let element;">{{element.Empresa}} </td>
+            </ng-container>
+
+            <!-- Estado Column -->
+            <ng-container matColumnDef="usuario">
+              <th mat-header-cell *matHeaderCellDef> Usuario </th>
+              <td mat-cell *matCellDef="let element">
+                <p>{{element.Personal}}</p>
+              </td>
+            </ng-container>
+
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="correo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo </th>
+              <td mat-cell *matCellDef="let element">{{element.Email}} </td>
+            </ng-container>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Carga </th>
+              <td mat-cell *matCellDef="let element;">{{getFormatDate(element.createAt)}} </td>
+            </ng-container>
+
+            <!-- Título Column -->
+            <ng-container matColumnDef="formulario">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Formulario Cliente</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-chip-set aria-label="Dog selection">
+                  <mat-chip>
+                    {{element.nameFile}}
+                    <button matChipRemove (click)="downloadFile(element)"
+                      style="color: #163c6b;width: 27px;height: 27px;font-size: 24px;">
+                      <mat-icon>download</mat-icon>
+                    </button>
+                  </mat-chip>
+                </mat-chip-set>
+              </td>
+            </ng-container>
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+              <td mat-cell *matCellDef="let element">
+                <p *ngIf="element.status === 0" style="color:#133d6a;font-weight: 700;">Pendiente</p>
+                <p *ngIf="element.status === 1" style="color:#133d6a;font-weight: 700;">Pendiente</p>
+                <p *ngIf="element.status === 2" style="color:#bc5767;font-weight: 700;">Revisar</p>
+                <p *ngIf="element.status === 3" style="color:#8db91f;font-weight: 700;">Validado</p>
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="observaciones">
+              <th mat-header-cell *matHeaderCellDef> Observaciones </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <button mat-icon-button (click)="addObservations(observaciones, element)"
+                  *ngIf="element.status !== 3"><mat-icon style="color:#8db91f">edit_note</mat-icon></button>
+                <button mat-icon-button *ngIf="element.status === 3" matTooltip="Bloqueado"><mat-icon
+                    style="color:#ccc">edit_note</mat-icon></button>&nbsp;&nbsp;&nbsp;
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="validar">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> Validar </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <button mat-raised-button style="    background-color: #8db91f;
+                  color: white;
+                  height: 30px;
+                  width: 100px;" (click)="validateFormModalInfo(validationFormInfo, element)"
+                  *ngIf="element.status !== 3">Validar</button>
+                <button mat-raised-button style="    background-color: #ccc;
+                  color: white;
+                  height: 30px;
+                  width: 100px;" *ngIf="element.status === 3" matTooltip="Bloqueado"
+                  aria-label="Button that displays a tooltip when focused or hovered over">Validar</button>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="consolidarEmpresa">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Consolidar </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <button mat-icon-button (click)="getConsolidadoEmpresa(element)" style="color:#8db81e"
+                  *ngIf="element.status === 3">
+                  <mat-icon>download_2</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsObs"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsObs;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4" style="padding: 10px;">Sin información de estudios</td>
+            </tr>
+          </table>
+          <mat-paginator #paginador2 [pageSizeOptions]="[10, 25, 100]" aria-label="Páginas de Estudio"
+            style="border-end-end-radius: 10px;border-end-start-radius: 10px;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)"></mat-paginator>
+        </div>
+      </div>
+
+      <!--TABLA RESULTADOS-->
+      <div id="entregas" style="display: none;justify-content: center;margin-bottom:50px;margin-top: 50px;" @fadeInOut>
+        <div>
+          <div style="margin-bottom:20px;display: flex;">
+            <mat-form-field style="padding-right: 5px;height: 48px;">
+              <mat-label>ID</mat-label>
+              <input matInput (keyup)="onInputSearchEntregas($event)" [(ngModel)]="inputSearchId"
+                placeholder="Buscar..." #input>
+            </mat-form-field>
+            <mat-form-field style="padding-right: 5px;height: 48px;">
+              <mat-label>Nombre</mat-label>
+              <input matInput (keyup)="onInputSearchResult($event)" [(ngModel)]="inputSearch" placeholder="Buscar..."
+                #input>
+            </mat-form-field>
+            <mat-form-field class="example-form-field" style="padding-right:5px;height: 48px;">
+              <mat-label>Estado</mat-label>
+              <mat-select [(ngModel)]="selectedStatus" id="statusSelect" (selectionChange)="onStatusSelectR($event)"
+                style="height: 100%; line-height: 20px; font-size: 14px;">
+                <mat-option style="height: 30px; line-height: 30px;">Todos</mat-option>
+                <mat-option *ngFor="let status of allStatusResultados" [value]="status"
+                  style="height: 30px; line-height: 30px;">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div style="margin-left:20px">
+
+              <button mat-raised-button style="    max-width: 217px;
+              max-height: 50px;
+              width: 100%;
+              margin-left: 30px;
+              height: 50px;float:right;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2);"
+                (click)="cleanFiltersEntregas()" class="button-14">Limpiar Filtros</button>
+            </div>
+          </div>
+
+          <table mat-table [dataSource]="dataSourceResultados" matSort class="mat-elevation-z8 custom-table">
+            <!-- ID Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+              <td mat-cell *matCellDef="let element;">{{element.id}} </td>
+            </ng-container>
+
+            <!-- Estado Column -->
+            <ng-container matColumnDef="estado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+              <td mat-cell *matCellDef="let element">
+                <p *ngIf="element.status === 1" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: white;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;;margin:0px"> Nuevo </p>
+                <p *ngIf="element.status === 2" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #8db91f;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;margin:0px"> Vigente </p>
+                <p *ngIf="element.status === 3" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #da5e30;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;;margin:0px"> Procesando </p>
+                <p *ngIf="element.status === 4" style="padding: 9px 15px 9px 15px;
+                    border-radius: 8px;
+                    background-color: #163c6b;
+                    border: 1px solid #ccc;
+                    display: block;
+                    max-width: 120px;text-align: center;color:white;margin:0px"> Publicado </p>
+              </td>
+            </ng-container>
+
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="fecha">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Creación </th>
+              <td mat-cell *matCellDef="let element"> {{element.create | date:'dd/MM/YYYY'}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="fechaPub">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Fecha Publicación </th>
+              <td mat-cell *matCellDef="let element"> {{element.end | date:'dd/MM/YYYY'}} </td>
+            </ng-container>
+
+            <!-- Título Column -->
+            <ng-container matColumnDef="titulo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Estudio</th>
+              <td mat-cell *matCellDef="let element" style="width: 300px;">{{element.estudiesName}}</td>
+            </ng-container>
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="cargos">
+              <th mat-header-cell *matHeaderCellDef> Listado Cargos </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <a *ngIf="element.tipeStudies === 'Compensacion'">
+                  <input type="file" #fileInput style="display: none;"
+                    (change)="onCargoSelected($event, element, uploadCargos, loadingData)" />
+                  <button mat-icon-button (click)="fileInput.click()">
+                    <mat-icon style="color:#163c6b">
+                      upload_2
+                    </mat-icon>
+                  </button></a>
+              </td>
+            </ng-container>
+
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="addUsers">
+              <th mat-header-cell *matHeaderCellDef> Empresas </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <div *ngIf="element.status === 3">
+                  <button mat-icon-button (click)="addUsers(addEmpresas, element)">
+                    <mat-icon style="color:#163c6b">
+                      group
+                    </mat-icon>
+                  </button>
+                </div>
+                <div *ngIf="element.status === 4">
+                  <button mat-icon-button [disabled]="true">
+                    <mat-icon style="color:#b4b4b4">
+                      group
+                    </mat-icon>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef> Tipo Estudio </th>
+              <td mat-cell *matCellDef="let element">
+                <a *ngIf="element.tipeStudies === 'compensacion'">Compensación</a>
+                <a *ngIf="element.tipeStudies === 'beneficios'">Beneficios</a>
+                <a
+                  *ngIf="element.tipeStudies !== 'beneficios' && element.tipeStudies !== 'compensacion'">{{element.tipeStudies}}</a>
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="acciones">
+              <th mat-header-cell *matHeaderCellDef style="width:250px"> Consolidar Encuestas </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <button mat-icon-button (click)="downloadResponse(element, download)"><mat-icon
+                    style="color:#8db91f">download_2</mat-icon></button>&nbsp;&nbsp;&nbsp;
+              </td>
+            </ng-container>
+
+            <!-- Fecha Column -->
+            <ng-container matColumnDef="pdf">
+              <th mat-header-cell *matHeaderCellDef> Archivos </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <div>
+                  <button mat-icon-button (click)="visorPDF(element,addUploadPDF)">
+                    <mat-icon style="color:#3471b8">upload_file</mat-icon>
+                  </button>
+                  
+                </div>
+
+              </td>
+            </ng-container>
+
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="consolidado">
+              <th mat-header-cell *matHeaderCellDef style="display: center;"> Base Plana </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <div>
+                  <input type="file" #fileInput style="display: none;"
+                    (change)="onFileSelected($event, element, modalUpload, loadingData, errorBasePlana)" />
+                  <button mat-icon-button (click)="fileInput.click()">
+                    <mat-icon style="color:#3471b8">
+                      upload_2
+                    </mat-icon>
+                  </button>
+                  <!--  <button mat-icon-button *ngIf="element.BasePlane"><svg xmlns="http://www.w3.org/2000/svg" width="1em"
+                      height="1em" viewBox="0 0 32 32">
+                      <path fill="#20744a" fill-rule="evenodd"
+                        d="M28.781 4.405h-10.13V2.018L2 4.588v22.527l16.651 2.868v-3.538h10.13A1.16 1.16 0 0 0 30 25.349V5.5a1.16 1.16 0 0 0-1.219-1.095m.16 21.126H18.617l-.017-1.889h2.487v-2.2h-2.506l-.012-1.3h2.518v-2.2H18.55l-.012-1.3h2.549v-2.2H18.53v-1.3h2.557v-2.2H18.53v-1.3h2.557v-2.2H18.53v-2h10.411Z" />
+                      <path fill="#20744a"
+                        d="M22.487 7.439h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323zm0 3.501h4.323v2.2h-4.323z" />
+                      <path fill="#fff" fill-rule="evenodd"
+                        d="m6.347 10.673l2.146-.123l1.349 3.709l1.594-3.862l2.146-.123l-2.606 5.266l2.606 5.279l-2.269-.153l-1.532-4.024l-1.533 3.871l-2.085-.184l2.422-4.663z" />
+                    </svg></button>-->
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="publish">
+              <th mat-header-cell *matHeaderCellDef [ngStyle]="{'text-align': 'center'}"> Publicar </th>
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
+                <div *ngIf="!activeSwitchPublish && element.status === 3" class="checkbox-wrapper-2">
+                  <input type="checkbox" [checked]="false"
+                    (change)="updateStatus(3, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,null, validationCancel, validationStatusIdBP)"
+                    class="sc-gJwTLC ikxBAC">
+                </div>
+                <div *ngIf="activeSwitchPublish && element.status === 3" class="checkbox-wrapper-2">
+                  <input type="checkbox" [checked]="false"
+                    (change)="updateStatus(3, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,null, validationCancel, validationStatusIdBP)"
+                    class="sc-gJwTLC ikxBAC">
+                </div>
+                <div *ngIf="element.status === 4" class="checkbox-wrapper-2">
+                  <input type="checkbox" [checked]="true"
+                    (change)="updateStatus(4, element, errorModal, errorModalCompany, validationStatus, validationStatusId3, validationStatusId4,validationStatusId5, validationCancel, validationStatusIdBP)"
+                    class="sc-gJwTLC ikxBAC">
+                </div>
+              </td>
+            </ng-container>
+
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsResultados"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsResultados;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4" style="padding: 10px;">Sin información de estudios</td>
+            </tr>
+          </table>
+          <mat-paginator #paginador3 [pageSizeOptions]="[10, 25, 100]" aria-label="Páginas de Estudio"
+            style="border-end-end-radius: 10px;border-end-start-radius: 10px;box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);"></mat-paginator>
+        </div>
+      </div>
+
+      <!--TABLA EMPRESAS-->
+      <div id="empresas" style="display: none;justify-content: center;margin-bottom:50px;margin-top: 50px;" @fadeInOut>
+        <div>
+          <div style="margin-bottom:20px;display: flex;">
+            <mat-form-field class="example-form-field" style="padding-right:5px;height: 48px;">
+              <mat-label>Empresa</mat-label>
+              <mat-select [(ngModel)]="selectedEmpresa" id="statusSelect"
+                (selectionChange)="onStatusSelectEmpresa($event)"
+                style="height: 100%; line-height: 20px; font-size: 14px;">
+                <mat-option style="height: 30px; line-height: 30px;">Todos</mat-option>
+                <mat-option *ngFor="let status of filteredArrayUser" [value]="status.empresaName"
+                  style="height: 30px; line-height: 30px;">
+                  {{status.empresaName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div style="margin-left:20px">
+
+              <button mat-raised-button style="    max-width: 217px;
+              max-height: 50px;
+              width: 100%;
+              margin-left: 30px;
+              height: 50px;float:right;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2);"
+                (click)="cleanFiltersEmpresas()" class="button-14">Limpiar Filtros</button>
+            </div>
+          </div>
+          <table mat-table [dataSource]="dataSourceEmpresa" matSort class="mat-elevation-z8 custom-table">
+
+            <!-- Título Column -->
+            <ng-container matColumnDef="empresaName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre de Empresa</th>
+              <td mat-cell *matCellDef="let element">{{element.empresaName}}</td>
+            </ng-container>
+
+            <!-- Tipo Column -->
+            <ng-container matColumnDef="nombre">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre Contacto </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.nombre}}
+              </td>
+            </ng-container>
+
+            <!-- Acciones Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo Contacto </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.email}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="cargo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Cargo del Usuario </th>
+              <td mat-cell *matCellDef="let element">
+                {{element.cargo}}
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="tipo">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de Usuario </th>
+              <td mat-cell *matCellDef="let element">
+                <a *ngIf="element.tipo === 'Administrador'">Gestor</a>
+                <a *ngIf="element.tipo !== 'Administrador'">{{element.tipo}}</a>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsEmpresa"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsEmpresa;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4" style="padding: 10px;">Sin información de estudios</td>
+            </tr>
+          </table>
+          <mat-paginator #paginador5 [pageSizeOptions]="[10, 25, 100]" aria-label="Páginas de Estudio"
+            style="border-end-end-radius: 10px;border-end-start-radius: 10px;box-shadow:0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)"></mat-paginator>
+
+        </div>
+
+      </div>
+
+      <!-- EX TABLA ENCUESTAS-->
+      <div id="metrics" style="display: none; justify-content: center; margin-bottom:50px; margin-top: 50px;"
+        @fadeInOut>
+        <div>
+          <form style="margin-bottom:10px;display:flex" [formGroup]="metricsForm">
+
+            <div style="padding:10px">
+              <mat-form-field class="example-form-field"
+                style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                <mat-label>Año</mat-label>
+                <mat-select formControlName="studyYear" id="yearSelect">
+                  <mat-option>Año</mat-option>
+                  <mat-option *ngFor="let year of allYear" [value]="year">{{year}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div style="padding:10px">
+              <mat-form-field appearance="fill" class="example-field"
+                style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                <mat-label>Tipo Estudio</mat-label>
+                <mat-select formControlName="studyType">
+                  <mat-option *ngFor="let study of dataMetrics" [value]="study.tipeStudies">
+                    {{study.tipeStudies}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div style="padding:10px">
+              <mat-form-field class="example-field" style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                <mat-label>Tipo de Entrega</mat-label>
+                <mat-select formControlName="studyEntrega">
+                  <mat-option *ngFor="let type of allEntregaType" [value]="type">{{type}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div style="padding:10px">
+              <mat-form-field appearance="fill" class="example-field"
+                style="padding-right:5px;padding-top:5px;float:left;height: 48px;">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="studyStatus">
+                  <mat-option *ngFor="let state of allStatusMetrics" [value]="state">
+                    {{state}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!--<div style="padding: 15px 10px 10px 10px;">
+              <mat-form-field style="padding-right: 5px;height: 48px;">
+                <mat-label>ID</mat-label>
+                <input matInput (keyup)="onInputSearchEntregas($event)" [(ngModel)]="inputSearchId" placeholder="Buscar..."
+                  #input>
+              </mat-form-field>
+            </div>-->
+
+            <div style="padding:10px;display: flex;">
+              <button mat-raised-button class="newBtnFindMetrics" (click)="findCustomMetrics()">Buscar Estudios</button>
+              <button mat-raised-button class="newBtn14"
+                style="max-height: 56px; width: 200px; height: 67px;margin-left:30px; float: right; box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2);"
+                (click)="cleanFiltersProgress()">Limpiar Filtros</button>
+            </div>
+          </form>
+          <div *ngIf="showTablesMetrics">
+            <table mat-table [dataSource]="dataSourceFilterMetrics" multiTemplateDataRows class="mat-elevation-z8">
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let element" style="width:80px"> {{element.id}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef> Fecha Creación </th>
+                <td mat-cell *matCellDef="let element" style="width:180px"> {{element.createFormat}} </td>
+              </ng-container>
+
+              <!-- Nombre Estudios Column -->
+              <ng-container matColumnDef="nombreEstudios">
+                <th mat-header-cell *matHeaderCellDef> Nombre Estudios </th>
+                <td mat-cell *matCellDef="let element" class="multi-line-cell" style="width: 300px;">
+                  {{element.nameStudio}} </td>
+              </ng-container>
+
+              <!-- Empresas Column -->
+              <ng-container matColumnDef="empresas">
+                <th mat-header-cell *matHeaderCellDef> Empresas </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.CantidadEmpresas}} </td>
+              </ng-container>
+
+              <!-- Preguntas Column -->
+              <ng-container matColumnDef="preguntas">
+                <th mat-header-cell *matHeaderCellDef> Preguntas </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.nroPreguntas}} </td>
+              </ng-container>
+
+              <!-- Respuestas Column -->
+              <ng-container matColumnDef="respuestas">
+                <th mat-header-cell *matHeaderCellDef> Respuestas </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.CantidadRespuestas}} </td>
+              </ng-container>
+
+              <!-- Usuarios Column -->
+              <ng-container matColumnDef="usuarios">
+                <th mat-header-cell *matHeaderCellDef> Contactos </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;"> {{element.CantidadUsuarios}} </td>
+              </ng-container>
+
+              <!-- Tasa Respuesta Column -->
+              <ng-container matColumnDef="tasaRespuesta">
+                <th mat-header-cell *matHeaderCellDef>Tasa Respuesta </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">
+                  {{ element.CantidadPreguntas > 0 ? (element.CantidadRespuestas / element.CantidadPreguntas *
+                  100).toFixed(0) : 0 }}%
+                </td>
+              </ng-container>
+
+              <!-- Usuarios Column -->
+              <ng-container matColumnDef="tasaCumplimiento">
+                <th mat-header-cell *matHeaderCellDef>Tasa Cumplimiento </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">
+                  {{ element.cumplimiento > 0 ? element.cumplimiento : 0 }}%
+                </td>
+              </ng-container>
+
+              <!-- Usuarios Column -->
+              <ng-container matColumnDef="archivos">
+                <th mat-header-cell *matHeaderCellDef>Formularios </th>
+                <td mat-cell *matCellDef="let element" style="text-align: center;">{{element.CantidadFormularios}} </td>
+              </ng-container>
+
+              <!-- Expand Column -->
+              <ng-container matColumnDef="expand">
+                <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+                <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button aria-label="expand row"
+                    (click)="(expandedElement2 = expandedElement2 === element ? null : element); $event.stopPropagation()">
+                    <mat-icon *ngIf="expandedElement2 === element">keyboard_arrow_up</mat-icon>
+
+                    <mat-icon *ngIf="expandedElement2 !== element">keyboard_arrow_down</mat-icon>
+
+                  </button>
+                </td>
+              </ng-container>
+
+
+              <!-- Expanded Content Column -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand2.length">
+                  <div class="example-element-detail"
+                    [@detailExpand]="element === expandedElement2 ? 'expanded' : 'collapsed'">
+
+                    <div class="example-element-description">
+                      <table class="styled-table">
+                        <thead>
+                          <tr>
+                            <th>Empresa</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Tipo Usuario</th>
+                            <th>Preguntas</th>
+                            <th>Respuestas</th>
+                            <th>% de Avance</th>
+                            <th>Formularios Cargados</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <ng-container *ngFor="let empresa of element.detalle">
+                            <ng-container *ngFor="let user of empresa.personal; let i = index">
+                              <tr>
+                                <!-- Mostrar el nombre de la empresa solo en la primera fila del bloque -->
+                                <td *ngIf="i === 0" [attr.rowspan]="empresa.personal.length">{{ empresa.EmpresaName }}
+                                </td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.tipo }}</td>
+                                <td style="text-align: center;">{{ user.Preguntas }}</td>
+                                <td style="text-align: center;">{{ user.Respuestas }}</td>
+                                <td style="text-align: center;"> {{ user.Respuestas > 0 ? (user.Respuestas /
+                                  user.Preguntas *
+                                  100).toFixed(0) : 0 }}%</td>
+                                <td style="text-align: center;">
+                                  <span *ngIf="user.files.length> 0">Si</span>
+                                  <span *ngIf="user.files.length === 0">No</span>
+                                </td>
+                              </tr>
+                            </ng-container>
+                          </ng-container>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <!-- Header Row -->
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand2"></tr>
+              <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand2;" class="example-element-row"
+                [class.example-expanded-row]="expandedElement2 === element"
+                (click)="expandedElement2 = expandedElement2 === element ? null : element">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+            <mat-paginator #paginadorMetrics [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</mat-drawer-container>
+
+<ng-template #status>
+  <mat-card class="modalStatus">
+    <div style="text-align: center;">
+      <h2>Actualizar Estado</h2>
+      <mat-form-field>
+        <mat-label>Actualizar Estado</mat-label>
+        <mat-select>
+          <!--  <mat-option value="1">No Publicado</mat-option>-->
+          <mat-option value="2">Vigente</mat-option>
+          <mat-option value="3">Procesando</mat-option>
+          <mat-option value="4">Terminado</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div style="display: flex;
+    justify-content: center;">
+      <button mat-raised-button style="margin-right:10px" mat-dialog-close>Cerrar</button>
+      <button mat-raised-button (click)="updateStatus(null, null, data, null, null,null, null, null, null,null)"
+        *ngIf="!eventStatusLoading" [disabled]="!eventStatus"
+        [ngClass]="eventStatus ? 'activeBtnUpd' : 'disabledBtnUpd'">Actualizar</button>
+      <button mat-raised-button (click)="updateStatus(null, null, data, null, null, null, null,  null,  null,null)"
+        *ngIf="eventStatusLoading" [disabled]="true" class="activeBtnUpd"><mat-spinner
+          style="width:20px"></mat-spinner></button>
+    </div>
+
+  </mat-card>
+</ng-template>
+
+<ng-template #errorModal2>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Debe crear una encuesta antes de onActivateResponseChange estudio.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #errorModal>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>Debe crear una encuesta antes de publicar un estudio.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button (click)="changeSwitchStatus(5, errorModal)" routerLink="/admin/home" [mat-dialog-close]
+      class="custom-button2 btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #errorModalCompany>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>{{txtMsgPublish}}</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button routerLink="/admin/home" [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="changeSwitchStatus(5,errorModalCompany)">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalDelete>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Eliminar Estudio</h3>
+    <p class="multi-line-cell">¿Esta seguro de eliminar el estudio <br> "{{dataDel.estudiesName}}"?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;margin-bottom:10px">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="confirmDeleteStudy(dataDel)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalDF>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Consolidar Formulario</h3>
+    <p>¿Desea consolidar todos los formularios?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;margin-bottom:10px">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="getUploadFiles(dataDel2)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalDownload2 let-dialogRef>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Consolidar Encuestas</h3>
+    <p>¿Desea consolidar todas las encuestas?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;margin-bottom:10px">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="downloadResponse(dataDel3, download)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationStatus>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Activar Estudio</h3>
+    <p>Se enviará la encuesta al cliente.<br>
+      ¿Está seguro de pasar a vigente el estudio?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel" style="margin-right: 20px;"
+      (click)="changeSwitchStatus(5, validationStatus)">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="changeStatusValidation(dataStudySelected, 2)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationStatusId3>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Procesar Estudio</h3>
+    <p>No se permiten más respuestas.<br>
+      ¿Estas seguro de procesar el estudio?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button class="custom-button btnHoverCancel" style="margin-right: 20px;"
+      (click)="changeSwitchStatus(2, validationStatusId3)">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="changeStatusValidation(dataStudySelected, 3)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationCancel>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Pasar a Vigente</h3>
+    <p>Se van activar las respuestas.<br>
+      ¿Esta seguro de activar el estudio?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel" style="margin-right: 20px;"
+      (click)="changeSwitchStatus(3, validationCancel)">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="changeStatusValidation(dataStudySelected, 2)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationStatusId4>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Publicar Estudio</h3>
+    <p>El estudio se está procesando.<br>
+      ¿Esta seguro de publicar el estudio?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="changeStatusValidation(dataStudySelected, 4)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationStatusId5>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Despublicar Estudio</h3>
+    <p>El estudio ya está publicado<br>
+      ¿Esta seguro de despublicar el estudio?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button class="custom-button btnHoverCancel"
+      style="margin-right: 20px;" (click)="cancelPublish(dataStudySelected, 4)">Cancelar</button>
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover"
+      (click)="despublish(dataStudySelected, 3)">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationStatusIdBP>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>ERROR</h3>
+    <p>No se ha cargado la base plana del estudio.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button2 btnHover" style="margin-right: 20px;"
+      (click)="changeSwitchStatus(4, validationStatusIdBP)">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #download>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>Archivo descargado correctamente.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3571b8; color:white">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #uploadPDF>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Cargar PDF</h3>
+    <p>Carga exitosa.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3572b8;color:white" (click)="reloadPage()">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #uploadCargos>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Listado Cargos</h3>
+    <p>Carga exitosa.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3572b8;color:white" (click)="reloadPage()">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #loadingData>
+
+  <div style="width:100%;text-align: center;margin-top:50px">
+    <p style="font-weight: 700;">Cargando...</p>
+    <div style="width: 100%;display: flex;justify-content:center">
+      <mat-spinner style="width:30px;height:30px"></mat-spinner>
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #validateFiles>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3572b8;color:white" (click)="reloadPage()">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalUpload>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Base Plana</h3>
+    <p>{{msgModalBasePlana}}</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] (click)="reloadPage()" class="custom-button btnHover"
+      style="background-color:#3572b8;color:white">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalErrorDetail>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Mensaje</h3>
+    <p>Debe agregar preguntas o contactos para ver el detalle.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3572b8;color:white">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #modalAddCompany>
+  <div style="display: flex; justify-content: center;">
+    <div style="width: 100%; max-width: 400px; padding: 20px;">
+      <h3 style="text-align: center;">Agregar Empresa </h3>
+      <form #addPersonForm="ngForm" (ngSubmit)="onSubmitModalForm(addPersonForm)" style="width: 100%;">
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Nombre de la Empresa</mat-label>
+          <input matInput name="empresaName" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Dirección</mat-label>
+          <input matInput name="direccion" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" name="email" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Teléfono</mat-label>
+          <input matInput name="phone" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Web</mat-label>
+          <input matInput name="web" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <div style="text-align: center; margin-top: 20px;">
+          <button mat-raised-button type="button" [mat-dialog-close] class="custom-button btnHover"
+            style="background-color: #aaa; color: white; margin-right: 10px;">Cancelar</button>
+          <button mat-raised-button type="submit" class="custom-button btnHover"
+            style="background-color: #3572b8; color: white;">Agregar</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #modalAddUser>
+  <div style="display: flex; justify-content: center;">
+    <div style="width: 100%; max-width: 400px; padding: 20px;">
+      <h3 style="text-align: center;">Asociar Contacto </h3>
+      <form #addPersonForm="ngForm" (ngSubmit)="onSubmitModalFormUser(addPersonForm)" style="width: 100%;">
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Nombre</mat-label>
+          <input matInput name="nombre" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" name="email" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <mat-form-field appearance="fill" style="width: 100%;">
+          <mat-label>Cargo</mat-label>
+          <input matInput type="cargo" name="cargo" ngModel required style="width: 100%;">
+        </mat-form-field>
+        <div style="text-align: center; margin-top: 20px;">
+          <button mat-raised-button type="button" [mat-dialog-close] class="custom-button btnHover"
+            style="background-color: #aaa; color: white; margin-right: 10px;">Cancelar</button>
+          <button mat-raised-button type="submit" class="custom-button btnHover"
+            style="background-color: #3572b8; color: white;">Agregar</button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+
+<!--MODAL SELECCIÓN EMPRESA, PREGUNTAS, FORMULARIOS-->
+<ng-template #addEmpresa>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Base Plana</h3>
+    <p>Carga exitosa.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3572b8;color:white">Cerrar</button>
+  </div>
+</ng-template>
+
+
+<ng-template #errorBasePlana>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Error</h3>
+    <p>Error de formato, revise el contenido del archivo.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;
+    padding: 8px 0px 15px 0px;">
+    <button mat-raised-button [mat-dialog-close] (click)="dialogCloseAll(loadingData, errorBasePlana)" class="custom-button2 btnHover">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #addPreguntas>
+  <div style="display: flex; padding-left:2.5vw;background-color:#133e6b;color:white">
+    <h2 class="txt-cf-h1">Preguntas</h2>
+  </div>
+  <app-create-poll [estudio]="estudioSelected"></app-create-poll>
+</ng-template>
+
+<ng-template #addPreguntasId>
+  <app-create-poll [id]="id" [estudio]="estudioSelected"></app-create-poll>
+</ng-template>
+
+<ng-template #editQuestions>
+  <app-create-poll [id]="id" [typeAction]="'edit'" [estudio]="estudioSelected"></app-create-poll>
+</ng-template>
+
+<ng-template #addEmpresas>
+  <app-add-empresa [estudio]="estudioSelected" [consultor]="isEntrega"></app-add-empresa>
+</ng-template>
+
+
+<ng-template #addFormularios>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3>Base Plana</h3>
+    <p>Carga exitosa.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHover"
+      style="background-color:#3572b8;color:white">Cerrar</button>
+  </div>
+</ng-template>
+
+<ng-template #addUploadFile>
+  <app-upload-file-study [id]="id" [estudio]="estudioSelected"></app-upload-file-study>
+</ng-template>
+
+<ng-template #addUploadPDF>
+  <app-dialog-upload-pdf-multiple [id]="id" [estudio]="estudioSelected" [origen]="origen"></app-dialog-upload-pdf-multiple>
+</ng-template>
+
+
+<ng-template #createStudy>
+  <app-create-form></app-create-form>
+</ng-template>
+
+<ng-template #observaciones>
+  <div style="padding:20px 30px 15px 30px;text-align: center;">
+    <h3 style="color:#163c6b">Observaciones</h3>
+  </div>
+  <div style="padding:20px 30px 15px 30px;text-align: left;">
+    <div style="height:100%;overflow:auto">
+      <div>
+        <div>
+          <b>ID: </b>
+          <span>{{selectedStudyResponse.id}}</span>
+        </div>
+        <br>
+        <div>
+          <b>Nombre Estudio: </b><br>
+          <span>{{selectedStudyResponse.estudiesName}}</span>
+        </div>
+      </div>
+      <br>
+      <div>
+        <div>
+          <b>Estado: </b><br>
+          <span *ngIf="obsSelected.status === 0">Validando Respuestas</span>
+          <span *ngIf="obsSelected.status === 1">Validando Respuestas</span>
+          <span *ngIf="obsSelected.status === 2">Revisar Observaciones</span>
+          <span *ngIf="obsSelected.status === 3">Formulario Validado</span>
+        </div>
+        <br>
+        <div>
+          <b>Nombre: </b><br>
+          <span>{{obsSelected.nameFile}}</span>
+        </div>
+      </div>
+
+      <br>
+      <br>
+      <b>Detalle: </b><br><br>
+      <mat-form-field class="example-full-width" style="width:99%">
+        <textarea [(ngModel)]="fieldObs" matInput #message maxlength="1000" rows="8"></textarea>
+        <mat-hint align="end">{{message.value.length}} / 1000</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div style="    display: flex;
+    justify-content: end;
+    padding: 20px;
+    padding-right: 2.5vw;
+    border-top: 1px solid #cdcdcd;">
+    <div>
+      <button mat-raised-button class="custom-button2" [mat-dialog-close] (click)="cancelObs()"
+        style="background-color: white!important;color:black!important">Cancelar</button>
+    </div>
+
+    <div style="margin-left: 1vw;">
+      <button mat-raised-button class="custom-button" style="background-color: #133d6a; color: white;"
+        (click)="saveModalObs(modalObsConfirm)">Guardar</button>
+    </div>
+
+  </div>
+</ng-template>
+
+<ng-template #modalObsConfirm>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Confirmación</h3>
+    <p>¿Esta seguro de guardar los cambios?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button class="custom-button2 btnHover" (click)="sendObs()">Aceptar</button>
+  </div>
+</ng-template>
+
+
+<ng-template #validationForm>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>Validar Estudio</h3>
+    <p>El estudio será validado.<br>
+      ¿Esta seguro de validar el estudio?</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button [mat-dialog-close] class="custom-button btnHoverCancel"
+      style="margin-right: 20px;">Cancelar</button>
+    <button mat-raised-button class="custom-button2 btnHover" (click)="validateFormAccept()">Aceptar</button>
+  </div>
+</ng-template>
+
+<ng-template #validationFormInfo>
+  <div style="padding:25px 30px 15px 30px;text-align: center;">
+    <h3>IMPORTANTE:</h3>
+    <p>Una vez validado el estudio, esta acción no se puede deshacer.</p>
+  </div>
+  <mat-divider style="margin-bottom:10px"></mat-divider>
+  <div style="text-align: center;">
+    <button mat-raised-button class="custom-button2 btnHover" [mat-dialog-close]
+      (click)="validateFormModal(validationForm)">Cerrar</button>
+  </div>
+</ng-template>
+
+
+<ng-template #dialogWelcome let-dialogRef="dialogRef">
+  <div class="custom-modal-overlay fondo-curvas">
+    <div class="custom-modal">
+      <button class="close-btn" (click)="closeModal()">✕</button>
+      <h1>HOLA! :)</h1>
+      <p class="subtext">
+        Te damos la bienvenida a nuestra plataforma, donde podrás acceder a los diversos estudios publicados.
+      </p>
+      <p class="highlight">
+        Te invitamos a descubrir una forma dinámica e interactiva de explorar la información contenida en nuestros informes.
+      </p>
+    </div>
+  </div>
+</ng-template>
